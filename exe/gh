@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# If the site does not exist
+if [ ! -d _site ]; then
+
+  # Initialize git to target GitHub
+  mkdir _site
+  cd _site
+  git init
+  git remote add gh git@github.com:ElMassimo/elmassimo.github.io.git
+  git fetch gh master
+  git checkout master
+  cd ..
+fi
+
+# Rebuild site
+jekyll build
+
+# Initialize git to target GitHub
+cd _site
+git add .
+
+# Commit all the latest changes
+if [ -z "$1" ]; then
+  read -r -p "Please enter the commit message: " -r
+  [ -z "$REPLY" ] && return
+  git commit -m "$REPLY"
+else
+  git commit -m "$@"
+fi
+
+# Push to GitHub
+echo 'Pushed'
+git push gh master

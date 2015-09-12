@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
+<link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
+<link href="http://maximomussini.com/" rel="alternate" type="text/html" />
+<updated>2015-10-01T01:43:02-03:00</updated>
+<id>http://maximomussini.com/</id>
+<subtitle>Thoughts about development and product design.</subtitle>
+<entry>
+<title>Less</title>
+<link href="http://maximomussini.com/posts/less" rel="alternate" type="text/html" title="Less" />
+<published>2015-10-01T00:09:00-03:00</published>
+<updated>2015-10-01T00:09:00-03:00</updated>
+<id>http://maximomussini.com/posts/less</id>
+<content type="html" xml:base="http://maximomussini.com/posts/less">&lt;p&gt;Recently I’ve been digging into the &lt;a href=&quot;http://lesscode.is/&quot;&gt;&lt;em&gt;#lesscode&lt;/em&gt;&lt;/a&gt; movement, which proposes that software tools exist to solve real problems—a piece of code that doesn’t solve a problem is just waste. It also implies that frugality is a trademark of great designs; we should use it as an inspiration to create elegant software that focuses on solving the problem at hand.&lt;/p&gt;
+
+&lt;p&gt;This is related with other ideas like &lt;a href=&quot;http://www.amazon.com/Machine-That-Changed-World-Revolutionizing/dp/0743299795&quot;&gt;&lt;em&gt;lean manufacturing&lt;/em&gt;&lt;/a&gt;: focus all effort in the things that add value, and reduce everything else. This management philosophy was started by Toyota in the ’50s and later evolved to a business methodology called &lt;a href=&quot;http://www.amazon.com/Lean-Thinking-Banish-Create-Corporation-ebook/dp/B0048WQDIO&quot;&gt;&lt;em&gt;lean thinking&lt;/em&gt;&lt;/a&gt;, a way to apply the idea—of delivering more value while eliminating waste—to business in general.&lt;/p&gt;
+
+&lt;p&gt;While both &lt;em&gt;lesscode&lt;/em&gt; and the lean methodologies share the idea of creating something valuable and cutting down the waste, &lt;em&gt;lesscode&lt;/em&gt; has a deeper emotional perspective. As a developer, you are responsible for any complexity in the solution.&lt;/p&gt;
+
+&lt;p&gt;It’s by embracing the constraints—both natural and self-imposed, such as aiming for a great design—and gaining a sense of minimalism, that one is able to discover elegant and simple solutions, and find freedom.&lt;/p&gt;
+
+&lt;p&gt;Freedom from bloated frameworks, freedom from cargo-cult programming, freedom from the fear of not understanding. Freedom to rid your code out of &lt;em&gt;excess and complexity&lt;/em&gt;, and &lt;strong&gt;focus on what matters&lt;/strong&gt;.&lt;/p&gt;
+</content>
+<category term="posts" />
+<summary>Recently I’ve been digging into the #lesscode movement, which proposes that software tools exist to solve real problems—a piece of code that doesn’t solve a problem is just waste. It also implies that frugality is a trademark of great designs; we should use it as an inspiration to create elegant software that focuses on solving the problem at hand.</summary>
+</entry>
+</feed>

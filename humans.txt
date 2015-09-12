@@ -1,0 +1,11 @@
+/* TEAM */
+Creator: Máximo Mussini
+Contact: maximomussini@gmail.com
+Twitter: https://twitter.com/MaximoMussini
+Location: https://www.google.com/maps/place/Montevideo,+Uruguay
+
+/* SITE */
+Last update: 2015-10-01
+Language: English / Español / Castellano
+Doctype: HTML5
+Software: Jekyll, Sublime Text, Photoshop
