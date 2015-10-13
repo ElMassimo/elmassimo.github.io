@@ -30,5 +30,4 @@ else
 fi
 
 # Push to GitHub
-echo 'Pushed'
 git push gh master

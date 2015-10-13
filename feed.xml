@@ -3,9 +3,118 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-10-01T14:18:19-03:00</updated>
+<updated>2015-10-13T10:31:36-02:00</updated>
 <id>http://maximomussini.com/</id>
 <subtitle>Thoughts about development and product design.</subtitle>
+<entry>
+<title>Breaking Mongoid Inheritance</title>
+<link href="http://maximomussini.com/posts/mongoid-inheritance" rel="alternate" type="text/html" title="Breaking Mongoid Inheritance" />
+<published>2015-10-12T23:29:00-02:00</published>
+<updated>2015-10-12T23:29:00-02:00</updated>
+<id>http://maximomussini.com/posts/mongoid-inheritance</id>
+<content type="html" xml:base="http://maximomussini.com/posts/mongoid-inheritance">&lt;p&gt;By default, &lt;a href=&quot;http://mongoid.github.io/&quot;&gt;&lt;em&gt;Mongoid&lt;/em&gt;&lt;/a&gt; will use &lt;a href=&quot;http://martinfowler.com/eaaCatalog/singleTableInheritance.html&quot;&gt;single-collection inheritance&lt;/a&gt; when extending a Ruby class, by storing a &lt;code&gt;_type&lt;/code&gt; attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.&lt;/p&gt;
+
+&lt;p&gt;In addition, it will handle the hierarchy in queries, by allowing to query the parent class to return documents from any subclass, or query a specific subclass to fetch only documents of that specific type. In order to do this efficiently, &lt;em&gt;Mongoid&lt;/em&gt; will check for existing indexes that contain &lt;code&gt;_type&lt;/code&gt; as a prefix, or add a &lt;code&gt;{ _type: 1 }&lt;/code&gt; index.&lt;/p&gt;
+
+&lt;p&gt;As a consequence of the approach:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Storage size increases since we need to store an additional attribute on every document. The smaller the document, the bigger the impact of this extra field.&lt;/li&gt;
+  &lt;li&gt;For large collections, adding a &lt;code&gt;_type&lt;/code&gt; index or prefix it to existing ones to create compound indexes could be a concern, since large indexes might not fit in memory, which would quickly degrade the performance.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Bah, trade-offs. It’s still awesome &lt;img class=&quot;emoji&quot; title=&quot;:smirk:&quot; alt=&quot;:smirk:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f60f.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;While this behaviour is usually desirable, there are some scenarios where it’s suitable to use inheritance in Ruby but it doesn’t make sense to store different classes of the hierarchy in the same collection.&lt;/p&gt;
+
+&lt;p&gt;In particular, if subclasses will always be queried independently, we can &lt;strong&gt;store each type in a different collection&lt;/strong&gt;, which:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Doesn’t require additional indexes.&lt;/li&gt;
+  &lt;li&gt;Doesn’t require extra information in each document.&lt;/li&gt;
+  &lt;li&gt;Provides a natural way to partition the data.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Easy. Just use mixins to share code between the subclasses, &lt;em&gt;Mongoid&lt;/em&gt; will store them in separate collections &lt;img class=&quot;emoji&quot; title=&quot;:relieved:&quot; alt=&quot;:relieved:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f60c.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;an-example-smallmore-like-a-very-contrived-example-img-classemoji-titlesmile-altsmile-srchttpsassetsgithubcomimagesiconsemojiunicode1f604png-height20-width20-alignabsmiddle-small&quot;&gt;An example &lt;small&gt;(more like “A Very Contrived Example” &lt;img class=&quot;emoji&quot; title=&quot;:smile:&quot; alt=&quot;:smile:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f604.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;)&lt;/small&gt;&lt;/h2&gt;
+
+&lt;p&gt;Let’s imagine that we have a drawing app, where you can draw many triangles on a canvas, and need to choose between three different drawing modes: regular, equilateral, or isosceles.&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+class Triangle
+  include Mongoid::Document
+  …
+end&lt;/p&gt;
+
+&lt;p&gt;class IsoscelesTriangle &amp;lt; Triangle
+  validate_two_sides_are_equal
+end&lt;/p&gt;
+
+&lt;p&gt;class EquilateralTriangle &amp;lt; Triangle
+  validate_all_sides_are_equal
+end
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;We can take advantage of this restriction and store each type of triangle in a separate collection, which will prevent the database from scanning more documents than necessary to execute our queries.&lt;/p&gt;
+
+&lt;p&gt;This will be more efficient than adding an extra &lt;code&gt;_type&lt;/code&gt; attribute and index, which is the default behaviour provided by &lt;em&gt;Mongoid&lt;/em&gt; when inheriting a model. If we want to make this work, we will need to avoid &lt;em&gt;Mongoid&lt;/em&gt;’s single-collection inheritance.&lt;/p&gt;
+
+&lt;h3 id=&quot;mixins&quot;&gt;Mixins&lt;/h3&gt;
+&lt;p&gt;Using mixins to share the code is a nice way to get the job done, but in this case it falls short because &lt;code&gt;Triangle&lt;/code&gt; (the base class) is not abstract—turning it into a module wouldn’t allow us to instantiate it. We can deal with this by creating a module that contains the code that we want to reuse.&lt;/p&gt;
+
+&lt;p&gt;We shall name it &lt;code&gt;Trianglable&lt;/code&gt;. Hmm, sounds weird, let’s go with &lt;code&gt;Trilateral&lt;/code&gt;. Maybe &lt;code&gt;BaseTriangle&lt;/code&gt;? &lt;code&gt;Triangleness&lt;/code&gt;? Damn, names are tough &lt;img class=&quot;emoji&quot; title=&quot;:tired_face:&quot; alt=&quot;:tired_face:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f62b.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+module AbstractTriangle
+  include Mongoid::Document
+  …
+end&lt;/p&gt;
+
+&lt;p&gt;class Triangle
+  include AbstractTriangle
+end&lt;/p&gt;
+
+&lt;p&gt;class IsoscelesTriangle
+  include AbstractTriangle
+  validate_two_sides_are_equal
+end&lt;/p&gt;
+
+&lt;p&gt;class EquilateralTriangle
+  include AbstractTriangle
+  validate_all_sides_are_equal
+end
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Much better &lt;img class=&quot;emoji&quot; title=&quot;:neutral_face:&quot; alt=&quot;:neutral_face:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f610.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;using-inheritance&quot;&gt;Using Inheritance&lt;/h3&gt;
+
+&lt;p&gt;In cases like this I would like to start with inheritance, which can make the code easier to follow, and move to the mixin approach or composition as the requirements change and some of the behaviour or logic in the base class should no longer be shared with the subclasses.&lt;/p&gt;
+
+&lt;p&gt;When facing a similar situation recently, I decided to take a look at &lt;em&gt;Mongoid&lt;/em&gt; internals and find out if it was viable to prevent the unwanted STI behaviour. Ideally, we would get standard Ruby inheritance, without the subclass being handled differently by &lt;em&gt;Mongoid&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The first thing to do, was to look for an &lt;a href=&quot;http://ruby-doc.org/core-2.2.0/Class.html#method-i-inherited&quot;&gt;&lt;code&gt;inherited&lt;/code&gt;&lt;/a&gt; hook in one of the many modules inside the library, which happened to be in &lt;a href=&quot;https://github.com/mongodb/mongoid/blob/d787ec40e5554d7e09a1c4d4cc95c5251ec279eb/lib/mongoid/traversable.rb#L193&quot;&gt;&lt;code&gt;Mongoid::Traversable&lt;/code&gt;&lt;/a&gt;. Unfortunately, there’s a lot going on in that method; &lt;em&gt;Mongoid&lt;/em&gt; doesn’t make it easy to extend or modify its functionality in a clean way.&lt;/p&gt;
+
+&lt;p&gt;Feeling determined, I chose to hack my way into a solution. The result is the module below—hacky at best, more likely a problem waiting for the next &lt;em&gt;Mongoid&lt;/em&gt; update to blow up &lt;img class=&quot;emoji&quot; title=&quot;:hear_no_evil:&quot; alt=&quot;:hear_no_evil:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f649.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/ElMassimo/f59432e4211c6fbb6e04.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;All things considered, it provided a nice balance between sharing code, keeping the storage and index size down, and maintaining a straightforward structure in the code.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;¯\&lt;em&gt;(ツ)&lt;/em&gt;/¯&lt;/strong&gt;&lt;/p&gt;
+</content>
+<category term="posts" />
+<summary>By default, Mongoid will use single-collection inheritance when extending a Ruby class, by storing a _type attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.</summary>
+</entry>
 <entry>
 <title>Less</title>
 <link href="http://maximomussini.com/posts/less" rel="alternate" type="text/html" title="Less" />

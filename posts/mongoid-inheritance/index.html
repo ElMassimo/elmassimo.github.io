@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Breaking Mongoid Inheritance · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900" type="text/css" />
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml">
+
+<!-- Facebook Stuff -->
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Breaking Mongoid Inheritance">
+<meta property="og:description" content="By default, [_Mongoid_](http://mongoid.github.io/) will use [single-collection inheritance](http://martinfowler.com/e...">
+<meta property="og:url" content="http://maximomussini.com/posts/mongoid-inheritance">
+<meta property="og:site_name" content="Máximo Mussini">
+
+
+  <body>
+    <header>
+  
+    <div class="hero"
+      
+        style="background-image: url(/images/mongoid-inheritance.jpg);"
+      >
+      <h1>Breaking Mongoid Inheritance</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr />
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">October 12, 2015</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+
+  <div class="post">
+    <p>By default, <a href="http://mongoid.github.io/"><em>Mongoid</em></a> will use <a href="http://martinfowler.com/eaaCatalog/singleTableInheritance.html">single-collection inheritance</a> when extending a Ruby class, by storing a <code>_type</code> attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.</p>
+
+<p>In addition, it will handle the hierarchy in queries, by allowing to query the parent class to return documents from any subclass, or query a specific subclass to fetch only documents of that specific type. In order to do this efficiently, <em>Mongoid</em> will check for existing indexes that contain <code>_type</code> as a prefix, or add a <code>{ _type: 1 }</code> index.</p>
+
+<p>As a consequence of the approach:</p>
+
+<ul>
+  <li>Storage size increases since we need to store an additional attribute on every document. The smaller the document, the bigger the impact of this extra field.</li>
+  <li>For large collections, adding a <code>_type</code> index or prefix it to existing ones to create compound indexes could be a concern, since large indexes might not fit in memory, which would quickly degrade the performance.</li>
+</ul>
+
+<blockquote>
+  <p>Bah, trade-offs. It’s still awesome <img class="emoji" title=":smirk:" alt=":smirk:" src="https://assets.github.com/images/icons/emoji/unicode/1f60f.png" height="20" width="20" align="absmiddle" /></p>
+</blockquote>
+
+<p>While this behaviour is usually desirable, there are some scenarios where it’s suitable to use inheritance in Ruby but it doesn’t make sense to store different classes of the hierarchy in the same collection.</p>
+
+<p>In particular, if subclasses will always be queried independently, we can <strong>store each type in a different collection</strong>, which:</p>
+
+<ul>
+  <li>Doesn’t require additional indexes.</li>
+  <li>Doesn’t require extra information in each document.</li>
+  <li>Provides a natural way to partition the data.</li>
+</ul>
+
+<blockquote>
+  <p>Easy. Just use mixins to share code between the subclasses, <em>Mongoid</em> will store them in separate collections <img class="emoji" title=":relieved:" alt=":relieved:" src="https://assets.github.com/images/icons/emoji/unicode/1f60c.png" height="20" width="20" align="absmiddle" /></p>
+</blockquote>
+
+<hr />
+
+<h2 id="an-example-smallmore-like-a-very-contrived-example-img-classemoji-titlesmile-altsmile-srchttpsassetsgithubcomimagesiconsemojiunicode1f604png-height20-width20-alignabsmiddle-small">An example <small>(more like “A Very Contrived Example” <img class="emoji" title=":smile:" alt=":smile:" src="https://assets.github.com/images/icons/emoji/unicode/1f604.png" height="20" width="20" align="absmiddle" />)</small></h2>
+
+<p>Let’s imagine that we have a drawing app, where you can draw many triangles on a canvas, and need to choose between three different drawing modes: regular, equilateral, or isosceles.</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Triangle</span>
+  <span class="kp">include</span> <span class="no">Mongoid</span><span class="o">::</span><span class="no">Document</span>
+  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">IsoscelesTriangle</span> <span class="o">&lt;</span> <span class="no">Triangle</span>
+  <span class="n">validate_two_sides_are_equal</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">EquilateralTriangle</span> <span class="o">&lt;</span> <span class="no">Triangle</span>
+  <span class="n">validate_all_sides_are_equal</span>
+<span class="k">end</span></code></pre></div>
+
+<p>We can take advantage of this restriction and store each type of triangle in a separate collection, which will prevent the database from scanning more documents than necessary to execute our queries.</p>
+
+<p>This will be more efficient than adding an extra <code>_type</code> attribute and index, which is the default behaviour provided by <em>Mongoid</em> when inheriting a model. If we want to make this work, we will need to avoid <em>Mongoid</em>’s single-collection inheritance.</p>
+
+<h3 id="mixins">Mixins</h3>
+<p>Using mixins to share the code is a nice way to get the job done, but in this case it falls short because <code>Triangle</code> (the base class) is not abstract—turning it into a module wouldn’t allow us to instantiate it. We can deal with this by creating a module that contains the code that we want to reuse.</p>
+
+<p>We shall name it <code>Trianglable</code>. Hmm, sounds weird, let’s go with <code>Trilateral</code>. Maybe <code>BaseTriangle</code>? <code>Triangleness</code>? Damn, names are tough <img class="emoji" title=":tired_face:" alt=":tired_face:" src="https://assets.github.com/images/icons/emoji/unicode/1f62b.png" height="20" width="20" align="absmiddle" /></p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">AbstractTriangle</span>
+  <span class="kp">include</span> <span class="no">Mongoid</span><span class="o">::</span><span class="no">Document</span>
+  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Triangle</span>
+  <span class="kp">include</span> <span class="no">AbstractTriangle</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">IsoscelesTriangle</span>
+  <span class="kp">include</span> <span class="no">AbstractTriangle</span>
+  <span class="n">validate_two_sides_are_equal</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">EquilateralTriangle</span>
+  <span class="kp">include</span> <span class="no">AbstractTriangle</span>
+  <span class="n">validate_all_sides_are_equal</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Much better <img class="emoji" title=":neutral_face:" alt=":neutral_face:" src="https://assets.github.com/images/icons/emoji/unicode/1f610.png" height="20" width="20" align="absmiddle" /></p>
+
+<hr />
+
+<h3 id="using-inheritance">Using Inheritance</h3>
+
+<p>In cases like this I would like to start with inheritance, which can make the code easier to follow, and move to the mixin approach or composition as the requirements change and some of the behaviour or logic in the base class should no longer be shared with the subclasses.</p>
+
+<p>When facing a similar situation recently, I decided to take a look at <em>Mongoid</em> internals and find out if it was viable to prevent the unwanted STI behaviour. Ideally, we would get standard Ruby inheritance, without the subclass being handled differently by <em>Mongoid</em>.</p>
+
+<p>The first thing to do, was to look for an <a href="http://ruby-doc.org/core-2.2.0/Class.html#method-i-inherited"><code>inherited</code></a> hook in one of the many modules inside the library, which happened to be in <a href="https://github.com/mongodb/mongoid/blob/d787ec40e5554d7e09a1c4d4cc95c5251ec279eb/lib/mongoid/traversable.rb#L193"><code>Mongoid::Traversable</code></a>. Unfortunately, there’s a lot going on in that method; <em>Mongoid</em> doesn’t make it easy to extend or modify its functionality in a clean way.</p>
+
+<p>Feeling determined, I chose to hack my way into a solution. The result is the module below—hacky at best, more likely a problem waiting for the next <em>Mongoid</em> update to blow up <img class="emoji" title=":hear_no_evil:" alt=":hear_no_evil:" src="https://assets.github.com/images/icons/emoji/unicode/1f649.png" height="20" width="20" align="absmiddle" /></p>
+
+<script src="https://gist.github.com/ElMassimo/f59432e4211c6fbb6e04.js"></script>
+
+<p>All things considered, it provided a nice balance between sharing code, keeping the storage and index size down, and maintaining a straightforward structure in the code.</p>
+
+<p><strong>¯\<em>(ツ)</em>/¯</strong></p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/less/" class="overlay">
+        <h1>Less</h1>
+        <div class="post-info">
+  <span class="date">October 01, 2015</span>
+  <span class="reading-time">2 min read</span>
+</div>
+
+        <div class="post">
+          <p>Recently I’ve been digging into the <span href="http://lesscode.is/"><em>#lesscode</em></span> movement, which proposes that software tools exist to solve real problems—a piece of code that doesn’t solve a problem is just waste. It also implies that frugality is a trademark of great designs; we should use it as an inspiration to create elegant software that focuses on solving the problem at hand.</p>
+
+<p>This is related with other ideas like <span href="http://www.amazon.com/Machine-That-Changed-World-Revolutionizing/dp/0743299795"><em>lean manufacturing</em></span>: focus all effort in the things that add value, and reduce everything else. This management philosophy was started by Toyota in the ’50s and later evolved to a business methodology called <span href="http://www.amazon.com/Lean-Thinking-Banish-Create-Corporation-ebook/dp/B0048WQDIO"><em>lean thinkin…</em></span></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>
