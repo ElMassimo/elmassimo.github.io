@@ -3,8 +3,9 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-10-13T10:31:36-02:00</updated>
+<updated>2015-10-14T11:58:05-02:00</updated>
 <id>http://maximomussini.com/</id>
+<title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
 <entry>
 <title>Breaking Mongoid Inheritance</title>
@@ -29,7 +30,7 @@
 
 &lt;p&gt;While this behaviour is usually desirable, there are some scenarios where it’s suitable to use inheritance in Ruby but it doesn’t make sense to store different classes of the hierarchy in the same collection.&lt;/p&gt;
 
-&lt;p&gt;In particular, if subclasses will always be queried independently, we can &lt;strong&gt;store each type in a different collection&lt;/strong&gt;, which:&lt;/p&gt;
+&lt;p&gt;In particular, if subclasses will always be queried independently, we can &lt;strong&gt;store each type in a different collection&lt;/strong&gt;, which will improve the performance because it:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Doesn’t require additional indexes.&lt;/li&gt;

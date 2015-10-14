@@ -17,14 +17,14 @@
 <meta http-equiv="cleartype" content="on">
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900" type="text/css" />
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900" type="text/css">
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,900" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
-<link rel="alternate" type="application/rss+xml" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
 <!-- Facebook Stuff -->
 <meta property="og:locale" content="en_US">
@@ -105,7 +105,7 @@
 
 <p>While this behaviour is usually desirable, there are some scenarios where it’s suitable to use inheritance in Ruby but it doesn’t make sense to store different classes of the hierarchy in the same collection.</p>
 
-<p>In particular, if subclasses will always be queried independently, we can <strong>store each type in a different collection</strong>, which:</p>
+<p>In particular, if subclasses will always be queried independently, we can <strong>store each type in a different collection</strong>, which will improve the performance because it:</p>
 
 <ul>
   <li>Doesn’t require additional indexes.</li>
