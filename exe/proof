@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+# Build the site.
+`jekyll build --trace`
+
+# Check all the links in the site.
+require 'html/proofer'
+HTML::Proofer.new('./_site', href_ignore: ['#']).run

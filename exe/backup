@@ -6,7 +6,7 @@ git add .
 # Commit all the latest changes
 if [ -z "$1" ]; then
   read -r -p "Please enter the commit message: " -r
-  [ -z "$REPLY" ] && return
+  [ -z "$REPLY" ] && exit
   git commit -m "$REPLY"
 else
   git commit -m "$@"

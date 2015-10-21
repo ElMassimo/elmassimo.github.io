@@ -2,10 +2,10 @@
 Creator: Máximo Mussini
 Contact: maximomussini@gmail.com
 Twitter: https://twitter.com/MaximoMussini
-Location: https://www.google.com/maps/place/Montevideo,+Uruguay
+Location: Montevideo, UY
 
 /* SITE */
-Last update: 2015-10-14
+Last update: 2015-10-20
 Language: English / Español / Castellano
 Doctype: HTML5
 Software: Jekyll, Sublime Text, Photoshop

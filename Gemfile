@@ -1,10 +1,13 @@
 source 'https://rubygems.org'
 
 gem 'github-pages'
-gem 'mr_poole'
 gem 'octopress-autoprefixer'
-gem 'rake'
+
+group :test do
+  gem 'html-proofer'
+end
 
 group :development do
+  gem 'mr_poole'
   gem 'pry-byebug'
 end
