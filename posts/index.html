@@ -83,6 +83,20 @@
 <ul class="posts list">
 
   <li>
+    <a href="/posts/mongoid-n+1/" class="post overlay">
+      <div>
+        <span class="title ch">Avoiding the N+1 problem in Mongoid</span>
+        <span class="date ch">
+          <time datetime="2015-10-30T19:30:00-02:00" itemprop="datePublished">October 30, 2015</time>
+        </span>
+        
+          <p>One of the downsides of using…</p>
+        
+      </div>
+    </a>
+  </li>
+
+  <li>
     <a href="/posts/mongoid-inheritance/" class="post overlay">
       <div>
         <span class="title ch">Breaking Mongoid Inheritance</span>
@@ -90,7 +104,9 @@
           <time datetime="2015-10-12T23:29:00-02:00" itemprop="datePublished">October 12, 2015</time>
         </span>
         
-          <p>By default, <span href="http://mongoid.github.io/"><em>Mongoid</em></span> will use <span href="http://martinfowler.com/eaaCatalog/singleTableInheritance.html">single-collection inheritance</span> when extending a Ruby class, by storing a <code>_type</code> attribute in every document in the collection that contains the concrete class name,…</p>
+          <p>By default, <span href="http://mongoid.github.io/"><em>Mongoid</em></span> will use <span href="http://martinfowler.com/eaaCatalog/singleTableInheritance.html">single-collection inheritance</span> when extending a Ruby class, by storing a <code>_type</code> attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.</p>
+
+<p>In addition, it will handle…</p>
         
       </div>
     </a>

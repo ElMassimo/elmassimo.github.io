@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-# Alias for backup
-exe/backup "$@"
+git push -f bb dev

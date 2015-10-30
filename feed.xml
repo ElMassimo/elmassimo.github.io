@@ -3,10 +3,138 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-10-20T23:11:57-02:00</updated>
+<updated>2015-10-30T20:45:49-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
+<entry>
+<title>Avoiding the N+1 problem in Mongoid</title>
+<link href="http://maximomussini.com/posts/mongoid-n+1" rel="alternate" type="text/html" title="Avoiding the N+1 problem in Mongoid" />
+<published>2015-10-30T19:30:00-02:00</published>
+<updated>2015-10-30T19:30:00-02:00</updated>
+<id>http://maximomussini.com/posts/mongoid-n+1</id>
+<content type="html" xml:base="http://maximomussini.com/posts/mongoid-n+1">&lt;p&gt;One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!&lt;/p&gt;
+
+&lt;p&gt;A performance issue that is very common when using ORMs is the &lt;em&gt;N+1 query&lt;/em&gt; problem. This anti-pattern usually occurs when trying to load related information for each item in a list of results.&lt;/p&gt;
+
+&lt;p&gt;Since most ORMs don’t perform eager loading by default (to avoid fetching more data than necessary), it’s necessary to make extra queries &lt;em&gt;per item&lt;/em&gt; to fetch the related data. Imagine that we have a simple music store app:&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+class Band
+  include Mongoid::Document
+  has_many :albums
+end&lt;/p&gt;
+
+&lt;p&gt;class Album
+  include Mongoid::Document
+  belongs_to :band
+  has_many :songs
+end&lt;/p&gt;
+
+&lt;p&gt;class Song
+  include Mongoid::Document
+  belongs_to :album
+end
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;A classical appearance of the &lt;em&gt;N+1 problem&lt;/em&gt; might look like:&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+albums = Album.where(year: 1970)&lt;/p&gt;
+
+&lt;p&gt;albums.each do |album|
+  puts “Album: #{album.name}, Band: #{album.band.name}”
+end
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;In this example, we are loading a list of albums (the first query) and then loading the related band for each album, making one query &lt;em&gt;per album&lt;/em&gt;. With a list of &lt;em&gt;N albums&lt;/em&gt;, we make 1 query to get the albums and N queries to get the bands: a total of &lt;em&gt;N+1 queries&lt;/em&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The problem can also appear in other scenarios, such as more complex object graph traversals. In those cases, it can be much harder to spot the cause.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;To understand why this is inefficient, we need to consider the impact of latency in the response time. Even if each of the &lt;em&gt;N queries&lt;/em&gt; is executed quickly, each query requires one database round trip. This latency will add up linearly as &lt;em&gt;N&lt;/em&gt; increases, which can have a devastating effect in the response time.&lt;/p&gt;
+
+&lt;h2 id=&quot;avoiding-the-n1-problem&quot;&gt;Avoiding the N+1 problem&lt;/h2&gt;
+
+&lt;p&gt;A solution to the &lt;em&gt;N+1 problem&lt;/em&gt; is to eagerly load the documents that we need, so that when we access a relation it’s already preloaded and doesn’t trigger a query.&lt;/p&gt;
+
+&lt;p&gt;In &lt;em&gt;Mongoid&lt;/em&gt;, we can do this by running an &lt;code&gt;$in&lt;/code&gt; query using the relation foreign keys to fetch all the related records, and then assign the relations in memory using &lt;code&gt;set_relation&lt;/code&gt;. This way, we only perform a single query to fetch a relation, regardless of the amount of documents returned by the first query.&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+band_ids = albums.map(&amp;amp;:band_id)&lt;/p&gt;
+
+&lt;p&gt;bands = Band.in(id: band_ids)&lt;/p&gt;
+
+&lt;p&gt;bands = bands.index_by(&amp;amp;:id)
+albums.each do |album|
+  album.set_relation(:band, bands[album.band_id])
+end
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;The algorithm changes slightly depending on the type of relation we want to &lt;em&gt;include&lt;/em&gt;, and how the foreign keys are stored, but the idea is the same: get a list of foreign keys, use them to make a query to fetch the related documents, and assign the relations in memory using the foreign keys to match the objects.&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+album_ids = albums.map(&amp;amp;:id)&lt;/p&gt;
+
+&lt;p&gt;songs = Song.in(album_id: album_ids)&lt;/p&gt;
+
+&lt;p&gt;album_songs = songs.group_by(&amp;amp;:album_id)
+albums.each do |album|
+  album.set_relation(:songs, album_songs[album.id])
+end
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Although eager loading the documents manually is not very complex, writing this logic every time is cumbersome, error-prone, and hard to maintain.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, &lt;em&gt;Mongoid&lt;/em&gt; has baked-in support to eager load relations using the &lt;code&gt;includes&lt;/code&gt; method, which allows to specify all the relations that we want to eager load pmce the query is made. The following is equivalent to the two snippets above:&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+albums.includes(:band, :songs)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Easy, right? This becomes extremely useful when trying to avoid those sneaky &lt;em&gt;N+1 queries&lt;/em&gt; we were talking about &lt;img class=&quot;emoji&quot; title=&quot;:wink:&quot; alt=&quot;:wink:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f609.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;performance-considerations&quot;&gt;Performance Considerations&lt;/h2&gt;
+
+&lt;p&gt;Although eager loading can be helpful, it’s important to be aware that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It takes a lot of processing to obtain the foreign keys, fetch the documents from the database, traverse them, and assign them to the objects in memory.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;$in&lt;/code&gt; queries are usually slower, and get slower as the amount of values increases.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Most of the times, the overhead of processing in memory and making a more complex query is lower than the latency of issuing a lot of queries separately. Rewriting the code to eager load the relations that we need will usually improve the performance.&lt;/p&gt;
+
+&lt;p&gt;As with any performance optimization, there might be some corner cases where eager loading is slower. It’s important to run benchmarks and measure the response time to verify that it’s worth it to use eager loading &lt;img class=&quot;emoji&quot; title=&quot;:bar_chart:&quot; alt=&quot;:bar_chart:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f4ca.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Always keep an eye out for this anti-pattern; accessing the database in a naive way will make the app perform badly. Using a tool like &lt;a href=&quot;https://github.com/flyerhzm/bullet&quot;&gt;&lt;code&gt;bullet&lt;/code&gt;&lt;/a&gt; can help to detect N+1 queries or unused includes, but it’s better to use it as a safety net for the cases that slipped past our manual control.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Have in mind that in &lt;em&gt;mongodb&lt;/em&gt; it’s possible to embed the related documents instead of storing them in separate collections. Depending on the domain requirements, it can be a very good way to get the best out of the database, and avoid the problem entirely.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Thinking about data access from the beginning yields the best results, because it allow us to spot potential inefficiencies, and find alternative queries that perform better.&lt;/p&gt;
+
+&lt;h2 id=&quot;limitations-in-mongoid&quot;&gt;Limitations in Mongoid&lt;/h2&gt;
+
+&lt;p&gt;Eager loading in &lt;em&gt;Mongoid&lt;/em&gt; has some limitations:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Criteria-only&lt;/strong&gt;: It’s only possible to use eager loading with a &lt;code&gt;Mongoid::Criteria&lt;/code&gt; object. We can’t leverage the functionality if we have a list of objects.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;No Nested&lt;/strong&gt;: Only direct relations can be included, nested relations can’t be eagerly loaded (like &lt;code&gt;band.albums.songs&lt;/code&gt;).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;No Polymorphic&lt;/strong&gt;: Polymorphic relations can’t be included.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The first limitation exists because &lt;em&gt;Mongoid&lt;/em&gt; relies on the metadata to pick the appropriate eager loading algorithm. The relation metadata allows to infer things like foreign key names, the name of the database collection, and the name of the setter method for the relation.&lt;/p&gt;
+
+&lt;p&gt;I have solved the other limitations in &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt; &lt;img class=&quot;emoji&quot; title=&quot;:gem:&quot; alt=&quot;:gem:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f48e.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;, which extends the &lt;code&gt;includes&lt;/code&gt; method to support eager loading polymorphic and nested associations.&lt;/p&gt;
+
+&lt;p&gt;I will be writing about this gem soon, explaining its usage, as well as the difficulties of extending &lt;em&gt;Mongoid&lt;/em&gt;, stay tuned!&lt;/p&gt;
+</content>
+<category term="posts" />
+<summary>One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!</summary>
+</entry>
 <entry>
 <title>Breaking Mongoid Inheritance</title>
 <link href="http://maximomussini.com/posts/mongoid-inheritance" rel="alternate" type="text/html" title="Breaking Mongoid Inheritance" />
