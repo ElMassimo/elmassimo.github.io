@@ -3,7 +3,7 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-10-30T20:50:44-02:00</updated>
+<updated>2015-10-30T22:26:03-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
@@ -87,7 +87,7 @@ end
 
 &lt;p&gt;Although eager loading the documents manually is not very complex, writing this logic every time is cumbersome, error-prone, and hard to maintain.&lt;/p&gt;
 
-&lt;p&gt;Fortunately, &lt;em&gt;Mongoid&lt;/em&gt; has baked-in support to eager load relations using the &lt;code&gt;includes&lt;/code&gt; method, which allows to specify all the relations that we want to eager load pmce the query is made. The following is equivalent to the two snippets above:&lt;/p&gt;
+&lt;p&gt;Fortunately, &lt;em&gt;Mongoid&lt;/em&gt; has baked-in support to eager load relations using the &lt;code&gt;includes&lt;/code&gt; method, which allows to specify all the relations that we want to eager load once the query is made. The following is equivalent to the two snippets above:&lt;/p&gt;
 
 &lt;p&gt;{% highlight ruby %}
 albums.includes(:band, :songs)
@@ -108,7 +108,7 @@ albums.includes(:band, :songs)
 
 &lt;p&gt;As with any performance optimization, there might be some corner cases where eager loading is slower. It’s important to run benchmarks and measure the response time to verify that it’s worth it to use eager loading &lt;img class=&quot;emoji&quot; title=&quot;:bar_chart:&quot; alt=&quot;:bar_chart:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f4ca.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Always keep an eye out for this anti-pattern; accessing the database in a naive way will make the app perform badly. Using a tool like &lt;a href=&quot;https://github.com/flyerhzm/bullet&quot;&gt;&lt;code&gt;bullet&lt;/code&gt;&lt;/a&gt; can help to detect N+1 queries or unused includes, but it’s better to use it as a safety net for the cases that slipped past our manual control.&lt;/p&gt;
+&lt;p&gt;Always keep an eye out for this anti-pattern; accessing the database in a naive way will hurt the performance. Using a tool like &lt;a href=&quot;https://github.com/flyerhzm/bullet&quot;&gt;&lt;code&gt;bullet&lt;/code&gt;&lt;/a&gt; can help to detect N+1 queries or unused includes, but it’s better to use it as a safety net for the cases that slipped past our manual control.&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Have in mind that in &lt;em&gt;mongodb&lt;/em&gt; it’s possible to embed the related documents instead of storing them in separate collections. Depending on the domain requirements, it can be a very good way to get the best out of the database, and avoid the problem entirely.&lt;/p&gt;
