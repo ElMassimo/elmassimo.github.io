@@ -3,7 +3,7 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-10-30T22:26:03-02:00</updated>
+<updated>2015-11-02T14:01:06-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
@@ -37,7 +37,7 @@ end&lt;/p&gt;
 end
 {% endhighlight %}&lt;/p&gt;
 
-&lt;p&gt;A classical appearance of the &lt;em&gt;N+1 problem&lt;/em&gt; might look like:&lt;/p&gt;
+&lt;p&gt;A classic appearance of the &lt;em&gt;N+1 problem&lt;/em&gt; would be:&lt;/p&gt;
 
 &lt;p&gt;{% highlight ruby %}
 albums = Album.where(year: 1970)&lt;/p&gt;
