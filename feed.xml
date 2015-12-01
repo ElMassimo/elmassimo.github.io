@@ -3,10 +3,85 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-11-02T14:01:06-02:00</updated>
+<updated>2015-12-01T03:02:03-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
+<entry>
+<title>One Does Not Simply Extend Mongoid</title>
+<link href="http://maximomussini.com/posts/mongoid_includes" rel="alternate" type="text/html" title="One Does Not Simply Extend Mongoid" />
+<published>2015-11-30T22:46:00-02:00</published>
+<updated>2015-11-30T22:46:00-02:00</updated>
+<id>http://maximomussini.com/posts/mongoid_includes</id>
+<content type="html" xml:base="http://maximomussini.com/posts/mongoid_includes">&lt;p&gt;&lt;em&gt;Mongoid&lt;/em&gt; is not designed for extensibility; if you needs to modify its behaviour in a slight way, you will probably have no choice but to &lt;em&gt;monkey-patch&lt;/em&gt; it.&lt;/p&gt;
+
+&lt;p&gt;A while ago I faced a problem that required displaying related documents from several different &lt;em&gt;mongodb&lt;/em&gt; collections. The performance was not good, since for each item being displayed it was necessary to traverse a few nested associations to get the rest of the data.&lt;/p&gt;
+
+&lt;p&gt;Although &lt;em&gt;Mongoid&lt;/em&gt; provides eager loading support &lt;a href=&quot;{{ page.previous.url }}&quot;&gt;out of the box&lt;/a&gt;, it has a few limitations:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;No Nested&lt;/strong&gt;: Only direct relations can be eager loaded.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;No Polymorphic&lt;/strong&gt;: Polymorphic relations can’t be included.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Criteria-only&lt;/strong&gt;: It’s only possible to use eager loading with a &lt;code&gt;Mongoid::Criteria&lt;/code&gt; object. We can’t leverage the functionality if we have a list of objects.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Unfortunately, one of those traversed associations was both &lt;strong&gt;nested &amp;amp; polymorphic&lt;/strong&gt;, so in the beginning the only available solution was to eager load the relations manually.&lt;/p&gt;
+
+&lt;p&gt;After thinking about it for a whole, I decided to give it a shot and come up with an extension to eager load polymorphic and nested associations, and do away with all the boilerplate that is necessary to perform eager loading.&lt;/p&gt;
+
+&lt;h2 id=&quot;mongoidincludes-img-classemoji-titlegem-altgem-srchttpsassetsgithubcomimagesiconsemojiunicode1f48epng-height20-width20-alignabsmiddle-&quot;&gt;Mongoid::Includes &lt;img class=&quot;emoji&quot; title=&quot;:gem:&quot; alt=&quot;:gem:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f48e.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/h2&gt;
+&lt;p&gt;When writing the library, I picked a few constraints in order to give the project a clear direction:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Reuse &lt;em&gt;Mongoid’s&lt;/em&gt; eager loading functionality as building blocks.&lt;/li&gt;
+  &lt;li&gt;Fail-fast, or as early as possible.&lt;/li&gt;
+  &lt;li&gt;Cover only the most common use cases.&lt;/li&gt;
+  &lt;li&gt;Allow to override eager loading for the not so common ones.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Choosing these constraints allowed me to keep the library fairly small, without compromising its usefulness in more complex scenarios.&lt;/p&gt;
+
+&lt;p&gt;The result is &lt;a href=&quot;{{ page.github }}&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt;, a gem that enhances support for eager loading in &lt;em&gt;Mongoid&lt;/em&gt;, allowing to include polymorphic and nested associations, and modify eager loading queries on the fly.&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+Album.includes(:songs).includes(:musicians, from: :band)&lt;/p&gt;
+
+&lt;p&gt;Band.includes(:albums, with: -&amp;gt;(albums) { albums.gt(release: 1970).limit(2) })
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Mongoid::Includes&lt;/code&gt; extends the &lt;code&gt;includes&lt;/code&gt; method to support polymorphic associations without any syntax change. For nested includes, it expects a &lt;code&gt;:from&lt;/code&gt; option, indicating from which relation the include is going to be performed, eager loading it as well.&lt;/p&gt;
+
+&lt;p&gt;While those are the most typical cases, it also supports a &lt;code&gt;:with&lt;/code&gt; option which conveniently allows to modify the default query, and a &lt;code&gt;:loader&lt;/code&gt; option which receives the foreign keys of the documents to include.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Polymorphic or nested includes might be a sign of a poorly designed schema. &lt;a href=&quot;{{ page.github }}&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt; is very easy to use, but it should only be used if it’s truly necessary.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;extending-mongoid&quot;&gt;Extending Mongoid&lt;/h2&gt;
+&lt;p&gt;Although it was possible to reuse the eager loading logic in &lt;em&gt;Mongoid&lt;/em&gt;, doing so required a lot of fiddling and monkey-patching (using &lt;code&gt;prepend&lt;/code&gt;), since the library does not provide any point of extension.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Mongoid’s&lt;/em&gt; eager loading was written to work with queries, and assumes that the included documents will match an association on the model, so it relies on the association metadata to perform the includes. There is no simple way to reuse the logic without using relation metadata.&lt;/p&gt;
+
+&lt;p&gt;The biggest downside though, is that there is no way to perform eager loading for a set of documents, since the code relies on the contract of &lt;code&gt;Mongoid::Criteria&lt;/code&gt;. We can’t use eager loading if we triggered the query by using any &lt;code&gt;Enumerable&lt;/code&gt; method, or got the models by aggregation or any in-memory operation &lt;img class=&quot;emoji&quot; title=&quot;:disappointed_relieved:&quot; alt=&quot;:disappointed_relieved:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f625.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It would be a lot easier to extend &lt;em&gt;Mongoid’s&lt;/em&gt; functionality if it had a more modular design. Adding support for plugins that can be attached to the query lifecycle would be a huge step in that direction—less patching means more and better extensions.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-better-way&quot;&gt;A Better Way&lt;/h2&gt;
+&lt;p&gt;Some ORMs take a very different approach when it comes to eager loading. &lt;a href=&quot;https://github.com/elixir-lang/ecto&quot;&gt;Ecto&lt;/a&gt;, a popular database wrapper for the &lt;a href=&quot;http://elixir-lang.org/&quot;&gt;Elixir&lt;/a&gt; language, has a different &lt;a href=&quot;http://hexdocs.pm/ecto/Ecto.html&quot;&gt;philosophy&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: Ecto does not lazy load associations. While lazily loading associations may sound convenient at first, in the long run it becomes a source of confusion and performance issues.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As a long time &lt;em&gt;Mongoid&lt;/em&gt; user, I can painfully relate to this statement. &lt;a href=&quot;{{ page.previous.url }}&quot;&gt;N+1 queries&lt;/a&gt; are one of the fastest ways to degrade performance, and lazy loading associations makes it a lot easier to introduce them by accident. By not implementing lazy loading, the library becomes a lot simpler, and it encourages good practices and efficient data access patterns &lt;img class=&quot;emoji&quot; title=&quot;:tropical_drink:&quot; alt=&quot;:tropical_drink:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f379.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ecto also allows you to modify which models will be included for an association—like the &lt;code&gt;:with&lt;/code&gt; option in &lt;a href=&quot;{{ page.github }}&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt;—and you can also preload associations on a given model or models after they have been fetched from the database using the &lt;a href=&quot;http://hexdocs.pm/ecto/Ecto.Repo.html#c:preload/2&quot;&gt;&lt;code&gt;Repo.preload/2&lt;/code&gt;&lt;/a&gt; method. So much win!&lt;/p&gt;
+
+&lt;p&gt;Playing with Ecto inspired me to keep looking for a better solution for eager loading in &lt;em&gt;Mongoid&lt;/em&gt;. &lt;code&gt;Mongoid::Includes&lt;/code&gt; solves the first two limitations, but wouldn’t it be great if we could preload documents without a query? &lt;img class=&quot;emoji&quot; title=&quot;:wink:&quot; alt=&quot;:wink:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f609.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+</content>
+<category term="posts" />
+<summary>Mongoid is not designed for extensibility; if you needs to modify its behaviour in a slight way, you will probably have no choice but to monkey-patch it.</summary>
+</entry>
 <entry>
 <title>Avoiding the N+1 problem in Mongoid</title>
 <link href="http://maximomussini.com/posts/mongoid-n+1" rel="alternate" type="text/html" title="Avoiding the N+1 problem in Mongoid" />
@@ -130,7 +205,7 @@ albums.includes(:band, :songs)
 
 &lt;p&gt;I have solved the other limitations in &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt; &lt;img class=&quot;emoji&quot; title=&quot;:gem:&quot; alt=&quot;:gem:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f48e.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;, which extends the &lt;code&gt;includes&lt;/code&gt; method to support eager loading polymorphic and nested associations.&lt;/p&gt;
 
-&lt;p&gt;I will be writing about this gem soon, explaining its usage, as well as the difficulties of extending &lt;em&gt;Mongoid&lt;/em&gt;, stay tuned!&lt;/p&gt;
+&lt;p&gt;You can check &lt;a href=&quot;{{ page.next.url }}&quot;&gt;the next post&lt;/a&gt; where I talk about this gem and explain the motivation behind it, as well as the difficulties of extending &lt;em&gt;Mongoid&lt;/em&gt; &lt;img class=&quot;emoji&quot; title=&quot;:smiley:&quot; alt=&quot;:smiley:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f603.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 </content>
 <category term="posts" />
 <summary>One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!</summary>

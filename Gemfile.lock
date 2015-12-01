@@ -173,3 +173,6 @@ DEPENDENCIES
   mr_poole
   octopress-autoprefixer
   pry-byebug
+
+BUNDLED WITH
+   1.10.6

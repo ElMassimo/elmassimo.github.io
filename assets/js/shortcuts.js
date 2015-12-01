@@ -15,17 +15,17 @@ function clickById(id) {
 }
 
 function goToPreviousPost() {
-  clickById('previous-post');
+  clickById('previous-post')
 }
 
 function goToNextPost() {
-  clickById('next-post');
+  clickById('next-post')
 }
 
 function scrolledToTop() {
-  return window.scrollY == 0;
+  return window.scrollY == 0
 }
 
 function scrolledToBottom() {
-  return (window.innerHeight + window.scrollY) >= document.body.offsetHeight;
+  return (window.innerHeight + window.scrollY) >= document.body.offsetHeight
 }
