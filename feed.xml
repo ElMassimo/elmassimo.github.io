@@ -3,7 +3,7 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-12-01T13:55:24-02:00</updated>
+<updated>2015-12-01T14:14:50-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
@@ -15,7 +15,7 @@
 <id>http://maximomussini.com/posts/mongoid_includes</id>
 <content type="html" xml:base="http://maximomussini.com/posts/mongoid_includes">&lt;p&gt;&lt;em&gt;Mongoid&lt;/em&gt; is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to &lt;em&gt;monkey-patch&lt;/em&gt; it.&lt;/p&gt;
 
-&lt;p&gt;A while ago I was working on a feature that required displaying information from several &lt;em&gt;mongodb&lt;/em&gt; collections. The performance was pretty bad, since for each item being displayed it was necessary to traverse a few nested associations to get the rest of the data.&lt;/p&gt;
+&lt;p&gt;A while ago I was working on a feature that required displaying information from several &lt;em&gt;mongodb&lt;/em&gt; collections. The performance was pretty bad, since for each item being displayed it was necessary to traverse nested and polymorphic associations to get the rest of the data.&lt;/p&gt;
 
 &lt;p&gt;Although &lt;em&gt;Mongoid&lt;/em&gt; provides eager loading support &lt;a href=&quot;{{ page.previous.url }}&quot;&gt;out of the box&lt;/a&gt;, it has a few limitations:&lt;/p&gt;
 
