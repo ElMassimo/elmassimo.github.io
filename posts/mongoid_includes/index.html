@@ -28,7 +28,7 @@
 <!-- Facebook Stuff -->
 <meta property="og:locale" content="en_US">
 <meta property="og:title" content="One Does Not Simply Extend Mongoid">
-<meta property="og:description" content="_Mongoid_ is not designed for extensibility; if you needs to modify its behaviour in a slight way, you will probably ...">
+<meta property="og:description" content="_Mongoid_ is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably h...">
 <meta property="og:url" content="http://maximomussini.com/posts/mongoid_includes">
 <meta property="og:site_name" content="Máximo Mussini">
 
@@ -87,9 +87,9 @@
 
 
   <div class="post">
-    <p><em>Mongoid</em> is not designed for extensibility; if you needs to modify its behaviour in a slight way, you will probably have no choice but to <em>monkey-patch</em> it.</p>
+    <p><em>Mongoid</em> is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to <em>monkey-patch</em> it.</p>
 
-<p>A while ago I faced a problem that required displaying related documents from several different <em>mongodb</em> collections. The performance was not good, since for each item being displayed it was necessary to traverse a few nested associations to get the rest of the data.</p>
+<p>A while ago I was working on a feature that required displaying information from several <em>mongodb</em> collections. The performance was pretty bad, since for each item being displayed it was necessary to traverse a few nested associations to get the rest of the data.</p>
 
 <p>Although <em>Mongoid</em> provides eager loading support <a href="/posts/mongoid-n+1">out of the box</a>, it has a few limitations:</p>
 
@@ -101,7 +101,7 @@
 
 <p>Unfortunately, one of those traversed associations was both <strong>nested &amp; polymorphic</strong>, so in the beginning the only available solution was to eager load the relations manually.</p>
 
-<p>After thinking about it for a whole, I decided to give it a shot and come up with an extension to eager load polymorphic and nested associations, and do away with all the boilerplate that is necessary to perform eager loading.</p>
+<p>After thinking about it for a while, I decided to give it a shot and come up with an extension to eager load polymorphic and nested associations, and do away with all the boilerplate that is necessary to perform eager loading.</p>
 
 <h2 id="mongoidincludes-img-classemoji-titlegem-altgem-srchttpsassetsgithubcomimagesiconsemojiunicode1f48epng-height20-width20-alignabsmiddle-">Mongoid::Includes <img class="emoji" title=":gem:" alt=":gem:" src="https://assets.github.com/images/icons/emoji/unicode/1f48e.png" height="20" width="20" align="absmiddle" /></h2>
 <p>When writing the library, I picked a few constraints in order to give the project a clear direction:</p>

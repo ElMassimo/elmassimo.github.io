@@ -3,7 +3,7 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-12-01T03:02:03-02:00</updated>
+<updated>2015-12-01T13:55:24-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
@@ -13,9 +13,9 @@
 <published>2015-11-30T22:46:00-02:00</published>
 <updated>2015-11-30T22:46:00-02:00</updated>
 <id>http://maximomussini.com/posts/mongoid_includes</id>
-<content type="html" xml:base="http://maximomussini.com/posts/mongoid_includes">&lt;p&gt;&lt;em&gt;Mongoid&lt;/em&gt; is not designed for extensibility; if you needs to modify its behaviour in a slight way, you will probably have no choice but to &lt;em&gt;monkey-patch&lt;/em&gt; it.&lt;/p&gt;
+<content type="html" xml:base="http://maximomussini.com/posts/mongoid_includes">&lt;p&gt;&lt;em&gt;Mongoid&lt;/em&gt; is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to &lt;em&gt;monkey-patch&lt;/em&gt; it.&lt;/p&gt;
 
-&lt;p&gt;A while ago I faced a problem that required displaying related documents from several different &lt;em&gt;mongodb&lt;/em&gt; collections. The performance was not good, since for each item being displayed it was necessary to traverse a few nested associations to get the rest of the data.&lt;/p&gt;
+&lt;p&gt;A while ago I was working on a feature that required displaying information from several &lt;em&gt;mongodb&lt;/em&gt; collections. The performance was pretty bad, since for each item being displayed it was necessary to traverse a few nested associations to get the rest of the data.&lt;/p&gt;
 
 &lt;p&gt;Although &lt;em&gt;Mongoid&lt;/em&gt; provides eager loading support &lt;a href=&quot;{{ page.previous.url }}&quot;&gt;out of the box&lt;/a&gt;, it has a few limitations:&lt;/p&gt;
 
@@ -27,7 +27,7 @@
 
 &lt;p&gt;Unfortunately, one of those traversed associations was both &lt;strong&gt;nested &amp;amp; polymorphic&lt;/strong&gt;, so in the beginning the only available solution was to eager load the relations manually.&lt;/p&gt;
 
-&lt;p&gt;After thinking about it for a whole, I decided to give it a shot and come up with an extension to eager load polymorphic and nested associations, and do away with all the boilerplate that is necessary to perform eager loading.&lt;/p&gt;
+&lt;p&gt;After thinking about it for a while, I decided to give it a shot and come up with an extension to eager load polymorphic and nested associations, and do away with all the boilerplate that is necessary to perform eager loading.&lt;/p&gt;
 
 &lt;h2 id=&quot;mongoidincludes-img-classemoji-titlegem-altgem-srchttpsassetsgithubcomimagesiconsemojiunicode1f48epng-height20-width20-alignabsmiddle-&quot;&gt;Mongoid::Includes &lt;img class=&quot;emoji&quot; title=&quot;:gem:&quot; alt=&quot;:gem:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f48e.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/h2&gt;
 &lt;p&gt;When writing the library, I picked a few constraints in order to give the project a clear direction:&lt;/p&gt;
@@ -80,7 +80,7 @@ Album.includes(:songs).includes(:musicians, from: :band)&lt;/p&gt;
 &lt;p&gt;Playing with Ecto inspired me to keep looking for a better solution for eager loading in &lt;em&gt;Mongoid&lt;/em&gt;. &lt;code&gt;Mongoid::Includes&lt;/code&gt; solves the first two limitations, but wouldn’t it be great if we could preload documents without a query? &lt;img class=&quot;emoji&quot; title=&quot;:wink:&quot; alt=&quot;:wink:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f609.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 </content>
 <category term="posts" />
-<summary>Mongoid is not designed for extensibility; if you needs to modify its behaviour in a slight way, you will probably have no choice but to monkey-patch it.</summary>
+<summary>Mongoid is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to monkey-patch it.</summary>
 </entry>
 <entry>
 <title>Avoiding the N+1 problem in Mongoid</title>
