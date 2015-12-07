@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# If the site does not exist
+if [ ! -d _site ]; then
+
+  # Initialize git to target GitHub
+  mkdir _site
+  cd _site
+  git init
+  git remote add gh git@github.com:ElMassimo/elmassimo.github.io.git
+  git fetch gh master
+  git checkout master
+  cd ..
+fi
+
+# Rebuild site
+jekyll build

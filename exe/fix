@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Fix the last commit with the current work
+git add .
+git commit --amend --no-edit
+git push -f bb dev
+
+# Upload all the latest changes
+exe/build
+cd _site
+git add .
+git commit --amend --no-edit
+git push -f gh master

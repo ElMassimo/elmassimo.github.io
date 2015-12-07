@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Ruby & to_proc · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="Blocks are a very unique part of Ruby's syntax, but sometimes it can be tedious to write a block to perform a simple method call. An extremely common idiom in Ruby uses symbols to specify the method that should be called, but.. how does it work?">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Ruby & to_proc">
+<meta property="og:description" content="Blocks are a very unique part of Ruby's syntax, but sometimes it can be tedious to write a block to perform a simple ...">
+<meta property="og:url" content="http://maximomussini.com/posts/ruby-to_proc">
+<meta property="og:site_name" content="Máximo Mussini">
+
+
+  <body>
+    <header>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr />
+</div>
+
+    <div class="content container">
+  <h1>Ruby & to_proc</h1>
+
+  <div class="post-info">
+  <span class="date">December 07, 2015</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+
+  <div class="post">
+    <p>Blocks are a very unique part of Ruby’s syntax. Let’s look at a simple example:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="s1">&#39;Jane Jim Jenny&#39;</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">length</span> <span class="p">}</span><span class="o">.</span><span class="n">reduce</span> <span class="p">{</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">n</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">n</span> <span class="p">}</span>
+<span class="c1"># =&gt; 12</span></code></pre></div>
+
+<p>When performing this kind of functional transformation, it’s tedious to write a block to perform a simple method call. An extremely common idiom in Ruby uses symbols to specify the method that should be called:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">names</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:length</span><span class="p">)</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:+</span><span class="p">)</span></code></pre></div>
+
+<!-- > Sweet <img class='emoji' title=':cake:' alt=':cake:' src='https://assets.github.com/images/icons/emoji/unicode/1f370.png' height='20' width='20' align='absmiddle' /><br/>But how does it work? -->
+
+<blockquote>
+  <p>Sweet! <img class="emoji" title=":cake:" alt=":cake:" src="https://assets.github.com/images/icons/emoji/unicode/1f370.png" height="20" width="20" align="absmiddle" /></p>
+</blockquote>
+
+<p>In Ruby, the ampersand operator <code>&amp;</code> can coerce an object into a <code>Proc</code> by calling the <code>to_proc</code> method if it’s defined. More generally, <code>&amp;object</code> will be evaluated in the following way:</p>
+
+<ul>
+  <li>object is a <code>Proc</code>: <code>&amp;</code> converts it to a block.</li>
+  <li>object is not a <code>Proc</code>: <code>&amp;</code> tries to call <code>to_proc</code> on the object, and then converts it to a block.</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">names</span><span class="o">.</span><span class="n">map</span> <span class="o">&amp;</span><span class="ss">:to_s</span>
+<span class="c1"># is the same than</span>
+<span class="n">names</span><span class="o">.</span><span class="n">map</span> <span class="o">&amp;</span><span class="ss">:to_s</span><span class="o">.</span><span class="n">to_proc</span></code></pre></div>
+
+<blockquote>
+  <p>Huh? <img class="emoji" title=":confused:" alt=":confused:" src="https://assets.github.com/images/icons/emoji/unicode/1f615.png" height="20" width="20" align="absmiddle" /></p>
+</blockquote>
+
+<p>It turns out the <em>magic</em> is in how Ruby defines <code>to_proc</code> for symbols. In recent versions of Ruby, the method is <a href="http://ruby-doc.org/core-2.2.3/Symbol.html#method-i-to_proc">defined in C</a>, but it would look like this in Ruby:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Symbol</span>
+  <span class="k">def</span> <span class="nf">to_proc</span>
+    <span class="o">-&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span> <span class="p">{</span> <span class="n">obj</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Back to our snippet, let’s expand the <code>to_proc</code> call incrementally until we arrive at the same block we would write by hand:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">names</span><span class="o">.</span><span class="n">map</span> <span class="o">&amp;</span><span class="ss">:to_s</span>
+
+<span class="c1"># We can expand it to</span>
+<span class="n">names</span><span class="o">.</span><span class="n">map</span> <span class="o">&amp;</span><span class="ss">:to_s</span><span class="o">.</span><span class="n">to_proc</span>
+
+<span class="c1"># Replacing &quot;to_proc&quot; with the result of calling the method</span>
+<span class="n">names</span><span class="o">.</span><span class="n">map</span> <span class="o">&amp;-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span> <span class="p">{</span> <span class="nb">name</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:to_s</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">}</span>
+
+<span class="c1"># &quot;map&quot; passes a single argument to the block, so we can simplify</span>
+<span class="n">names</span><span class="o">.</span><span class="n">map</span> <span class="o">&amp;-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="p">{</span> <span class="nb">name</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:to_s</span><span class="p">)</span> <span class="p">}</span>
+
+<span class="c1"># Calling the method directly we get</span>
+<span class="n">names</span><span class="o">.</span><span class="n">map</span> <span class="o">&amp;-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="p">{</span> <span class="nb">name</span><span class="o">.</span><span class="n">to_s</span> <span class="p">}</span>
+
+<span class="c1"># Since &quot;&amp;&quot; transforms Procs and Lambdas to blocks, it&#39;s equivalent to</span>
+<span class="n">names</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="nb">name</span><span class="o">.</span><span class="n">to_s</span> <span class="p">}</span></code></pre></div>
+
+<p>So there you have it, <code>&amp;</code> will coerce the <code>:to_s</code> symbol by calling <code>to_proc</code>, and then transform the resulting proc or lambda to a block.</p>
+
+<blockquote>
+  <p>There’s nothing special about the shorthand <code>&amp;:method</code> syntax. Ruby arbitrarily defines <code>Symbol#to_proc</code> in a way that allows programmers to avoid some boilerplate.</p>
+</blockquote>
+
+<h2 id="a-world-of-proc-img-classemoji-titleearthamericas-altearthamericas-srchttpsassetsgithubcomimagesiconsemojiunicode1f30epng-height20-width20-alignabsmiddle-">A world of proc <img class="emoji" title=":earth_americas:" alt=":earth_americas:" src="https://assets.github.com/images/icons/emoji/unicode/1f30e.png" height="20" width="20" align="absmiddle" /></h2>
+<p>Now that we understand what is really going on, we could use <code>to_proc</code> for our own benefit by defining it in our objects and classes.</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;ostruct&#39;</span>
+
+<span class="k">class</span> <span class="nc">Formula</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+    <span class="vi">@formula</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="s1">&#39;**&#39;</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span>
+    <span class="no">OpenStruct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span><span class="o">.</span><span class="n">instance_eval</span><span class="p">(</span><span class="vi">@formula</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">to_proc</span>
+    <span class="o">-&gt;</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">){</span> <span class="n">apply</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">x2</span> <span class="o">=</span> <span class="no">Formula</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;x^2 + y^2&#39;</span><span class="p">)</span>
+<span class="o">[</span><span class="p">{</span> <span class="ss">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="ss">y</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="ss">x</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="ss">y</span><span class="p">:</span> <span class="mi">4</span> <span class="p">},</span> <span class="p">{</span> <span class="ss">x</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="ss">y</span><span class="p">:</span> <span class="mi">7</span> <span class="p">}</span><span class="o">].</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x2</span><span class="p">)</span>
+<span class="c1"># =&gt; [2, 25, 74]</span></code></pre></div>
+
+<p>We may also define <code>to_proc</code> at the class level, allowing us to pass a class as a block:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Formula</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">to_proc</span>
+    <span class="o">-&gt;</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">){</span> <span class="kp">new</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="o">[</span><span class="s1">&#39;x^2 + y^2&#39;</span><span class="p">,</span> <span class="s1">&#39;x + y^3&#39;</span><span class="o">].</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="no">Formula</span><span class="p">)</span>
+<span class="c1"># =&gt; [#&lt;Formula @formula=&quot;x**2 + y**2&quot;&gt;, #&lt;Formula: @formula=&quot;x + y**3&quot;&gt;]</span></code></pre></div>
+
+<h2 id="a-note-on-performance-img-classemoji-titlebarchart-altbarchart-srchttpsassetsgithubcomimagesiconsemojiunicode1f4capng-height20-width20-alignabsmiddle-">A note on performance <img class="emoji" title=":bar_chart:" alt=":bar_chart:" src="https://assets.github.com/images/icons/emoji/unicode/1f4ca.png" height="20" width="20" align="absmiddle" /></h2>
+<p>Running some benchmarks in Ruby 2.2.3, it seems that there is not an important performance penalty from using <code>to_proc</code>. I wrote a small <a href="https://gist.github.com/ElMassimo/2183ffc0401d1157c78e">benchmark</a> that you can <a href="https://gist.github.com/ElMassimo/2183ffc0401d1157c78e">run</a> if you are curious <img class="emoji" title=":smiley:" alt=":smiley:" src="https://assets.github.com/images/icons/emoji/unicode/1f603.png" height="20" width="20" align="absmiddle" /></p>
+
+<h2 id="summary">Summary</h2>
+<p>There’s nothing special about the shorthand <code>&amp;:method</code> syntax. Ruby defines <code>Symbol#to_proc</code> in a particular way that allows programmers to avoid some boilerplate, and the <code>&amp;</code> operator can coerce any object into a block by calling <code>to_proc</code>.</p>
+
+<p><code>Symbol#to_proc</code> is so ubiquitous that there’s no harm in using it; most of the times it can help to keep the code terse without any downsides.</p>
+
+<p>However, it’s better to stay away from <code>to_proc</code> in everyday usage, since it is as obscure as it is powerful. Defining <code>to_proc</code> for custom objects can make it very difficult to reason about the code, which defeats the purpose of using it in the first place.</p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/mongoid_includes/" class="overlay">
+        <h1>One Does Not Simply Extend Mongoid</h1>
+        <div class="post-info">
+  <span class="date">November 30, 2015</span>
+  <span class="reading-time">5 min read</span>
+</div>
+
+        <div class="post">
+          <p><em>Mongoid</em> is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to <em>monkey-patch</em> it.</p>
+
+<p>A while ago I was working on a feature that required displaying information from several <em>mongodb</em> collections. The performance was pretty bad, since for each item being displayed it was necessary to traverse nested and polymorphic associations to get the rest of the data.</p>
+
+<p>Although <em>Mongoid</em> provides eager loading support <span href="/posts/mongoid-n+1">out of the box</span>, it has a few limitations:</p>
+
+<ul>
+  <li>
+<strong>No Nested</strong>: Only direct relations can be eager loaded.</li>
+  <li>
+<strong>No Polymorphic</strong>: Polymorphic relations can’t be in…</li>
+</ul>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>

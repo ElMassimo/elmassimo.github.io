@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Commit all the latest changes
+if [ -z "$1" ]; then
+  read -r -p "Please enter the commit message: " -r
+  [ -z "$REPLY" ] && exit 1
+  git commit -m "$REPLY"
+else
+  git commit -m "$@"
+fi

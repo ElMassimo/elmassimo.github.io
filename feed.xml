@@ -3,10 +3,141 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-12-02T12:08:23-02:00</updated>
+<updated>2015-12-07T20:25:25-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
+<entry>
+<title>Ruby &amp;amp; to_proc</title>
+<link href="http://maximomussini.com/posts/ruby-to_proc" rel="alternate" type="text/html" title="Ruby &amp; to_proc" />
+<published>2015-12-07T19:22:00-02:00</published>
+<updated>2015-12-07T19:22:00-02:00</updated>
+<id>http://maximomussini.com/posts/ruby-to_proc</id>
+<content type="html" xml:base="http://maximomussini.com/posts/ruby-to_proc">&lt;p&gt;Blocks are a very unique part of Ruby’s syntax. Let’s look at a simple example:&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+‘Jane Jim Jenny’.split.map { |s| s.length }.reduce { |sum, n| sum + n }
+# =&amp;gt; 12
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;When performing this kind of functional transformation, it’s tedious to write a block to perform a simple method call. An extremely common idiom in Ruby uses symbols to specify the method that should be called:&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+names.map(&amp;amp;:length).reduce(&amp;amp;:+)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;!-- &gt; Sweet &lt;img class=&#39;emoji&#39; title=&#39;:cake:&#39; alt=&#39;:cake:&#39; src=&#39;https://assets.github.com/images/icons/emoji/unicode/1f370.png&#39; height=&#39;20&#39; width=&#39;20&#39; align=&#39;absmiddle&#39; /&gt;&lt;br/&gt;But how does it work? --&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Sweet! &lt;img class=&quot;emoji&quot; title=&quot;:cake:&quot; alt=&quot;:cake:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f370.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In Ruby, the ampersand operator &lt;code&gt;&amp;amp;&lt;/code&gt; can coerce an object into a &lt;code&gt;Proc&lt;/code&gt; by calling the &lt;code&gt;to_proc&lt;/code&gt; method if it’s defined. More generally, &lt;code&gt;&amp;amp;object&lt;/code&gt; will be evaluated in the following way:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;object is a &lt;code&gt;Proc&lt;/code&gt;: &lt;code&gt;&amp;amp;&lt;/code&gt; converts it to a block.&lt;/li&gt;
+  &lt;li&gt;object is not a &lt;code&gt;Proc&lt;/code&gt;: &lt;code&gt;&amp;amp;&lt;/code&gt; tries to call &lt;code&gt;to_proc&lt;/code&gt; on the object, and then converts it to a block.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;{% highlight ruby %}
+names.map &amp;amp;:to_s
+# is the same than
+names.map &amp;amp;:to_s.to_proc
+{% endhighlight %}&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Huh? &lt;img class=&quot;emoji&quot; title=&quot;:confused:&quot; alt=&quot;:confused:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f615.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It turns out the &lt;em&gt;magic&lt;/em&gt; is in how Ruby defines &lt;code&gt;to_proc&lt;/code&gt; for symbols. In recent versions of Ruby, the method is &lt;a href=&quot;http://ruby-doc.org/core-2.2.3/Symbol.html#method-i-to_proc&quot;&gt;defined in C&lt;/a&gt;, but it would look like this in Ruby:&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+class Symbol
+  def to_proc
+    -&amp;gt;(obj, args = nil) { obj.send(self, *args) }
+  end
+end
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Back to our snippet, let’s expand the &lt;code&gt;to_proc&lt;/code&gt; call incrementally until we arrive at the same block we would write by hand:&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+names.map &amp;amp;:to_s&lt;/p&gt;
+
+&lt;h1 id=&quot;we-can-expand-it-to&quot;&gt;We can expand it to&lt;/h1&gt;
+&lt;p&gt;names.map &amp;amp;:to_s.to_proc&lt;/p&gt;
+
+&lt;h1 id=&quot;replacing-toproc-with-the-result-of-calling-the-method&quot;&gt;Replacing “to_proc” with the result of calling the method&lt;/h1&gt;
+&lt;p&gt;names.map &amp;amp;-&amp;gt;(name, args = nil) { name.send(:to_s, *args) }&lt;/p&gt;
+
+&lt;h1 id=&quot;map-passes-a-single-argument-to-the-block-so-we-can-simplify&quot;&gt;“map” passes a single argument to the block, so we can simplify&lt;/h1&gt;
+&lt;p&gt;names.map &amp;amp;-&amp;gt;(name) { name.send(:to_s) }&lt;/p&gt;
+
+&lt;h1 id=&quot;calling-the-method-directly-we-get&quot;&gt;Calling the method directly we get&lt;/h1&gt;
+&lt;p&gt;names.map &amp;amp;-&amp;gt;(name) { name.to_s }&lt;/p&gt;
+
+&lt;h1 id=&quot;since--transforms-procs-and-lambdas-to-blocks-its-equivalent-to&quot;&gt;Since “&amp;amp;” transforms Procs and Lambdas to blocks, it’s equivalent to&lt;/h1&gt;
+&lt;p&gt;names.map { |name| name.to_s }
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;So there you have it, &lt;code&gt;&amp;amp;&lt;/code&gt; will coerce the &lt;code&gt;:to_s&lt;/code&gt; symbol by calling &lt;code&gt;to_proc&lt;/code&gt;, and then transform the resulting proc or lambda to a block.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;There’s nothing special about the shorthand &lt;code&gt;&amp;amp;:method&lt;/code&gt; syntax. Ruby arbitrarily defines &lt;code&gt;Symbol#to_proc&lt;/code&gt; in a way that allows programmers to avoid some boilerplate.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;a-world-of-proc-img-classemoji-titleearthamericas-altearthamericas-srchttpsassetsgithubcomimagesiconsemojiunicode1f30epng-height20-width20-alignabsmiddle-&quot;&gt;A world of proc &lt;img class=&quot;emoji&quot; title=&quot;:earth_americas:&quot; alt=&quot;:earth_americas:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f30e.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/h2&gt;
+&lt;p&gt;Now that we understand what is really going on, we could use &lt;code&gt;to_proc&lt;/code&gt; for our own benefit by defining it in our objects and classes.&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+require ‘ostruct’&lt;/p&gt;
+
+&lt;p&gt;class Formula
+  def initialize(formula)
+    @formula = formula.gsub(‘^’, ‘**’)
+  end&lt;/p&gt;
+
+&lt;p&gt;def apply(variables)
+    OpenStruct.new(variables).instance_eval(@formula)
+  end&lt;/p&gt;
+
+&lt;p&gt;def to_proc
+    -&amp;gt;(&lt;em&gt;args){ apply(&lt;/em&gt;args) }
+  end
+end&lt;/p&gt;
+
+&lt;p&gt;x2 = Formula.new(‘x^2 + y^2’)
+[{ x: 1, y: 1 }, { x: 3, y: 4 }, { x: 5, y: 7 }].map(&amp;amp;x2)
+# =&amp;gt; [2, 25, 74]
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;We may also define &lt;code&gt;to_proc&lt;/code&gt; at the class level, allowing us to pass a class as a block:&lt;/p&gt;
+
+&lt;p&gt;{% highlight ruby %}
+class Formula&lt;/p&gt;
+
+&lt;p&gt;def self.to_proc
+    -&amp;gt;(&lt;em&gt;args){ new(&lt;/em&gt;args) }
+  end
+end&lt;/p&gt;
+
+&lt;p&gt;[‘x^2 + y^2’, ‘x + y^3’].map(&amp;amp;Formula)
+# =&amp;gt; [#&amp;lt;Formula @formula=”x&lt;strong&gt;2 + y&lt;/strong&gt;2”&amp;gt;, #&amp;lt;Formula: @formula=”x + y**3”&amp;gt;]
+{% endhighlight %}&lt;/p&gt;
+
+&lt;h2 id=&quot;a-note-on-performance-img-classemoji-titlebarchart-altbarchart-srchttpsassetsgithubcomimagesiconsemojiunicode1f4capng-height20-width20-alignabsmiddle-&quot;&gt;A note on performance &lt;img class=&quot;emoji&quot; title=&quot;:bar_chart:&quot; alt=&quot;:bar_chart:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f4ca.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/h2&gt;
+&lt;p&gt;Running some benchmarks in Ruby 2.2.3, it seems that there is not an important performance penalty from using &lt;code&gt;to_proc&lt;/code&gt;. I wrote a small &lt;a href=&quot;{{ page.benchmark }}&quot;&gt;benchmark&lt;/a&gt; that you can &lt;a href=&quot;{{ page.benchmark }}&quot;&gt;run&lt;/a&gt; if you are curious &lt;img class=&quot;emoji&quot; title=&quot;:smiley:&quot; alt=&quot;:smiley:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f603.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;There’s nothing special about the shorthand &lt;code&gt;&amp;amp;:method&lt;/code&gt; syntax. Ruby defines &lt;code&gt;Symbol#to_proc&lt;/code&gt; in a particular way that allows programmers to avoid some boilerplate, and the &lt;code&gt;&amp;amp;&lt;/code&gt; operator can coerce any object into a block by calling &lt;code&gt;to_proc&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Symbol#to_proc&lt;/code&gt; is so ubiquitous that there’s no harm in using it; most of the times it can help to keep the code terse without any downsides.&lt;/p&gt;
+
+&lt;p&gt;However, it’s better to stay away from &lt;code&gt;to_proc&lt;/code&gt; in everyday usage, since it is as obscure as it is powerful. Defining &lt;code&gt;to_proc&lt;/code&gt; for custom objects can make it very difficult to reason about the code, which defeats the purpose of using it in the first place.&lt;/p&gt;
+</content>
+<category term="posts" />
+<summary>Blocks are a very unique part of Ruby’s syntax. Let’s look at a simple example:</summary>
+</entry>
 <entry>
 <title>One Does Not Simply Extend Mongoid</title>
 <link href="http://maximomussini.com/posts/mongoid_includes" rel="alternate" type="text/html" title="One Does Not Simply Extend Mongoid" />

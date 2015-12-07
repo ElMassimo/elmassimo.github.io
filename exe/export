@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
-# Backup all the current work
-git add .
-
 # Commit all the latest changes
 if [ -z "$1" ]; then
   read -r -p "Please enter the commit message: " -r
   [ -z "$REPLY" ] && exit
-  git commit -m "$REPLY"
+  message="$REPLY"
 else
-  git commit -m "$@"
+  message="$@"
 fi
 
-exe/save
+exe/save "$message"
+exe/gh "$message"
