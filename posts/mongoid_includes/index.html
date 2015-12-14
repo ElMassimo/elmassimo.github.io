@@ -189,9 +189,7 @@
         <div class="post">
           <p>One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!</p>
 
-<p>A performance issue that is very common when using ORMs is the <em>N+1 query</em> problem. This anti-pattern usually occurs when trying to load related information for each item in a list of results.</p>
-
-<p>Since most ORMs don’t perform eager loading by default (to avoid fetching more data than necessary), it’s necessary to make extra queries <em>per item</em> to fetch the related data. Imagine that we…</p>
+<p>A performance issue that is very common when using ORMs is the <em>N+1 query</em> problem. This anti-p…</p>
         </div>
       </a>
     </div>
@@ -210,6 +208,7 @@ if (document.location.hostname.search('maximomussini.com') !== -1) {
 }
 </script>
 
+<script src="/assets/js/anchors.js"></script>
 <script src="/assets/js/shortcuts.js"></script>
 
   </body>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Improving your Git Experience in Bash · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Improving your Git Experience in Bash">
+<meta property="og:description" content="_Bash_ is the default terminal for most Unix distributions, so it's very appealing to get the best out of it. If you ...">
+<meta property="og:url" content="http://maximomussini.com/posts/bash-git-prompt">
+<meta property="og:site_name" content="Máximo Mussini">
+
+
+  <body>
+    <header>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr />
+</div>
+
+    <div class="content container">
+  <h1>Improving your Git Experience in Bash</h1>
+
+  <div class="post-info">
+  <span class="date">December 14, 2015</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+
+  <div class="post">
+    <p><em>Bash</em> is the default terminal for most Unix distributions, so it’s very appealing to get the best out of it. If you enjoy customizing your setup, you might want to try something like <a href="http://ohmyz.sh/">zsh</a> instead, which comes with similar functionality out of the box.</p>
+
+<p>Let’s take a look at how we can improve our <em>Git</em> usage in <em>bash</em> by adding a few plugins <img class="emoji" title=":neckbeard:" alt=":neckbeard:" src="https://assets.github.com/images/icons/emoji/neckbeard.png" height="20" width="20" align="absmiddle" /></p>
+
+<h2 id="bash-git-autocompletion">Bash Git Autocompletion</h2>
+<p>A great way to get <em>Git</em> autocompletion is to install the <code>bash-completion</code> package. This plugin will improve our experience when switching or pulling different branches, and is a real time-saver when using <a href="https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches">topic branches</a>.</p>
+
+<p><img src="/images/bash-git-prompt/git-autocompletion.png" alt="Checking out Branches" /></p>
+
+<h3 id="installation-on-os-x">Installation on OS X</h3>
+<p>First, install <code>bash-completion</code> using <a href="http://brew.sh/">Homebrew</a>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">brew install bash-completion</code></pre></div>
+
+<p>and then add this line to <code>~/.bash_profile</code> to load the plugin:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">[[</span> -f <span class="s2">&quot;$(brew --prefix)/etc/bash_completion&quot;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">source</span> <span class="s2">&quot;$(brew --prefix)/etc/bash_completion&quot;</span></code></pre></div>
+
+<h3 id="installation-on-ubuntu">Installation on Ubuntu</h3>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install bash-completion</code></pre></div>
+
+<h2 id="bash-git-prompt">Bash Git Prompt</h2>
+<p>Running a <em>Git</em> command without knowing the current branch is like running <code>rm</code> or <code>mkdir</code> in the terminal without knowning the current directory: it’s dangerous and error-prone.</p>
+
+<p>Sure, we could type <code>pwd</code> every time before running those commands, but it wouldn’t be practical. Why not take the same approach for <em>Git</em>, and display the current branch in the terminal prompt?</p>
+
+<p><a href="https://github.com/magicmonty/bash-git-prompt"><code>bash-git-prompt</code></a> is a project that takes care of that, displaying the current branch and other helpful stats. It has many different themes available, which can be customized by specifying a theme through the <code>GIT_PROMPT_THEME</code> environment variable.</p>
+
+<p><img src="/images/bash-git-prompt/git-prompt-default.png" alt="Default Theme" /></p>
+
+<p>The following are some settings I modified in my <code>~/.bash_profile</code>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">GIT_PROMPT_ONLY_IN_REPO</span><span class="o">=</span><span class="m">1</span> <span class="c"># Use the default prompt when not in a git repo.</span>
+<span class="nv">GIT_PROMPT_FETCH_REMOTE_STATUS</span><span class="o">=</span><span class="m">0</span> <span class="c"># Avoid fetching remote status</span>
+<span class="nv">GIT_PROMPT_SHOW_UPSTREAM</span><span class="o">=</span><span class="m">0</span> <span class="c"># Don&#39;t display upstream tracking branch</span>
+<span class="nv">GIT_SHOW_UNTRACKED_FILES</span><span class="o">=</span>no <span class="c"># Don&#39;t count untracked files (no, normal, all)</span></code></pre></div>
+
+<h3 id="installation-on-os-x-1">Installation on OS X</h3>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="nb">source</span> <span class="s2">&quot;$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh&quot;</span>
+<span class="k">fi</span></code></pre></div>
+
+<h4 id="installation-on-ubuntu-1">Installation on Ubuntu</h4>
+<p>It might be necessary to <a href="https://github.com/magicmonty/bash-git-prompt#via-git-clone">clone the project’s git repo</a>, and source <code>gitprompt.sh</code> into the <code>~/.bashrc</code> file.</p>
+
+<h2 id="customizing-the-git-prompt">Customizing the Git Prompt</h2>
+<p>The themes that come bundled with <a href="https://github.com/magicmonty/bash-git-prompt"><code>bash-git-prompt</code></a> displayed too much information for my taste, and the symbols in the default theme are not particularly meaningful.</p>
+
+<p>After trying different themes, I decided to bake my own. I wanted something that emphasized the important bits and pieces, looked clean, and was easy to understand. Fortunately, the plugin provides a command to generate a custom theme file:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git_prompt_make_custom_theme Default</code></pre></div>
+
+<p>The command creates a <code>~/.git-prompt-colors.sh</code> based on the default theme and will get loaded by the plugin automatically, so you can start playing with the variables right away. However, you may need to dive into the source code to figure out how each variable is used, and find the ones you want to customize.</p>
+
+<p>After tweaking the variables for a while, I was able to create a custom theme. The expresiveness of emojis made it a lot easier for me to understand the current git status <img class="emoji" title=":sweat_smile:" alt=":sweat_smile:" src="https://assets.github.com/images/icons/emoji/unicode/1f605.png" height="20" width="20" align="absmiddle" /></p>
+
+<p><img src="/images/bash-git-prompt/git-prompt-emoji.png" alt="Emoji Theme" /></p>
+
+<script src="https://gist.github.com/ElMassimo/515d12ab6db95dbb233c.js"></script>
+
+<p>Emojis are a great way to make ye olde terminal a bit more fun! <img class="emoji" title=":tada:" alt=":tada:" src="https://assets.github.com/images/icons/emoji/unicode/1f389.png" height="20" width="20" align="absmiddle" /></p>
+
+<hr />
+
+<p>It would be awesome if <a href="https://github.com/magicmonty/bash-git-prompt"><code>bash-git-prompt</code></a> provided a way to customize the full prompt order and displayed elements, with a template string like:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">GIT_PROMPT</span><span class="o">=</span><span class="s2">&quot;{PathShort}{Branch}{Remote}{Modified}{Staged}{Clean}&quot;</span></code></pre></div>
+
+<p>That would make it possible to create very different themes, as well as opting out of certain information—like git stashes.</p>
+
+<p>For now, I’m pleased with the result; it’s practical, looks nice, and I don’t need to type <code>git branch</code> to check the current branch <img class="emoji" title=":sunglasses:" alt=":sunglasses:" src="https://assets.github.com/images/icons/emoji/unicode/1f60e.png" height="20" width="20" align="absmiddle" /></p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/ruby-to_proc/" class="overlay">
+        <h1>Ruby & to_proc</h1>
+        <div class="post-info">
+  <span class="date">December 07, 2015</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+        <div class="post">
+          <p>Blocks are a very unique part of Ruby’s syntax. Let’s look at a simple example:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="s1">'Jane Jim Jenny'</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">length</span> <span class="p">}</span><span class="o">.</span><span class="n">reduce</span> <span class="p">{</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">n</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">n</span> <span class="p">}</span>
+<span class="c1"># =&gt; 12</span></code></pre></div>
+
+<p>When performing this kind of functional transformation, it’s tedious to write a block to perform a simple method call. An extremely common idiom in Ruby uses symbols to specify the method that should be called:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">names</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:length</span><span class="p">)</span><span class="o">.</span><span class="n">reduce</span><span class="p">(…</span></code></pre></div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>

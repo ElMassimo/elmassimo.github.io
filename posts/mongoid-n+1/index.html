@@ -234,7 +234,7 @@
         <div class="post">
           <p>By default, <span href="http://mongoid.github.io/"><em>Mongoid</em></span> will use <span href="http://martinfowler.com/eaaCatalog/singleTableInheritance.html">single-collection inheritance</span> when extending a Ruby class, by storing a <code>_type</code> attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.</p>
 
-<p>In addition, it will handle the hierarchy in queries, by allowing to query the parent class to return documents from any subclass, or query a specific subclass to fetch only documents of that specific type. In order to do this efficiently, <em>Mongoid</em> will check for existing indexes that contain <code>_type</code> as a pr…</p>
+<p>In addition, it will handle the hierarchy in queries, by allowing to query the parent class to return documents from any subcla…</p>
         </div>
       </a>
     </div>
@@ -253,6 +253,7 @@ if (document.location.hostname.search('maximomussini.com') !== -1) {
 }
 </script>
 
+<script src="/assets/js/anchors.js"></script>
 <script src="/assets/js/shortcuts.js"></script>
 
   </body>

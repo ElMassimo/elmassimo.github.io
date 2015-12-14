@@ -3,10 +3,101 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-12-07T20:25:25-02:00</updated>
+<updated>2015-12-15T12:43:18-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
+<entry>
+<title>Improving your Git Experience in Bash</title>
+<link href="http://maximomussini.com/posts/bash-git-prompt" rel="alternate" type="text/html" title="Improving your Git Experience in Bash" />
+<published>2015-12-14T17:46:00-02:00</published>
+<updated>2015-12-14T17:46:00-02:00</updated>
+<id>http://maximomussini.com/posts/bash-git-prompt</id>
+<content type="html" xml:base="http://maximomussini.com/posts/bash-git-prompt">&lt;p&gt;&lt;em&gt;Bash&lt;/em&gt; is the default terminal for most Unix distributions, so it’s very appealing to get the best out of it. If you enjoy customizing your setup, you might want to try something like &lt;a href=&quot;http://ohmyz.sh/&quot;&gt;zsh&lt;/a&gt; instead, which comes with similar functionality out of the box.&lt;/p&gt;
+
+&lt;p&gt;Let’s take a look at how we can improve our &lt;em&gt;Git&lt;/em&gt; usage in &lt;em&gt;bash&lt;/em&gt; by adding a few plugins &lt;img class=&quot;emoji&quot; title=&quot;:neckbeard:&quot; alt=&quot;:neckbeard:&quot; src=&quot;https://assets.github.com/images/icons/emoji/neckbeard.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;bash-git-autocompletion&quot;&gt;Bash Git Autocompletion&lt;/h2&gt;
+&lt;p&gt;A great way to get &lt;em&gt;Git&lt;/em&gt; autocompletion is to install the &lt;code&gt;bash-completion&lt;/code&gt; package. This plugin will improve our experience when switching or pulling different branches, and is a real time-saver when using &lt;a href=&quot;https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches&quot;&gt;topic branches&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/bash-git-prompt/git-autocompletion.png&quot; alt=&quot;Checking out Branches&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;installation-on-os-x&quot;&gt;Installation on OS X&lt;/h3&gt;
+&lt;p&gt;First, install &lt;code&gt;bash-completion&lt;/code&gt; using &lt;a href=&quot;http://brew.sh/&quot;&gt;Homebrew&lt;/a&gt;:
+{% highlight bash %}
+brew install bash-completion
+{% endhighlight %}
+and then add this line to &lt;code&gt;~/.bash_profile&lt;/code&gt; to load the plugin:
+{% highlight bash %}
+[[ -f “$(brew –prefix)/etc/bash_completion” ]] &amp;amp;&amp;amp; source “$(brew –prefix)/etc/bash_completion”
+{% endhighlight %}&lt;/p&gt;
+
+&lt;h3 id=&quot;installation-on-ubuntu&quot;&gt;Installation on Ubuntu&lt;/h3&gt;
+&lt;p&gt;{% highlight bash %}
+sudo apt-get install bash-completion
+{% endhighlight %}&lt;/p&gt;
+
+&lt;h2 id=&quot;bash-git-prompt&quot;&gt;Bash Git Prompt&lt;/h2&gt;
+&lt;p&gt;Running a &lt;em&gt;Git&lt;/em&gt; command without knowing the current branch is like running &lt;code&gt;rm&lt;/code&gt; or &lt;code&gt;mkdir&lt;/code&gt; in the terminal without knowning the current directory: it’s dangerous and error-prone.&lt;/p&gt;
+
+&lt;p&gt;Sure, we could type &lt;code&gt;pwd&lt;/code&gt; every time before running those commands, but it wouldn’t be practical. Why not take the same approach for &lt;em&gt;Git&lt;/em&gt;, and display the current branch in the terminal prompt?&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;{{ page.bash_git_prompt }}&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; is a project that takes care of that, displaying the current branch and other helpful stats. It has many different themes available, which can be customized by specifying a theme through the &lt;code&gt;GIT_PROMPT_THEME&lt;/code&gt; environment variable.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/bash-git-prompt/git-prompt-default.png&quot; alt=&quot;Default Theme&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The following are some settings I modified in my &lt;code&gt;~/.bash_profile&lt;/code&gt;:
+{% highlight bash %}
+GIT_PROMPT_ONLY_IN_REPO=1 # Use the default prompt when not in a git repo.
+GIT_PROMPT_FETCH_REMOTE_STATUS=0 # Avoid fetching remote status
+GIT_PROMPT_SHOW_UPSTREAM=0 # Don’t display upstream tracking branch
+GIT_SHOW_UNTRACKED_FILES=no # Don’t count untracked files (no, normal, all)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;h3 id=&quot;installation-on-os-x-1&quot;&gt;Installation on OS X&lt;/h3&gt;
+&lt;p&gt;{% highlight bash %}
+if [ -f “$(brew –prefix)/opt/bash-git-prompt/share/gitprompt.sh” ]; then
+  source “$(brew –prefix)/opt/bash-git-prompt/share/gitprompt.sh”
+fi
+{% endhighlight %}&lt;/p&gt;
+
+&lt;h4 id=&quot;installation-on-ubuntu-1&quot;&gt;Installation on Ubuntu&lt;/h4&gt;
+&lt;p&gt;It might be necessary to &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt#via-git-clone&quot;&gt;clone the project’s git repo&lt;/a&gt;, and source &lt;code&gt;gitprompt.sh&lt;/code&gt; into the &lt;code&gt;~/.bashrc&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;h2 id=&quot;customizing-the-git-prompt&quot;&gt;Customizing the Git Prompt&lt;/h2&gt;
+&lt;p&gt;The themes that come bundled with &lt;a href=&quot;{{ page.bash_git_prompt }}&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; displayed too much information for my taste, and the symbols in the default theme are not particularly meaningful.&lt;/p&gt;
+
+&lt;p&gt;After trying different themes, I decided to bake my own. I wanted something that emphasized the important bits and pieces, looked clean, and was easy to understand. Fortunately, the plugin provides a command to generate a custom theme file:&lt;/p&gt;
+
+&lt;p&gt;{% highlight bash %}
+git_prompt_make_custom_theme Default
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;The command creates a &lt;code&gt;~/.git-prompt-colors.sh&lt;/code&gt; based on the default theme and will get loaded by the plugin automatically, so you can start playing with the variables right away. However, you may need to dive into the source code to figure out how each variable is used, and find the ones you want to customize.&lt;/p&gt;
+
+&lt;p&gt;After tweaking the variables for a while, I was able to create a custom theme. The expresiveness of emojis made it a lot easier for me to understand the current git status &lt;img class=&quot;emoji&quot; title=&quot;:sweat_smile:&quot; alt=&quot;:sweat_smile:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f605.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/bash-git-prompt/git-prompt-emoji.png&quot; alt=&quot;Emoji Theme&quot; /&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/ElMassimo/515d12ab6db95dbb233c.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Emojis are a great way to make ye olde terminal a bit more fun! &lt;img class=&quot;emoji&quot; title=&quot;:tada:&quot; alt=&quot;:tada:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f389.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;It would be awesome if &lt;a href=&quot;{{ page.bash_git_prompt }}&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; provided a way to customize the full prompt order and displayed elements, with a template string like:&lt;/p&gt;
+
+&lt;p&gt;{% highlight bash %}
+GIT_PROMPT=”{PathShort}{Branch}{Remote}{Modified}{Staged}{Clean}”
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;That would make it possible to create very different themes, as well as opting out of certain information—like git stashes.&lt;/p&gt;
+
+&lt;p&gt;For now, I’m pleased with the result; it’s practical, looks nice, and I don’t need to type &lt;code&gt;git branch&lt;/code&gt; to check the current branch &lt;img class=&quot;emoji&quot; title=&quot;:sunglasses:&quot; alt=&quot;:sunglasses:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f60e.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+</content>
+<category term="posts" />
+<summary>Bash is the default terminal for most Unix distributions, so it’s very appealing to get the best out of it. If you enjoy customizing your setup, you might want to try something like zsh instead, which comes with similar functionality out of the box.</summary>
+</entry>
 <entry>
 <title>Ruby &amp;amp; to_proc</title>
 <link href="http://maximomussini.com/posts/ruby-to_proc" rel="alternate" type="text/html" title="Ruby &amp; to_proc" />
