@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Unselect All Example</title>
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/examples/todo.css">
+    <script type="application/javascript">
+      var app = angular.module('items', []);
+
+      app.controller('ItemsCtrl', function ItemsCtrl($scope, $filter) {
+        var items = $scope.items = [
+          { title: 'Get some groceries', selected: false },
+          { title: 'Pick up laundry', selected: false },
+          { title: 'Go for a jog', selected: false },
+        ];
+
+        $scope.$watch('items', function () {
+          $scope.selectedCount = $filter('filter')(items, { selected: true }).length;
+          $scope.allChecked = $scope.selectedCount == items.length;
+        }, true);
+
+        $scope.markAll = function (selected) {
+          _.each(items, function (item) { item.selected = selected; });
+        };
+      });
+    </script>
+  </head>
+  <body ng-app="items">
+    <section id="todoapp" ng-controller="ItemsCtrl">
+      <section id="main" ng-show="items.length" ng-cloak>
+        <ul id="todo-list">
+          <li id="header">
+            <label for="toggle-all">
+              <input id="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
+              <span>{{ allChecked ? 'Unselect all' : 'Select all' }}</span>
+            </label>
+          </li>
+          <li ng-repeat="item in items" ng-class="{ selected: item.selected }">
+            <label>
+              <input class="toggle" type="checkbox" ng-model="item.selected">
+              <span>{{ item.title }}</span>
+            </label>
+          </li>
+        </ul>
+      </section>
+      <footer id="footer" ng-show="items.length" ng-cloak>
+        <span id="todo-count"><strong>{{ selectedCount }}</strong>
+          <ng-pluralize count="selectedCount" when="{ one: 'item selected', other: 'items selected' }"></ng-pluralize>
+        </span>
+      </footer>
+    </section>
+  </body>
+</html>

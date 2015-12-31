@@ -3,10 +3,74 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-12-21T00:40:22-02:00</updated>
+<updated>2015-12-31T20:15:23-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
+<entry>
+<title>CoffeeScript and JS Libraries</title>
+<link href="http://maximomussini.com/posts/coffeescript-js-libraries" rel="alternate" type="text/html" title="CoffeeScript and JS Libraries" />
+<published>2015-12-31T18:58:00-02:00</published>
+<updated>2015-12-31T18:58:00-02:00</updated>
+<id>http://maximomussini.com/posts/coffeescript-js-libraries</id>
+<content type="html" xml:base="http://maximomussini.com/posts/coffeescript-js-libraries">&lt;p&gt;A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.&lt;/p&gt;
+
+&lt;p&gt;In the frontend this has become increasingly more common because of all the available languages that compile to JavaScript. &lt;a href=&quot;http://coffeescript.org/&quot;&gt;&lt;em&gt;CoffeeScript&lt;/em&gt;&lt;/a&gt; was one of the first ones to gain adoption, but nowadays we have a myriad of available languages like &lt;a href=&quot;http://elm-lang.org/&quot;&gt;&lt;em&gt;Elm&lt;/em&gt;&lt;/a&gt;, &lt;a href=&quot;https://github.com/clojure/clojurescript&quot;&gt;&lt;em&gt;ClojureScript&lt;/em&gt;&lt;/a&gt;, &lt;a href=&quot;http://opalrb.org/&quot;&gt;&lt;em&gt;Opal&lt;/em&gt;&lt;/a&gt;, and &lt;a href=&quot;https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS&quot;&gt;many more&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Recently, we were trying to debug a strange issue with &lt;a href=&quot;http://www.nick-cherry.com&quot;&gt;one of my coworkers&lt;/a&gt;, where we had a list of selectable items with a checkbox to select/unselect all the items. Selecting all the items was working properly, but only the first item got unselected.&lt;/p&gt;
+
+&lt;p&gt;{% example select_all_broken.html height=254 %}&lt;/p&gt;
+
+&lt;p&gt;After debugging it for a while we reached the conclusion that the iteration was being interrupted. Could &lt;a href=&quot;http://lodash.com&quot;&gt;&lt;code&gt;lodash&lt;/code&gt;&lt;/a&gt; have such a serious bug?&lt;/p&gt;
+
+&lt;p&gt;{% highlight coffeescript %}
+selectAll = (isSelected) -&amp;gt;
+  _.each tasks, (task) -&amp;gt; task.selected = isSelected
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Fortunately, we decided to skip that theory, and instead reached for the &lt;a href=&quot;https://lodash.com/docs#forEach&quot;&gt;documentation&lt;/a&gt;, which stated:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Iteratee functions may exit iteration early by explicitly returning false.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Which sounds like a reasonable feature that can help to create more efficient algorithms—though we weren’t returning &lt;code&gt;false&lt;/code&gt;!&lt;/p&gt;
+
+&lt;p&gt;But CoffeeScript was. The language draws inspiration from Ruby, and it borrows features like expressions and implicit returns. For functions, this means that the last executed expression becomes the return value of the function. This allows us to write very concise functions:&lt;/p&gt;
+
+&lt;p&gt;{% highlight coffeescript %}
+isEven = (n) -&amp;gt; n % 2 == 0
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;If we reinterpret our snippet above taking implicit returns into account, it is equivalent to:&lt;/p&gt;
+
+&lt;p&gt;{% highlight javascript %}
+function selectAll(isSelected) {
+  return _.each(tasks, function(task) { return task.selected = isSelected })
+}
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;When we unselect all the items and &lt;code&gt;selectAll(false)&lt;/code&gt; is called, the first iteration returns the value of &lt;code&gt;task.selected&lt;/code&gt; which is &lt;code&gt;false&lt;/code&gt;, causing &lt;em&gt;lodash&lt;/em&gt; to exit the iteration. Mistery solved &lt;img class=&quot;emoji&quot; title=&quot;:mag:&quot; alt=&quot;:mag:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f50d.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;{% example select_all.html height=254 %}&lt;/p&gt;
+
+&lt;p&gt;We can fix the bug by explicitly returning &lt;code&gt;null&lt;/code&gt; or &lt;code&gt;true&lt;/code&gt; on each loop, which will avoid stopping the iteration, and all the items will be unselected correctly.&lt;/p&gt;
+
+&lt;p&gt;{% highlight coffeescript %}
+selectAll = (isSelected) -&amp;gt;
+  _.each tasks, (task) -&amp;gt;
+    task.selected = isSelected
+    true
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;These are two useful features on their own, yet extremely inconvenient when combined. The reason is that the library was written for a language with a different mindset. The design of the language and the design of the library are not fully compatible.&lt;/p&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;TL;DR&lt;/h2&gt;
+&lt;p&gt;Watch out for language differences when using libraries written for another language, they will bite sooner or later.&lt;/p&gt;
+</content>
+<category term="posts" />
+<summary>A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.</summary>
+</entry>
 <entry>
 <title>Improving your Git Experience in Bash</title>
 <link href="http://maximomussini.com/posts/bash-git-prompt" rel="alternate" type="text/html" title="Improving your Git Experience in Bash" />
