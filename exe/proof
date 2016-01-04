@@ -13,5 +13,5 @@ class HtmlProofer < HTML::Proofer
   end
 end
 
-valid = HtmlProofer.new('./_site/posts/anko-vs-android-xml', href_ignore: ['#']).run
+valid = HtmlProofer.new('./_site', href_ignore: ['#']).run
 `exit 1` unless valid

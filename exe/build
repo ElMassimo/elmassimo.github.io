@@ -4,6 +4,7 @@
 if [ ! -d _site ]; then
 
   # Initialize git to target GitHub
+  echo "=> Initializing GitHub clone"
   mkdir _site
   cd _site
   git init
@@ -14,4 +15,5 @@ if [ ! -d _site ]; then
 fi
 
 # Rebuild site
+echo "=> Building Jekyll Site"
 jekyll build --trace

@@ -1,198 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+  
+
 <feed xmlns="http://www.w3.org/2005/Atom">
-<generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
-<link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
-<link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2016-01-04T20:50:34-02:00</updated>
-<id>http://maximomussini.com/</id>
-<title>Máximo Mussini · Code and Design</title>
-<subtitle>Thoughts about development and product design.</subtitle>
-<entry>
-<title>Anko DSL vs Android XML-First</title>
-<link href="http://maximomussini.com/posts/anko-vs-android-xml" rel="alternate" type="text/html" title="Anko DSL vs Android XML-First" />
-<published>2016-01-04T17:06:00-02:00</published>
-<updated>2016-01-04T17:06:00-02:00</updated>
-<id>http://maximomussini.com/posts/anko-vs-android-xml</id>
-<content type="html" xml:base="http://maximomussini.com/posts/anko-vs-android-xml">&lt;p&gt;&lt;a href=&quot;https://github.com/kotlin/anko&quot;&gt;&lt;em&gt;Anko&lt;/em&gt;&lt;/a&gt; is a library for &lt;em&gt;Android&lt;/em&gt; development in &lt;a href=&quot;https://kotlinlang.org&quot;&gt;&lt;em&gt;Kotlin&lt;/em&gt;&lt;/a&gt;. The library provides helper methods that take advantage of &lt;em&gt;Kotlin&lt;/em&gt;’s extension functions as a way to reduce the amount of boilerplate the &lt;em&gt;Android SDK&lt;/em&gt; requires. Those extension functions make it possible to accomplish common tasks like starting an activity or displaying a toast in a very succinct way.&lt;/p&gt;
+  <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
+  <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
+  <updated>2016-01-05T19:19:22-02:00</updated>
+  <id>http://maximomussini.com/</id>
+  <title>Máximo Mussini</title>
+  <subtitle>Thoughts about development and product design.</subtitle>
+  <author>
+    <name>Máximo Mussini</name>
+    <email>maximomussini@gmail.com</email>
+  </author>
+
+  <entry>
+    <title>Anko DSL vs Android XML-First
+</title>
+    <link href="http://maximomussini.com/posts/anko-vs-android-xml" rel="alternate" type="text/html" title="Anko DSL vs Android XML-First" />
+    <published>2016-01-04T17:06:00-02:00</published>
+  
+    <updated>2016-01-05T18:19:00-02:00</updated>
+  
+    <id>http://maximomussini.com/posts/anko-vs-android-xml</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/anko-vs-android-xml">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/anko-vs-android-xml.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;&lt;a href=&quot;https://github.com/kotlin/anko&quot;&gt;&lt;em&gt;Anko&lt;/em&gt;&lt;/a&gt; is a library for &lt;em&gt;Android&lt;/em&gt; development in &lt;a href=&quot;https://kotlinlang.org&quot;&gt;&lt;em&gt;Kotlin&lt;/em&gt;&lt;/a&gt;. The library provides helper methods that take advantage of &lt;em&gt;Kotlin&lt;/em&gt;’s extension functions as a way to reduce the amount of boilerplate the &lt;em&gt;Android SDK&lt;/em&gt; requires. Those extension functions make it possible to accomplish common tasks like starting an activity or displaying a toast in a very succinct way.&lt;/p&gt;
 
 &lt;p&gt;A big part of the library though, focuses on creating a &lt;a href=&quot;https://kotlinlang.org/docs/reference/type-safe-builders.html&quot;&gt;type-safe builder&lt;/a&gt; for creating view hierarchies, as an alternative to the XML-inflated view approach. Some of the benefits of defining a layout with &lt;em&gt;Anko&lt;/em&gt; are type-safety, and efficiency, since it’s not necessary to parse the XML.&lt;/p&gt;
 
 &lt;p&gt;I decided to take the DSL for a test drive by rewriting the “Navigation Drawer Activity” template from &lt;em&gt;AndroidStudio&lt;/em&gt;, replacing some of the XML layouts with the &lt;em&gt;Anko DSL&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;{% img navigation-drawer-activity-template.png %}&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/anko-vs-android-xml/navigation-drawer-activity-template.png&quot; alt=&quot;Alt&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;We can define an &lt;code&gt;AnkoComponent&lt;/code&gt; to create the UI:&lt;/p&gt;
 
-&lt;p&gt;{% highlight kotlin %}
-package com.maximomussini.anko&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.maximomussini.anko&lt;/span&gt;
 
-&lt;p&gt;import android.support.design.widget.AppBarLayout
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.GravityCompat
-import android.util.TypedValue
-import android.view.Gravity
-import android.view.View
-import com.maximomussini.anko.util.snackbar
-import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.toolbar
-import org.jetbrains.anko.design.appBarLayout
-import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.design.floatingActionButton
-import org.jetbrains.anko.design.navigationView
-import org.jetbrains.anko.support.v4._DrawerLayout
-import org.jetbrains.anko.support.v4.drawerLayout&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.design.widget.AppBarLayout&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.design.widget.Snackbar&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.v4.content.ContextCompat&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.v4.view.GravityCompat&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.util.TypedValue&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.view.Gravity&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.view.View&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.maximomussini.anko.util.snackbar&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.*&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.appcompat.v7.toolbar&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.design.appBarLayout&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.design.coordinatorLayout&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.design.floatingActionButton&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.design.navigationView&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.support.v4._DrawerLayout&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.support.v4.drawerLayout&lt;/span&gt;
 
-&lt;p&gt;class MainUI : AnkoComponent&lt;mainactivity&gt; {&lt;/mainactivity&gt;&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MainUI&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AnkoComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MainActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 
-&lt;pre&gt;&lt;code&gt;override fun createView(ui: AnkoContext&amp;lt;MainActivity&amp;gt;): View = with(ui) {
-    drawerLayout {
-        id = R.id.drawer
-        fitsSystemWindows = true
-        createAppBar(ui)
-        createNavigationView(ui)
-    }
-}
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AnkoContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MainActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;View&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;drawerLayout&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drawer&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;fitsSystemWindows&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;createAppBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;createNavigationView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-fun _DrawerLayout.createAppBar(ui: AnkoContext&amp;lt;MainActivity&amp;gt;) {
-    coordinatorLayout {
-        fitsSystemWindows = true
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_DrawerLayout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createAppBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AnkoContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MainActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;coordinatorLayout&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;fitsSystemWindows&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;
 
-        appBarLayout {
-            toolbar {
-                id = R.id.toolbar
-                popupTheme = R.style.AppTheme_PopupOverlay
-                backgroundResource = R.color.colorPrimary
-            }.lparams(width = matchParent) {
-                val tv = TypedValue()
-                if (ui.owner.theme.resolveAttribute(R.attr.actionBarSize, tv, true)) {
-                    height = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics);
-                }
-            }
-        }.lparams(width = matchParent)
+            &lt;span class=&quot;n&quot;&gt;appBarLayout&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;toolbar&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toolbar&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;popupTheme&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AppTheme_PopupOverlay&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;backgroundResource&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;colorPrimary&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lparams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matchParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;tv&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TypedValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resolveAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;actionBarSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TypedValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;complexToDimensionPixelSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;displayMetrics&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lparams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matchParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-        relativeLayout {
-            horizontalPadding = resources.getDimensionPixelSize(R.dimen.activity_horizontal_margin)
-            verticalPadding = resources.getDimensionPixelSize(R.dimen.activity_vertical_margin)
-            textView(&quot;Hello World!&quot;)
-        }.lparams(width = matchParent, height = matchParent) {
-            behavior = AppBarLayout.ScrollingViewBehavior()
-        }
+            &lt;span class=&quot;n&quot;&gt;relativeLayout&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;horizontalPadding&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getDimensionPixelSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dimen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;activity_horizontal_margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;verticalPadding&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getDimensionPixelSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dimen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;activity_vertical_margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;textView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Hello World!&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lparams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matchParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matchParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;behavior&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AppBarLayout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ScrollingViewBehavior&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-        floatingActionButton {
-            imageResource = android.R.drawable.ic_dialog_email
-            backgroundColor = ContextCompat.getColor(ui.owner, R.color.colorAccent)
-            onClick {
-                snackbar(&quot;Replace with your own action&quot;, Snackbar.LENGTH_LONG) {
-                    setAction(&quot;Action&quot;) { ui.toast(&quot;Clicked Snack&quot;) }
-                }
-            }
-        }.lparams {
-            margin = resources.getDimensionPixelSize(R.dimen.fab_margin)
-            gravity = Gravity.BOTTOM or GravityCompat.END
-        }
-    }.lparams(width = matchParent, height = matchParent)
-}
+            &lt;span class=&quot;n&quot;&gt;floatingActionButton&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;imageResource&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;android&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drawable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ic_dialog_email&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;backgroundColor&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ContextCompat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getColor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;colorAccent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;onClick&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;snackbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Replace with your own action&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Snackbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LENGTH_LONG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;setAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Action&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Clicked Snack&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lparams&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;margin&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getDimensionPixelSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dimen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fab_margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;gravity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Gravity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BOTTOM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GravityCompat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;END&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lparams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matchParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matchParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-fun _DrawerLayout.createNavigationView(ui: AnkoContext&amp;lt;MainActivity&amp;gt;) {
-    navigationView {
-        fitsSystemWindows = true
-        setNavigationItemSelectedListener(ui.owner)
-        inflateHeaderView(R.layout.nav_header_main)
-        inflateMenu(R.menu.activity_main_drawer)
-    }.lparams(height = matchParent, gravity = GravityCompat.START)
-} } {% endhighlight %}
-&lt;/code&gt;&lt;/pre&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_DrawerLayout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createNavigationView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AnkoContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MainActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;navigationView&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;fitsSystemWindows&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;setNavigationItemSelectedListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ui&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;inflateHeaderView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nav_header_main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;inflateMenu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;menu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;activity_main_drawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lparams&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matchParent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gravity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GravityCompat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;START&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And then, use the component to set the content view for the activity instead of using an XML layout:&lt;/p&gt;
 
-&lt;p&gt;{% highlight kotlin %}
-package com.maximomussini.anko&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.maximomussini.anko&lt;/span&gt;
 
-&lt;p&gt;import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import org.jetbrains.anko.find
-import org.jetbrains.anko.setContentView
-import org.jetbrains.anko.toast&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.os.Bundle&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.design.widget.NavigationView&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.v4.view.GravityCompat&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.v4.widget.DrawerLayout&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.v7.app.ActionBarDrawerToggle&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.v7.app.AppCompatActivity&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.support.v7.widget.Toolbar&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.view.Menu&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;android.view.MenuItem&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.find&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.setContentView&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.jetbrains.anko.toast&lt;/span&gt;
 
-&lt;p&gt;class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MainActivity&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AppCompatActivity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NavigationView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OnNavigationItemSelectedListener&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 
-&lt;pre&gt;&lt;code&gt;lateinit var drawer: DrawerLayout
+    &lt;span class=&quot;n&quot;&gt;lateinit&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;drawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DrawerLayout&lt;/span&gt;
 
-override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    MainUI().setContentView(this)
-    drawer = find&amp;lt;DrawerLayout&amp;gt;(R.id.drawer)
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;MainUI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setContentView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;drawer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DrawerLayout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-    val toolbar = find&amp;lt;Toolbar&amp;gt;(R.id.toolbar)
-    setSupportActionBar(toolbar)
+        &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;toolbar&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Toolbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toolbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;setSupportActionBar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toolbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-    val toggle = ActionBarDrawerToggle(this, drawer, toolbar,
-            R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-    drawer.setDrawerListener(toggle)
-    toggle.syncState()
-}
+        &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;toggle&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionBarDrawerToggle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;toolbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;navigation_drawer_open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;navigation_drawer_close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;drawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setDrawerListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toggle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;toggle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;syncState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-override fun onBackPressed() {
-    if (drawer.isDrawerOpen(GravityCompat.START)) {
-        drawer.closeDrawer(GravityCompat.START)
-    } else {
-        super.onBackPressed()
-    }
-}
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onBackPressed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isDrawerOpen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GravityCompat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;START&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;drawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;closeDrawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GravityCompat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;START&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onBackPressed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.main, menu)
-    return true
-}
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onCreateOptionsMenu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;menu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Menu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Boolean&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;menuInflater&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inflate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;menu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;menu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    when (item.itemId) {
-        R.id.action_settings -&amp;gt; {
-            toast(&quot;Settings&quot;)
-            return true
-        }
-    }
-    return super.onOptionsItemSelected(item)
-}
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onOptionsItemSelected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MenuItem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Boolean&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;itemId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;action_settings&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;toast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Settings&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onOptionsItemSelected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-override fun onNavigationItemSelected(item: MenuItem): Boolean {
-    when (item.itemId) {
-        R.id.nav_camera -&amp;gt; toast(&quot;Camera&quot;)
-        R.id.nav_gallery -&amp;gt; toast(&quot;Gallery&quot;)
-        R.id.nav_slideshow -&amp;gt; toast(&quot;Slideshow&quot;)
-        R.id.nav_manage -&amp;gt; toast(&quot;Manage&quot;)
-        R.id.nav_share -&amp;gt; toast(&quot;Share&quot;)
-        R.id.nav_send -&amp;gt; toast(&quot;Send&quot;)
-    }
-    drawer.closeDrawer(GravityCompat.START)
-    return true
-} } {% endhighlight %}
-&lt;/code&gt;&lt;/pre&gt;
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onNavigationItemSelected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MenuItem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Boolean&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;itemId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nav_camera&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;toast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Camera&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nav_gallery&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;toast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Gallery&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nav_slideshow&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;toast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Slideshow&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nav_manage&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;toast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Manage&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nav_share&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;toast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Share&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nav_send&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;toast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Send&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;drawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;closeDrawer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GravityCompat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;START&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;In contrast with the &lt;a href=&quot;https://gist.github.com/ElMassimo/839df056c44b7c8e53b7&quot;&gt;generated version&lt;/a&gt;, the &lt;em&gt;Anko&lt;/em&gt; version does require some boilerplate to set dimensions and colors from resources, but has a lot of expressiveness when it comes to bindings. Notice how it’s not necessary to create references to most of the components, since the listeners are added to each view when they are instantiated:&lt;/p&gt;
 
-&lt;p&gt;{% highlight kotlin %}
-floatingActionButton {
-    onClick { snackbar(“FAB”, Snackbar.LENGTH_LONG) }
-}
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;n&quot;&gt;floatingActionButton&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;onClick&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;snackbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;FAB&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Snackbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LENGTH_LONG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Compare this to the usual code, which incurs in the cost of finding the view (even if it’s a very low cost) and referencing the view id:&lt;/p&gt;
 
-&lt;p&gt;{% highlight kotlin %}
-val fab:FloatingActionButton = findViewById(R.id.fab) as FloatingActionButton
-fab.setOnClickListener {
-  Snackbar.make(it, “FAB”, Snackbar.LENGTH_LONG).show()
-}
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;fab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FloatingActionButton&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;findViewById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FloatingActionButton&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setOnClickListener&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Snackbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;it&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;FAB&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Snackbar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LENGTH_LONG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The &lt;em&gt;Anko DSL&lt;/em&gt; exposes the native API of each View, so it’s only possible to do what &lt;em&gt;Android&lt;/em&gt; components can do, with the exception of a few synthetic properties to set text or an image from a resource.&lt;/p&gt;
 
@@ -204,37 +211,50 @@ fab.setOnClickListener {
 
 &lt;p&gt;No theming support is a serious limitation, since most components in the design library need a theme to be styled properly.&lt;/p&gt;
 
-&lt;p&gt;{% img anko-vs-xml.png alt=”Anko does not have theming support” class=”square” %}&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/anko-vs-android-xml/anko-vs-xml.png&quot; alt=&quot;Anko does not have theming support&quot; class=&quot;square&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It should be possible to add support for theming in &lt;em&gt;Anko&lt;/em&gt;, but unfortunately theming is just one of many XML-based hacks and workarounds in the SDK.&lt;/p&gt;
 
 &lt;p&gt;Adding views with Java code is very cumbersome, so most Java developers will stick to XML, and the SDK and support library will continue to do hacks around XML inflation.&lt;/p&gt;
 
 &lt;p&gt;The idea behind the &lt;em&gt;Anko DSL&lt;/em&gt; is a very interesting one, but it seems like the &lt;em&gt;Android SDK&lt;/em&gt; is not polished enough for &lt;em&gt;Anko&lt;/em&gt; to reach its full potential.&lt;/p&gt;
-</content>
-<category term="posts" />
-<summary>Anko is a library for Android development in Kotlin. The library provides helper methods that take advantage of Kotlin’s extension functions as a way to reduce the amount of boilerplate the Android SDK requires. Those extension functions make it possible to accomplish common tasks like starting an activity or displaying a toast in a very succinct way.</summary>
-</entry>
-<entry>
-<title>CoffeeScript and JS Libraries</title>
-<link href="http://maximomussini.com/posts/coffeescript-js-libraries" rel="alternate" type="text/html" title="CoffeeScript and JS Libraries" />
-<published>2015-12-31T18:58:00-02:00</published>
-<updated>2015-12-31T18:58:00-02:00</updated>
-<id>http://maximomussini.com/posts/coffeescript-js-libraries</id>
-<content type="html" xml:base="http://maximomussini.com/posts/coffeescript-js-libraries">&lt;p&gt;A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.&lt;/p&gt;
+
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/anko-vs-android-xml.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
+
+  <entry>
+    <title>CoffeeScript and JS Libraries
+</title>
+    <link href="http://maximomussini.com/posts/coffeescript-js-libraries" rel="alternate" type="text/html" title="CoffeeScript and JS Libraries" />
+    <published>2015-12-31T18:58:00-02:00</published>
+  
+    <updated>2016-01-05T18:19:00-02:00</updated>
+  
+    <id>http://maximomussini.com/posts/coffeescript-js-libraries</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/coffeescript-js-libraries">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/coffeescript-js-libraries.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.&lt;/p&gt;
 
 &lt;p&gt;In the frontend this has become increasingly more common because of all the available languages that compile to JavaScript. &lt;a href=&quot;http://coffeescript.org/&quot;&gt;&lt;em&gt;CoffeeScript&lt;/em&gt;&lt;/a&gt; was one of the first ones to gain adoption, but nowadays we have a myriad of available languages like &lt;a href=&quot;http://elm-lang.org/&quot;&gt;&lt;em&gt;Elm&lt;/em&gt;&lt;/a&gt;, &lt;a href=&quot;https://github.com/clojure/clojurescript&quot;&gt;&lt;em&gt;ClojureScript&lt;/em&gt;&lt;/a&gt;, &lt;a href=&quot;http://opalrb.org/&quot;&gt;&lt;em&gt;Opal&lt;/em&gt;&lt;/a&gt;, and &lt;a href=&quot;https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS&quot;&gt;many more&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Recently, we were trying to debug a strange issue with &lt;a href=&quot;http://www.nick-cherry.com&quot;&gt;one of my coworkers&lt;/a&gt;, where we had a list of selectable items with a checkbox to select/unselect all the items. Selecting all the items was working properly, but only the first item got unselected.&lt;/p&gt;
 
-&lt;p&gt;{% example select_all_broken.html height=254 %}&lt;/p&gt;
+&lt;figure class=&quot;example-wrapper&quot;&gt;
+  &lt;iframe src=&quot;/examples/posts/coffeescript-js-libraries/select_all_broken.html&quot; frameborder=&quot;0&quot; class=&quot;example&quot; width=&quot;&quot; height=&quot;254&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;After debugging it for a while we reached the conclusion that the iteration was being interrupted. Could &lt;a href=&quot;http://lodash.com&quot;&gt;&lt;code&gt;lodash&lt;/code&gt;&lt;/a&gt; have such a serious bug?&lt;/p&gt;
 
-&lt;p&gt;{% highlight coffeescript %}
-selectAll = (isSelected) -&amp;gt;
-  _.each tasks, (task) -&amp;gt; task.selected = isSelected
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot; data-lang=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nv&quot;&gt;selectAll = &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(isSelected) -&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tasks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;(task) -&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;task.selected = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Fortunately, we decided to skip that theory, and instead reached for the &lt;a href=&quot;https://lodash.com/docs#forEach&quot;&gt;documentation&lt;/a&gt;, which stated:&lt;/p&gt;
 
@@ -246,110 +266,113 @@ selectAll = (isSelected) -&amp;gt;
 
 &lt;p&gt;But CoffeeScript was. The language draws inspiration from Ruby, and it borrows features like expressions and implicit returns. For functions, this means that the last executed expression becomes the return value of the function. This allows us to write very concise functions:&lt;/p&gt;
 
-&lt;p&gt;{% highlight coffeescript %}
-isEven = (n) -&amp;gt; n % 2 == 0
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot; data-lang=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nv&quot;&gt;isEven = &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(n) -&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;If we reinterpret our snippet above taking implicit returns into account, it is equivalent to:&lt;/p&gt;
 
-&lt;p&gt;{% highlight javascript %}
-function selectAll(isSelected) {
-  return _.each(tasks, function(task) { return task.selected = isSelected })
-}
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selectAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;each&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tasks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;selected&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;When we unselect all the items and &lt;code&gt;selectAll(false)&lt;/code&gt; is called, the first iteration returns the value of &lt;code&gt;task.selected&lt;/code&gt; which is &lt;code&gt;false&lt;/code&gt;, causing &lt;em&gt;lodash&lt;/em&gt; to exit the iteration. Mistery solved &lt;img class=&quot;emoji&quot; title=&quot;:mag:&quot; alt=&quot;:mag:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f50d.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;{% example select_all.html height=254 %}&lt;/p&gt;
+&lt;figure class=&quot;example-wrapper&quot;&gt;
+  &lt;iframe src=&quot;/examples/posts/coffeescript-js-libraries/select_all.html&quot; frameborder=&quot;0&quot; class=&quot;example&quot; width=&quot;&quot; height=&quot;254&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;
+&lt;/figure&gt;
 
 &lt;p&gt;We can fix the bug by explicitly returning &lt;code&gt;null&lt;/code&gt; or &lt;code&gt;true&lt;/code&gt; on each loop, which will avoid stopping the iteration, and all the items will be unselected correctly.&lt;/p&gt;
 
-&lt;p&gt;{% highlight coffeescript %}
-selectAll = (isSelected) -&amp;gt;
-  _.each tasks, (task) -&amp;gt;
-    task.selected = isSelected
-    true
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot; data-lang=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nv&quot;&gt;selectAll = &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(isSelected) -&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tasks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;(task) -&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;task.selected = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt;
+    &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;These are two useful features on their own, yet extremely inconvenient when combined. The reason is that the library was written for a language with a different mindset. The design of the language and the design of the library are not fully compatible.&lt;/p&gt;
 
 &lt;h2 id=&quot;tldr&quot;&gt;TL;DR&lt;/h2&gt;
 &lt;p&gt;Watch out for language differences when using libraries written for another language, they will bite sooner or later.&lt;/p&gt;
-</content>
-<category term="posts" />
-<summary>A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.</summary>
-</entry>
-<entry>
-<title>Improving your Git Experience in Bash</title>
-<link href="http://maximomussini.com/posts/bash-git-prompt" rel="alternate" type="text/html" title="Improving your Git Experience in Bash" />
-<published>2015-12-14T17:46:00-02:00</published>
-<updated>2015-12-14T17:46:00-02:00</updated>
-<id>http://maximomussini.com/posts/bash-git-prompt</id>
-<content type="html" xml:base="http://maximomussini.com/posts/bash-git-prompt">&lt;p&gt;&lt;em&gt;Bash&lt;/em&gt; is the default terminal for most Unix distributions, so it’s very appealing to get the best out of it. If you enjoy customizing your setup, you might want to try something like &lt;a href=&quot;http://ohmyz.sh/&quot;&gt;zsh&lt;/a&gt; instead, which comes with similar functionality out of the box.&lt;/p&gt;
+
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/coffeescript-js-libraries.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
+
+  <entry>
+    <title>Improving your Git Experience in Bash
+</title>
+    <link href="http://maximomussini.com/posts/bash-git-prompt" rel="alternate" type="text/html" title="Improving your Git Experience in Bash" />
+    <published>2015-12-14T17:46:00-02:00</published>
+  
+    <updated>2016-01-05T18:19:00-02:00</updated>
+  
+    <id>http://maximomussini.com/posts/bash-git-prompt</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/bash-git-prompt">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/bash-git-prompt.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;&lt;em&gt;Bash&lt;/em&gt; is the default terminal for most Unix distributions, so it’s very appealing to get the best out of it. If you enjoy customizing your setup, you might want to try something like &lt;a href=&quot;http://ohmyz.sh/&quot;&gt;zsh&lt;/a&gt; instead, which comes with similar functionality out of the box.&lt;/p&gt;
 
 &lt;p&gt;Let’s take a look at how we can improve our &lt;em&gt;Git&lt;/em&gt; usage in &lt;em&gt;bash&lt;/em&gt; by adding a few plugins &lt;img class=&quot;emoji&quot; title=&quot;:neckbeard:&quot; alt=&quot;:neckbeard:&quot; src=&quot;https://assets.github.com/images/icons/emoji/neckbeard.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;bash-git-autocompletion&quot;&gt;Bash Git Autocompletion&lt;/h2&gt;
 &lt;p&gt;A great way to get &lt;em&gt;Git&lt;/em&gt; autocompletion is to install the &lt;code&gt;bash-completion&lt;/code&gt; package. This plugin will improve our experience when switching or pulling different branches, and is a real time-saver when using &lt;a href=&quot;https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches&quot;&gt;topic branches&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;{% img git-autocompletion.png alt=’Checking out Branches’ %}&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/bash-git-prompt/git-autocompletion.png&quot; alt=&quot;Checking out Branches&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;installation-on-os-x&quot;&gt;Installation on OS X&lt;/h3&gt;
-&lt;p&gt;First, install &lt;code&gt;bash-completion&lt;/code&gt; using &lt;a href=&quot;http://brew.sh/&quot;&gt;Homebrew&lt;/a&gt;:
-{% highlight bash %}
-brew install bash-completion
-{% endhighlight %}
-and then add this line to &lt;code&gt;~/.bash_profile&lt;/code&gt; to load the plugin:
-{% highlight bash %}
-[[ -f “$(brew –prefix)/etc/bash_completion” ]] &amp;amp;&amp;amp; source “$(brew –prefix)/etc/bash_completion”
-{% endhighlight %}&lt;/p&gt;
+&lt;p&gt;First, install &lt;code&gt;bash-completion&lt;/code&gt; using &lt;a href=&quot;http://brew.sh/&quot;&gt;Homebrew&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;brew install bash-completion&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;and then add this line to &lt;code&gt;~/.bash_profile&lt;/code&gt; to load the plugin:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; -f &lt;span class=&quot;s2&quot;&gt;&amp;quot;$(brew --prefix)/etc/bash_completion&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$(brew --prefix)/etc/bash_completion&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;installation-on-ubuntu&quot;&gt;Installation on Ubuntu&lt;/h3&gt;
-&lt;p&gt;{% highlight bash %}
-sudo apt-get install bash-completion
-{% endhighlight %}&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo apt-get install bash-completion&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;bash-git-prompt&quot;&gt;Bash Git Prompt&lt;/h2&gt;
 &lt;p&gt;Running a &lt;em&gt;Git&lt;/em&gt; command without knowing the current branch is like running &lt;code&gt;rm&lt;/code&gt; or &lt;code&gt;mkdir&lt;/code&gt; in the terminal without knowning the current directory: it’s dangerous and error-prone.&lt;/p&gt;
 
 &lt;p&gt;Sure, we could type &lt;code&gt;pwd&lt;/code&gt; every time before running those commands, but it wouldn’t be practical. Why not take the same approach for &lt;em&gt;Git&lt;/em&gt;, and display the current branch in the terminal prompt?&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;{{ page.bash_git_prompt }}&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; is a project that takes care of that, displaying the current branch and other helpful stats. It has many different themes available, which can be customized by specifying a theme through the &lt;code&gt;GIT_PROMPT_THEME&lt;/code&gt; environment variable.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; is a project that takes care of that, displaying the current branch and other helpful stats. It has many different themes available, which can be customized by specifying a theme through the &lt;code&gt;GIT_PROMPT_THEME&lt;/code&gt; environment variable.&lt;/p&gt;
 
-&lt;p&gt;{% img git-prompt-default.png alt=’Default Theme’ %}&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/bash-git-prompt/git-prompt-default.png&quot; alt=&quot;Default Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;The following are some settings I modified in my &lt;code&gt;~/.bash_profile&lt;/code&gt;:
-{% highlight bash %}
-GIT_PROMPT_ONLY_IN_REPO=1 # Use the default prompt when not in a git repo.
-GIT_PROMPT_FETCH_REMOTE_STATUS=0 # Avoid fetching remote status
-GIT_PROMPT_SHOW_UPSTREAM=0 # Don’t display upstream tracking branch
-GIT_SHOW_UNTRACKED_FILES=no # Don’t count untracked files (no, normal, all)
-{% endhighlight %}&lt;/p&gt;
+&lt;p&gt;The following are some settings I modified in my &lt;code&gt;~/.bash_profile&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;GIT_PROMPT_ONLY_IN_REPO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# Use the default prompt when not in a git repo.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;GIT_PROMPT_FETCH_REMOTE_STATUS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# Avoid fetching remote status&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;GIT_PROMPT_SHOW_UPSTREAM&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# Don&amp;#39;t display upstream tracking branch&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;GIT_SHOW_UNTRACKED_FILES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;no &lt;span class=&quot;c&quot;&gt;# Don&amp;#39;t count untracked files (no, normal, all)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;installation-on-os-x-1&quot;&gt;Installation on OS X&lt;/h3&gt;
-&lt;p&gt;{% highlight bash %}
-if [ -f “$(brew –prefix)/opt/bash-git-prompt/share/gitprompt.sh” ]; then
-  source “$(brew –prefix)/opt/bash-git-prompt/share/gitprompt.sh”
-fi
-{% endhighlight %}&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; -f &lt;span class=&quot;s2&quot;&gt;&amp;quot;$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;installation-on-ubuntu-1&quot;&gt;Installation on Ubuntu&lt;/h4&gt;
 &lt;p&gt;It might be necessary to &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt#via-git-clone&quot;&gt;clone the project’s git repo&lt;/a&gt;, and source &lt;code&gt;gitprompt.sh&lt;/code&gt; into the &lt;code&gt;~/.bashrc&lt;/code&gt; file.&lt;/p&gt;
 
 &lt;h2 id=&quot;customizing-the-git-prompt&quot;&gt;Customizing the Git Prompt&lt;/h2&gt;
-&lt;p&gt;The themes that come bundled with &lt;a href=&quot;{{ page.bash_git_prompt }}&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; displayed too much information for my taste, and the symbols in the default theme are not particularly meaningful.&lt;/p&gt;
+&lt;p&gt;The themes that come bundled with &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; displayed too much information for my taste, and the symbols in the default theme are not particularly meaningful.&lt;/p&gt;
 
 &lt;p&gt;After trying different themes, I decided to bake my own. I wanted something that emphasized the important bits and pieces, looked clean, and was easy to understand. Fortunately, the plugin provides a command to generate a custom theme file:&lt;/p&gt;
 
-&lt;p&gt;{% highlight bash %}
-git_prompt_make_custom_theme Default
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git_prompt_make_custom_theme Default&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The command creates a &lt;code&gt;~/.git-prompt-colors.sh&lt;/code&gt; based on the default theme and will get loaded by the plugin automatically, so you can start playing with the variables right away. However, you may need to dive into the source code to figure out how each variable is used, and find the ones you want to customize.&lt;/p&gt;
 
 &lt;p&gt;After tweaking the variables for a while, I was able to create a custom theme. The expresiveness of emojis made it a lot easier for me to understand the current git status &lt;img class=&quot;emoji&quot; title=&quot;:sweat_smile:&quot; alt=&quot;:sweat_smile:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f605.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;{% img git-prompt-emoji.png alt=’Emoji Theme’ %}&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/bash-git-prompt/git-prompt-emoji.png&quot; alt=&quot;Emoji Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;script src=&quot;https://gist.github.com/ElMassimo/515d12ab6db95dbb233c.js&quot;&gt;&lt;/script&gt;
 
@@ -357,37 +380,44 @@ git_prompt_make_custom_theme Default
 
 &lt;hr /&gt;
 
-&lt;p&gt;It would be awesome if &lt;a href=&quot;{{ page.bash_git_prompt }}&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; provided a way to customize the full prompt order and displayed elements, with a template string like:&lt;/p&gt;
+&lt;p&gt;It would be awesome if &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; provided a way to customize the full prompt order and displayed elements, with a template string like:&lt;/p&gt;
 
-&lt;p&gt;{% highlight bash %}
-GIT_PROMPT=”{PathShort}{Branch}{Remote}{Modified}{Staged}{Clean}”
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;GIT_PROMPT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;{PathShort}{Branch}{Remote}{Modified}{Staged}{Clean}&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;That would make it possible to create very different themes, as well as opting out of certain information—like git stashes.&lt;/p&gt;
 
 &lt;p&gt;For now, I’m pleased with the result; it’s practical, looks nice, and I don’t need to type &lt;code&gt;git branch&lt;/code&gt; to check the current branch &lt;img class=&quot;emoji&quot; title=&quot;:sunglasses:&quot; alt=&quot;:sunglasses:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f60e.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
-</content>
-<category term="posts" />
-<summary>Bash is the default terminal for most Unix distributions, so it’s very appealing to get the best out of it. If you enjoy customizing your setup, you might want to try something like zsh instead, which comes with similar functionality out of the box.</summary>
-</entry>
-<entry>
-<title>Ruby &amp;amp; to_proc</title>
-<link href="http://maximomussini.com/posts/ruby-to_proc" rel="alternate" type="text/html" title="Ruby &amp; to_proc" />
-<published>2015-12-07T19:22:00-02:00</published>
-<updated>2015-12-07T19:22:00-02:00</updated>
-<id>http://maximomussini.com/posts/ruby-to_proc</id>
-<content type="html" xml:base="http://maximomussini.com/posts/ruby-to_proc">&lt;p&gt;Blocks are a very unique part of Ruby’s syntax. Let’s look at a simple example:&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-‘Jane Jim Jenny’.split.map { |s| s.length }.reduce { |sum, n| sum + n }
-# =&amp;gt; 12
-{% endhighlight %}&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/bash-git-prompt.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
+
+  <entry>
+    <title>Ruby &amp;amp; to_proc
+</title>
+    <link href="http://maximomussini.com/posts/ruby-to_proc" rel="alternate" type="text/html" title="Ruby &amp; to_proc" />
+    <published>2015-12-07T19:22:00-02:00</published>
+  
+    <updated>2016-01-05T18:19:00-02:00</updated>
+  
+    <id>http://maximomussini.com/posts/ruby-to_proc</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/ruby-to_proc">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-to_proc.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;Blocks are a very unique part of Ruby’s syntax. Let’s look at a simple example:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Jane Jim Jenny&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reduce&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# =&amp;gt; 12&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;When performing this kind of functional transformation, it’s tedious to write a block to perform a simple method call. An extremely common idiom in Ruby uses symbols to specify the method that should be called:&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-names.map(&amp;amp;:length).reduce(&amp;amp;:+)
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reduce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;!-- &gt; Sweet &lt;img class=&#39;emoji&#39; title=&#39;:cake:&#39; alt=&#39;:cake:&#39; src=&#39;https://assets.github.com/images/icons/emoji/unicode/1f370.png&#39; height=&#39;20&#39; width=&#39;20&#39; align=&#39;absmiddle&#39; /&gt;&lt;br/&gt;But how does it work? --&gt;
 
@@ -402,11 +432,9 @@ names.map(&amp;amp;:length).reduce(&amp;amp;:+)
   &lt;li&gt;object is not a &lt;code&gt;Proc&lt;/code&gt;: &lt;code&gt;&amp;amp;&lt;/code&gt; tries to call &lt;code&gt;to_proc&lt;/code&gt; on the object, and then converts it to a block.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;{% highlight ruby %}
-names.map &amp;amp;:to_s
-# is the same than
-names.map &amp;amp;:to_s.to_proc
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:to_s&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# is the same than&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:to_s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_proc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Huh? &lt;img class=&quot;emoji&quot; title=&quot;:confused:&quot; alt=&quot;:confused:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f615.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
@@ -414,34 +442,30 @@ names.map &amp;amp;:to_s.to_proc
 
 &lt;p&gt;It turns out the &lt;em&gt;magic&lt;/em&gt; is in how Ruby defines &lt;code&gt;to_proc&lt;/code&gt; for symbols. In recent versions of Ruby, the method is &lt;a href=&quot;http://ruby-doc.org/core-2.2.3/Symbol.html#method-i-to_proc&quot;&gt;defined in C&lt;/a&gt;, but it would look like this in Ruby:&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-class Symbol
-  def to_proc
-    -&amp;gt;(obj, args = nil) { obj.send(self, *args) }
-  end
-end
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Symbol&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_proc&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Back to our snippet, let’s expand the &lt;code&gt;to_proc&lt;/code&gt; call incrementally until we arrive at the same block we would write by hand:&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-names.map &amp;amp;:to_s&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:to_s&lt;/span&gt;
 
-&lt;h1 id=&quot;we-can-expand-it-to&quot;&gt;We can expand it to&lt;/h1&gt;
-&lt;p&gt;names.map &amp;amp;:to_s.to_proc&lt;/p&gt;
+&lt;span class=&quot;c1&quot;&gt;# We can expand it to&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:to_s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_proc&lt;/span&gt;
 
-&lt;h1 id=&quot;replacing-toproc-with-the-result-of-calling-the-method&quot;&gt;Replacing “to_proc” with the result of calling the method&lt;/h1&gt;
-&lt;p&gt;names.map &amp;amp;-&amp;gt;(name, args = nil) { name.send(:to_s, *args) }&lt;/p&gt;
+&lt;span class=&quot;c1&quot;&gt;# Replacing &amp;quot;to_proc&amp;quot; with the result of calling the method&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:to_s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;h1 id=&quot;map-passes-a-single-argument-to-the-block-so-we-can-simplify&quot;&gt;“map” passes a single argument to the block, so we can simplify&lt;/h1&gt;
-&lt;p&gt;names.map &amp;amp;-&amp;gt;(name) { name.send(:to_s) }&lt;/p&gt;
+&lt;span class=&quot;c1&quot;&gt;# &amp;quot;map&amp;quot; passes a single argument to the block, so we can simplify&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:to_s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;h1 id=&quot;calling-the-method-directly-we-get&quot;&gt;Calling the method directly we get&lt;/h1&gt;
-&lt;p&gt;names.map &amp;amp;-&amp;gt;(name) { name.to_s }&lt;/p&gt;
+&lt;span class=&quot;c1&quot;&gt;# Calling the method directly we get&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_s&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;h1 id=&quot;since--transforms-procs-and-lambdas-to-blocks-its-equivalent-to&quot;&gt;Since “&amp;amp;” transforms Procs and Lambdas to blocks, it’s equivalent to&lt;/h1&gt;
-&lt;p&gt;names.map { |name| name.to_s }
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;c1&quot;&gt;# Since &amp;quot;&amp;amp;&amp;quot; transforms Procs and Lambdas to blocks, it&amp;#39;s equivalent to&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_s&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;So there you have it, &lt;code&gt;&amp;amp;&lt;/code&gt; will coerce the &lt;code&gt;:to_s&lt;/code&gt; symbol by calling &lt;code&gt;to_proc&lt;/code&gt;, and then transform the resulting proc or lambda to a block.&lt;/p&gt;
 
@@ -452,44 +476,40 @@ names.map &amp;amp;:to_s&lt;/p&gt;
 &lt;h2 id=&quot;a-world-of-proc-img-classemoji-titleearthamericas-altearthamericas-srchttpsassetsgithubcomimagesiconsemojiunicode1f30epng-height20-width20-alignabsmiddle-&quot;&gt;A world of proc &lt;img class=&quot;emoji&quot; title=&quot;:earth_americas:&quot; alt=&quot;:earth_americas:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f30e.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/h2&gt;
 &lt;p&gt;Now that we understand what is really going on, we could use &lt;code&gt;to_proc&lt;/code&gt; for our own benefit by defining it in our objects and classes.&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-require ‘ostruct’&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;ostruct&amp;#39;&lt;/span&gt;
 
-&lt;p&gt;class Formula
-  def initialize(formula)
-    @formula = formula.gsub(‘^’, ‘**’)
-  end&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Formula&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;formula&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@formula&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;formula&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gsub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;^&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;**&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;def apply(variables)
-    OpenStruct.new(variables).instance_eval(@formula)
-  end&lt;/p&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;variables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;OpenStruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;variables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;instance_eval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@formula&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;def to_proc
-    -&amp;gt;(&lt;em&gt;args){ apply(&lt;/em&gt;args) }
-  end
-end&lt;/p&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_proc&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;x2 = Formula.new(‘x^2 + y^2’)
-[{ x: 1, y: 1 }, { x: 3, y: 4 }, { x: 5, y: 7 }].map(&amp;amp;x2)
-# =&amp;gt; [2, 25, 74]
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Formula&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;x^2 + y^2&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# =&amp;gt; [2, 25, 74]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We may also define &lt;code&gt;to_proc&lt;/code&gt; at the class level, allowing us to pass a class as a block:&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-class Formula&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Formula&lt;/span&gt;
 
-&lt;p&gt;def self.to_proc
-    -&amp;gt;(&lt;em&gt;args){ new(&lt;/em&gt;args) }
-  end
-end&lt;/p&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_proc&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;[‘x^2 + y^2’, ‘x + y^3’].map(&amp;amp;Formula)
-# =&amp;gt; [#&amp;lt;Formula @formula=”x&lt;strong&gt;2 + y&lt;/strong&gt;2”&amp;gt;, #&amp;lt;Formula: @formula=”x + y**3”&amp;gt;]
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;x^2 + y^2&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;x + y^3&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Formula&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# =&amp;gt; [#&amp;lt;Formula @formula=&amp;quot;x**2 + y**2&amp;quot;&amp;gt;, #&amp;lt;Formula: @formula=&amp;quot;x + y**3&amp;quot;&amp;gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;a-note-on-performance-img-classemoji-titlebarchart-altbarchart-srchttpsassetsgithubcomimagesiconsemojiunicode1f4capng-height20-width20-alignabsmiddle-&quot;&gt;A note on performance &lt;img class=&quot;emoji&quot; title=&quot;:bar_chart:&quot; alt=&quot;:bar_chart:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f4ca.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/h2&gt;
-&lt;p&gt;Running some benchmarks in Ruby 2.2.3, it seems that there is not an important performance penalty from using &lt;code&gt;to_proc&lt;/code&gt;. I wrote a small &lt;a href=&quot;{{ page.benchmark }}&quot;&gt;benchmark&lt;/a&gt; that you can &lt;a href=&quot;{{ page.benchmark }}&quot;&gt;run&lt;/a&gt; if you are curious &lt;img class=&quot;emoji&quot; title=&quot;:smiley:&quot; alt=&quot;:smiley:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f603.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Running some benchmarks in Ruby 2.2.3, it seems that there is not an important performance penalty from using &lt;code&gt;to_proc&lt;/code&gt;. I wrote a small &lt;a href=&quot;https://gist.github.com/ElMassimo/2183ffc0401d1157c78e&quot;&gt;benchmark&lt;/a&gt; that you can &lt;a href=&quot;https://gist.github.com/ElMassimo/2183ffc0401d1157c78e&quot;&gt;run&lt;/a&gt; if you are curious &lt;img class=&quot;emoji&quot; title=&quot;:smiley:&quot; alt=&quot;:smiley:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f603.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 &lt;p&gt;There’s nothing special about the shorthand &lt;code&gt;&amp;amp;:method&lt;/code&gt; syntax. Ruby defines &lt;code&gt;Symbol#to_proc&lt;/code&gt; in a particular way that allows programmers to avoid some boilerplate, and the &lt;code&gt;&amp;amp;&lt;/code&gt; operator can coerce any object into a block by calling &lt;code&gt;to_proc&lt;/code&gt;.&lt;/p&gt;
@@ -497,21 +517,36 @@ end&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Symbol#to_proc&lt;/code&gt; is so ubiquitous that there’s no harm in using it; most of the times it can help to keep the code terse without any downsides.&lt;/p&gt;
 
 &lt;p&gt;However, it’s better to stay away from &lt;code&gt;to_proc&lt;/code&gt; in everyday usage, since it is as obscure as it is powerful. Defining &lt;code&gt;to_proc&lt;/code&gt; for custom objects can make it very difficult to reason about the code, which defeats the purpose of using it in the first place.&lt;/p&gt;
-</content>
-<category term="posts" />
-<summary>Blocks are a very unique part of Ruby’s syntax. Let’s look at a simple example:</summary>
-</entry>
-<entry>
-<title>One Does Not Simply Extend Mongoid</title>
-<link href="http://maximomussini.com/posts/mongoid_includes" rel="alternate" type="text/html" title="One Does Not Simply Extend Mongoid" />
-<published>2015-11-30T22:46:00-02:00</published>
-<updated>2015-11-30T22:46:00-02:00</updated>
-<id>http://maximomussini.com/posts/mongoid_includes</id>
-<content type="html" xml:base="http://maximomussini.com/posts/mongoid_includes">&lt;p&gt;&lt;em&gt;Mongoid&lt;/em&gt; is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to &lt;em&gt;monkey-patch&lt;/em&gt; it.&lt;/p&gt;
+
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/ruby-to_proc.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+    <summary>Blocks are a very unique part of Ruby&#39;s syntax, but sometimes it can be tedious to write a block to perform a simple method call. An extremely common idiom in Ruby uses symbols to specify the method that should be called, but.. how does it work?</summary>
+  
+  </entry>
+
+  <entry>
+    <title>One Does Not Simply Extend Mongoid
+</title>
+    <link href="http://maximomussini.com/posts/mongoid_includes" rel="alternate" type="text/html" title="One Does Not Simply Extend Mongoid" />
+    <published>2015-11-30T22:46:00-02:00</published>
+  
+    <updated>2016-01-05T18:19:00-02:00</updated>
+  
+    <id>http://maximomussini.com/posts/mongoid_includes</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/mongoid_includes">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/mongoid_includes.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;&lt;em&gt;Mongoid&lt;/em&gt; is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to &lt;em&gt;monkey-patch&lt;/em&gt; it.&lt;/p&gt;
 
 &lt;p&gt;A while ago I was working on a feature that required displaying information from several &lt;em&gt;mongodb&lt;/em&gt; collections. The performance was pretty bad, since for each item being displayed it was necessary to traverse nested and polymorphic associations to get the rest of the data.&lt;/p&gt;
 
-&lt;p&gt;Although &lt;em&gt;Mongoid&lt;/em&gt; provides eager loading support &lt;a href=&quot;{{ page.previous.url }}&quot;&gt;out of the box&lt;/a&gt;, it has a few limitations:&lt;/p&gt;
+&lt;p&gt;Although &lt;em&gt;Mongoid&lt;/em&gt; provides eager loading support &lt;a href=&quot;/posts/mongoid-n+1&quot;&gt;out of the box&lt;/a&gt;, it has a few limitations:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;No Nested&lt;/strong&gt;: Only direct relations can be eager loaded.&lt;/li&gt;
@@ -535,20 +570,18 @@ end&lt;/p&gt;
 
 &lt;p&gt;Choosing these constraints allowed me to keep the library fairly small, without compromising its usefulness in more complex scenarios.&lt;/p&gt;
 
-&lt;p&gt;The result is &lt;a href=&quot;{{ page.github }}&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt;, a gem that enhances support for eager loading in &lt;em&gt;Mongoid&lt;/em&gt;, allowing to include polymorphic and nested associations, and modify eager loading queries on the fly.&lt;/p&gt;
+&lt;p&gt;The result is &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt;, a gem that enhances support for eager loading in &lt;em&gt;Mongoid&lt;/em&gt;, allowing to include polymorphic and nested associations, and modify eager loading queries on the fly.&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-Album.includes(:songs).includes(:musicians, from: :band)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:songs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:musicians&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:band&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;p&gt;Band.includes(:albums, with: -&amp;gt;(albums) { albums.gt(release: 1970).limit(2) })
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;no&quot;&gt;Band&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;release&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1970&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;code&gt;Mongoid::Includes&lt;/code&gt; extends the &lt;code&gt;includes&lt;/code&gt; method to support polymorphic associations without any syntax change. For nested includes, it expects a &lt;code&gt;:from&lt;/code&gt; option, indicating from which relation the include is going to be performed, eager loading it as well.&lt;/p&gt;
 
 &lt;p&gt;While those are the most typical cases, it also supports a &lt;code&gt;:with&lt;/code&gt; option which conveniently allows to modify the default query, and a &lt;code&gt;:loader&lt;/code&gt; option which receives the foreign keys of the documents to include.&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Polymorphic or nested includes might be a sign of a poorly designed schema. &lt;a href=&quot;{{ page.github }}&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt; is very easy to use, but it should only be used if it’s truly necessary.&lt;/p&gt;
+  &lt;p&gt;Polymorphic or nested includes might be a sign of a poorly designed schema. &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt; is very easy to use, but it should only be used if it’s truly necessary.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h2 id=&quot;extending-mongoid&quot;&gt;Extending Mongoid&lt;/h2&gt;
@@ -567,54 +600,63 @@ Album.includes(:songs).includes(:musicians, from: :band)&lt;/p&gt;
   &lt;p&gt;NOTE: Ecto does not lazy load associations. While lazily loading associations may sound convenient at first, in the long run it becomes a source of confusion and performance issues.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;As a long time &lt;em&gt;Mongoid&lt;/em&gt; user, I can painfully relate to this statement. &lt;a href=&quot;{{ page.previous.url }}&quot;&gt;N+1 queries&lt;/a&gt; are one of the fastest ways to degrade performance, and lazy loading associations makes it a lot easier to introduce them by accident. By not implementing lazy loading, the library becomes a lot simpler, and it encourages good practices and efficient data access patterns &lt;img class=&quot;emoji&quot; title=&quot;:tropical_drink:&quot; alt=&quot;:tropical_drink:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f379.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;As a long time &lt;em&gt;Mongoid&lt;/em&gt; user, I can painfully relate to this statement. &lt;a href=&quot;/posts/mongoid-n+1&quot;&gt;N+1 queries&lt;/a&gt; are one of the fastest ways to degrade performance, and lazy loading associations makes it a lot easier to introduce them by accident. By not implementing lazy loading, the library becomes a lot simpler, and it encourages good practices and efficient data access patterns &lt;img class=&quot;emoji&quot; title=&quot;:tropical_drink:&quot; alt=&quot;:tropical_drink:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f379.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Ecto also allows you to modify which models will be included for an association—like the &lt;code&gt;:with&lt;/code&gt; option in &lt;a href=&quot;{{ page.github }}&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt;—and you can also preload associations on a given model or models after they have been fetched from the database using the &lt;a href=&quot;http://hexdocs.pm/ecto/Ecto.Repo.html#c:preload/2&quot;&gt;&lt;code&gt;Repo.preload/2&lt;/code&gt;&lt;/a&gt; method. So much win!&lt;/p&gt;
+&lt;p&gt;Ecto also allows you to modify which models will be included for an association—like the &lt;code&gt;:with&lt;/code&gt; option in &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt;—and you can also preload associations on a given model or models after they have been fetched from the database using the &lt;a href=&quot;http://hexdocs.pm/ecto/Ecto.Repo.html#c:preload/2&quot;&gt;&lt;code&gt;Repo.preload/2&lt;/code&gt;&lt;/a&gt; method. So much win!&lt;/p&gt;
 
 &lt;p&gt;Playing with Ecto inspired me to keep looking for a better solution for eager loading in &lt;em&gt;Mongoid&lt;/em&gt;. &lt;code&gt;Mongoid::Includes&lt;/code&gt; solves the first two limitations, but wouldn’t it be great if we could preload documents without a query? &lt;img class=&quot;emoji&quot; title=&quot;:wink:&quot; alt=&quot;:wink:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f609.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
-</content>
-<category term="posts" />
-<summary>Mongoid is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to monkey-patch it.</summary>
-</entry>
-<entry>
-<title>Avoiding the N+1 problem in Mongoid</title>
-<link href="http://maximomussini.com/posts/mongoid-n+1" rel="alternate" type="text/html" title="Avoiding the N+1 problem in Mongoid" />
-<published>2015-10-30T19:30:00-02:00</published>
-<updated>2015-10-30T19:30:00-02:00</updated>
-<id>http://maximomussini.com/posts/mongoid-n+1</id>
-<content type="html" xml:base="http://maximomussini.com/posts/mongoid-n+1">&lt;p&gt;One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!&lt;/p&gt;
+
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/mongoid_includes.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
+
+  <entry>
+    <title>Avoiding the N+1 problem in Mongoid
+</title>
+    <link href="http://maximomussini.com/posts/mongoid-n+1" rel="alternate" type="text/html" title="Avoiding the N+1 problem in Mongoid" />
+    <published>2015-10-30T19:30:00-02:00</published>
+  
+    <updated>2016-01-05T18:19:00-02:00</updated>
+  
+    <id>http://maximomussini.com/posts/mongoid-n+1</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/mongoid-n+1">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/mongoid-n+1.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!&lt;/p&gt;
 
 &lt;p&gt;A performance issue that is very common when using ORMs is the &lt;em&gt;N+1 query&lt;/em&gt; problem. This anti-pattern usually occurs when trying to load related information for each item in a list of results.&lt;/p&gt;
 
 &lt;p&gt;Since most ORMs don’t perform eager loading by default (to avoid fetching more data than necessary), it’s necessary to make extra queries &lt;em&gt;per item&lt;/em&gt; to fetch the related data. Imagine that we have a simple music store app:&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-class Band
-  include Mongoid::Document
-  has_many :albums
-end&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Band&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mongoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:albums&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;class Album
-  include Mongoid::Document
-  belongs_to :band
-  has_many :songs
-end&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Album&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mongoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;belongs_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:band&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:songs&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;class Song
-  include Mongoid::Document
-  belongs_to :album
-end
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Song&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mongoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;belongs_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:album&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;A classic appearance of the &lt;em&gt;N+1 problem&lt;/em&gt; would be:&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-albums = Album.where(year: 1970)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;year&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1970&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;p&gt;albums.each do |album|
-  puts “Album: #{album.name}, Band: #{album.band.name}”
-end
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Album: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;, Band: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;band&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;In this example, we are loading a list of albums (the first query) and then loading the related band for each album, making one query &lt;em&gt;per album&lt;/em&gt;. With a list of &lt;em&gt;N albums&lt;/em&gt;, we make 1 query to get the albums and N queries to get the bands: a total of &lt;em&gt;N+1 queries&lt;/em&gt;.&lt;/p&gt;
 
@@ -630,37 +672,31 @@ end
 
 &lt;p&gt;In &lt;em&gt;Mongoid&lt;/em&gt;, we can do this by running an &lt;code&gt;$in&lt;/code&gt; query using the relation foreign keys to fetch all the related records, and then assign the relations in memory using &lt;code&gt;set_relation&lt;/code&gt;. This way, we only perform a single query to fetch a relation, regardless of the amount of documents returned by the first query.&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-band_ids = albums.map(&amp;amp;:band_id)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;band_ids&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:band_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;p&gt;bands = Band.in(id: band_ids)&lt;/p&gt;
+&lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Band&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;band_ids&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;p&gt;bands = bands.index_by(&amp;amp;:id)
-albums.each do |album|
-  album.set_relation(:band, bands[album.band_id])
-end
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index_by&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_relation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:band&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;band_id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The algorithm changes slightly depending on the type of relation we want to &lt;em&gt;include&lt;/em&gt;, and how the foreign keys are stored, but the idea is the same: get a list of foreign keys, use them to make a query to fetch the related documents, and assign the relations in memory using the foreign keys to match the objects.&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-album_ids = albums.map(&amp;amp;:id)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;album_ids&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;p&gt;songs = Song.in(album_id: album_ids)&lt;/p&gt;
+&lt;span class=&quot;n&quot;&gt;songs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Song&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;album_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;album_ids&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;p&gt;album_songs = songs.group_by(&amp;amp;:album_id)
-albums.each do |album|
-  album.set_relation(:songs, album_songs[album.id])
-end
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;n&quot;&gt;album_songs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;songs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;group_by&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:album_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_relation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:songs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;album_songs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Although eager loading the documents manually is not very complex, writing this logic every time is cumbersome, error-prone, and hard to maintain.&lt;/p&gt;
 
 &lt;p&gt;Fortunately, &lt;em&gt;Mongoid&lt;/em&gt; has baked-in support to eager load relations using the &lt;code&gt;includes&lt;/code&gt; method, which allows to specify all the relations that we want to eager load once the query is made. The following is equivalent to the two snippets above:&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-albums.includes(:band, :songs)
-{% endhighlight %}&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:band&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:songs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Easy, right? This becomes extremely useful when trying to avoid those sneaky &lt;em&gt;N+1 queries&lt;/em&gt; we were talking about &lt;img class=&quot;emoji&quot; title=&quot;:wink:&quot; alt=&quot;:wink:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f609.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
@@ -699,18 +735,31 @@ albums.includes(:band, :songs)
 
 &lt;p&gt;I have solved the other limitations in &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt; &lt;img class=&quot;emoji&quot; title=&quot;:gem:&quot; alt=&quot;:gem:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f48e.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;, which extends the &lt;code&gt;includes&lt;/code&gt; method to support eager loading polymorphic and nested associations.&lt;/p&gt;
 
-&lt;p&gt;You can check &lt;a href=&quot;{{ page.next.url }}&quot;&gt;the next post&lt;/a&gt; where I talk about this gem and explain the motivation behind it, as well as the difficulties of extending &lt;em&gt;Mongoid&lt;/em&gt; &lt;img class=&quot;emoji&quot; title=&quot;:smiley:&quot; alt=&quot;:smiley:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f603.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
-</content>
-<category term="posts" />
-<summary>One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!</summary>
-</entry>
-<entry>
-<title>Breaking Mongoid Inheritance</title>
-<link href="http://maximomussini.com/posts/mongoid-inheritance" rel="alternate" type="text/html" title="Breaking Mongoid Inheritance" />
-<published>2015-10-12T23:29:00-02:00</published>
-<updated>2015-10-12T23:29:00-02:00</updated>
-<id>http://maximomussini.com/posts/mongoid-inheritance</id>
-<content type="html" xml:base="http://maximomussini.com/posts/mongoid-inheritance">&lt;p&gt;By default, &lt;a href=&quot;http://mongoid.github.io/&quot;&gt;&lt;em&gt;Mongoid&lt;/em&gt;&lt;/a&gt; will use &lt;a href=&quot;http://martinfowler.com/eaaCatalog/singleTableInheritance.html&quot;&gt;single-collection inheritance&lt;/a&gt; when extending a Ruby class, by storing a &lt;code&gt;_type&lt;/code&gt; attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.&lt;/p&gt;
+&lt;p&gt;You can check &lt;a href=&quot;/posts/mongoid_includes&quot;&gt;the next post&lt;/a&gt; where I talk about this gem and explain the motivation behind it, as well as the difficulties of extending &lt;em&gt;Mongoid&lt;/em&gt; &lt;img class=&quot;emoji&quot; title=&quot;:smiley:&quot; alt=&quot;:smiley:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f603.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/mongoid-n+1.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
+
+  <entry>
+    <title>Breaking Mongoid Inheritance
+</title>
+    <link href="http://maximomussini.com/posts/mongoid-inheritance" rel="alternate" type="text/html" title="Breaking Mongoid Inheritance" />
+    <published>2015-10-12T23:29:00-02:00</published>
+  
+    <updated>2016-01-05T18:19:00-02:00</updated>
+  
+    <id>http://maximomussini.com/posts/mongoid-inheritance</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/mongoid-inheritance">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/mongoid-inheritance.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;By default, &lt;a href=&quot;http://mongoid.github.io/&quot;&gt;&lt;em&gt;Mongoid&lt;/em&gt;&lt;/a&gt; will use &lt;a href=&quot;http://martinfowler.com/eaaCatalog/singleTableInheritance.html&quot;&gt;single-collection inheritance&lt;/a&gt; when extending a Ruby class, by storing a &lt;code&gt;_type&lt;/code&gt; attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.&lt;/p&gt;
 
 &lt;p&gt;In addition, it will handle the hierarchy in queries, by allowing to query the parent class to return documents from any subclass, or query a specific subclass to fetch only documents of that specific type. In order to do this efficiently, &lt;em&gt;Mongoid&lt;/em&gt; will check for existing indexes that contain &lt;code&gt;_type&lt;/code&gt; as a prefix, or add a &lt;code&gt;{ _type: 1 }&lt;/code&gt; index.&lt;/p&gt;
 
@@ -745,20 +794,18 @@ albums.includes(:band, :songs)
 
 &lt;p&gt;Let’s imagine that we have a drawing app, where you can draw many triangles on a canvas, and need to choose between three different drawing modes: regular, equilateral, or isosceles.&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-class Triangle
-  include Mongoid::Document
-  …
-end&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Triangle&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mongoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;class IsoscelesTriangle &amp;lt; Triangle
-  validate_two_sides_are_equal
-end&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IsoscelesTriangle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Triangle&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validate_two_sides_are_equal&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;class EquilateralTriangle &amp;lt; Triangle
-  validate_all_sides_are_equal
-end
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EquilateralTriangle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Triangle&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validate_all_sides_are_equal&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We can take advantage of this restriction and store each type of triangle in a separate collection, which will prevent the database from scanning more documents than necessary to execute our queries.&lt;/p&gt;
 
@@ -769,26 +816,24 @@ end
 
 &lt;p&gt;We shall name it &lt;code&gt;Trianglable&lt;/code&gt;. Hmm, sounds weird, let’s go with &lt;code&gt;Trilateral&lt;/code&gt;. Maybe &lt;code&gt;BaseTriangle&lt;/code&gt;? &lt;code&gt;Triangleness&lt;/code&gt;? Damn, names are tough &lt;img class=&quot;emoji&quot; title=&quot;:tired_face:&quot; alt=&quot;:tired_face:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f62b.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;{% highlight ruby %}
-module AbstractTriangle
-  include Mongoid::Document
-  …
-end&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;AbstractTriangle&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mongoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;class Triangle
-  include AbstractTriangle
-end&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Triangle&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AbstractTriangle&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;class IsoscelesTriangle
-  include AbstractTriangle
-  validate_two_sides_are_equal
-end&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;IsoscelesTriangle&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AbstractTriangle&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validate_two_sides_are_equal&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;class EquilateralTriangle
-  include AbstractTriangle
-  validate_all_sides_are_equal
-end
-{% endhighlight %}&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EquilateralTriangle&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AbstractTriangle&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validate_all_sides_are_equal&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Much better &lt;img class=&quot;emoji&quot; title=&quot;:neutral_face:&quot; alt=&quot;:neutral_face:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f610.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
@@ -809,17 +854,30 @@ end
 &lt;p&gt;All things considered, it provided a nice balance between sharing code, keeping the storage and index size down, and maintaining a straightforward structure in the code.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;¯\&lt;em&gt;(ツ)&lt;/em&gt;/¯&lt;/strong&gt;&lt;/p&gt;
-</content>
-<category term="posts" />
-<summary>By default, Mongoid will use single-collection inheritance when extending a Ruby class, by storing a _type attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.</summary>
-</entry>
-<entry>
-<title>Less</title>
-<link href="http://maximomussini.com/posts/less" rel="alternate" type="text/html" title="Less" />
-<published>2015-10-01T00:09:00-03:00</published>
-<updated>2015-10-01T00:09:00-03:00</updated>
-<id>http://maximomussini.com/posts/less</id>
-<content type="html" xml:base="http://maximomussini.com/posts/less">&lt;p&gt;Recently I’ve been digging into the &lt;a href=&quot;http://lesscode.is/&quot;&gt;&lt;em&gt;#lesscode&lt;/em&gt;&lt;/a&gt; movement, which proposes that software tools exist to solve real problems—a piece of code that doesn’t solve a problem is just waste. It also implies that frugality is a trademark of great designs; we should use it as an inspiration to create elegant software that focuses on solving the problem at hand.&lt;/p&gt;
+
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/mongoid-inheritance.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
+
+  <entry>
+    <title>Less
+</title>
+    <link href="http://maximomussini.com/posts/less" rel="alternate" type="text/html" title="Less" />
+    <published>2015-10-01T00:09:00-03:00</published>
+  
+    <updated>2016-01-05T18:19:00-02:00</updated>
+  
+    <id>http://maximomussini.com/posts/less</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/less">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/less.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;Recently I’ve been digging into the &lt;a href=&quot;http://lesscode.is/&quot;&gt;&lt;em&gt;#lesscode&lt;/em&gt;&lt;/a&gt; movement, which proposes that software tools exist to solve real problems—a piece of code that doesn’t solve a problem is just waste. It also implies that frugality is a trademark of great designs; we should use it as an inspiration to create elegant software that focuses on solving the problem at hand.&lt;/p&gt;
 
 &lt;p&gt;This is related with other ideas like &lt;a href=&quot;http://www.amazon.com/Machine-That-Changed-World-Revolutionizing/dp/0743299795&quot;&gt;&lt;em&gt;lean manufacturing&lt;/em&gt;&lt;/a&gt;: focus all effort in the things that add value, and reduce everything else. This management philosophy was started by Toyota in the ’50s and later evolved to a business methodology called &lt;a href=&quot;http://www.amazon.com/Lean-Thinking-Banish-Create-Corporation-ebook/dp/B0048WQDIO&quot;&gt;&lt;em&gt;lean thinking&lt;/em&gt;&lt;/a&gt;, a way to apply the idea—of delivering more value while eliminating waste—to business in general.&lt;/p&gt;
 
@@ -828,8 +886,16 @@ end
 &lt;p&gt;It’s by embracing the constraints—both natural and self-imposed, such as aiming for a great design—and gaining a sense of minimalism, that one is able to discover elegant and simple solutions, and find freedom.&lt;/p&gt;
 
 &lt;p&gt;Freedom from bloated frameworks, freedom from cargo-cult programming, freedom from the fear of not understanding. Freedom to rid your code out of &lt;em&gt;excess and complexity&lt;/em&gt;, and &lt;strong&gt;focus on what matters&lt;/strong&gt;.&lt;/p&gt;
-</content>
-<category term="posts" />
-<summary>Recently I’ve been digging into the #lesscode movement, which proposes that software tools exist to solve real problems—a piece of code that doesn’t solve a problem is just waste. It also implies that frugality is a trademark of great designs; we should use it as an inspiration to create elegant software that focuses on solving the problem at hand.</summary>
-</entry>
+
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/less.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
+
 </feed>
