@@ -1,8 +1,17 @@
 #!/usr/bin/env ruby
 
 # Build the site.
-`jekyll build --trace`
+`exe/build`
 
 # Check all the links in the site.
 require 'html/proofer'
-HTML::Proofer.new('./_site', href_ignore: ['#']).run
+
+class HtmlProofer < HTML::Proofer
+  def run
+    super
+    @failed_tests.empty?
+  end
+end
+
+valid = HtmlProofer.new('./_site/posts/anko-vs-android-xml', href_ignore: ['#']).run
+`exit 1` unless valid

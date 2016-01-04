@@ -3,10 +3,218 @@
 <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
 <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
 <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-<updated>2015-12-31T20:15:23-02:00</updated>
+<updated>2016-01-04T20:50:34-02:00</updated>
 <id>http://maximomussini.com/</id>
 <title>Máximo Mussini · Code and Design</title>
 <subtitle>Thoughts about development and product design.</subtitle>
+<entry>
+<title>Anko DSL vs Android XML-First</title>
+<link href="http://maximomussini.com/posts/anko-vs-android-xml" rel="alternate" type="text/html" title="Anko DSL vs Android XML-First" />
+<published>2016-01-04T17:06:00-02:00</published>
+<updated>2016-01-04T17:06:00-02:00</updated>
+<id>http://maximomussini.com/posts/anko-vs-android-xml</id>
+<content type="html" xml:base="http://maximomussini.com/posts/anko-vs-android-xml">&lt;p&gt;&lt;a href=&quot;https://github.com/kotlin/anko&quot;&gt;&lt;em&gt;Anko&lt;/em&gt;&lt;/a&gt; is a library for &lt;em&gt;Android&lt;/em&gt; development in &lt;a href=&quot;https://kotlinlang.org&quot;&gt;&lt;em&gt;Kotlin&lt;/em&gt;&lt;/a&gt;. The library provides helper methods that take advantage of &lt;em&gt;Kotlin&lt;/em&gt;’s extension functions as a way to reduce the amount of boilerplate the &lt;em&gt;Android SDK&lt;/em&gt; requires. Those extension functions make it possible to accomplish common tasks like starting an activity or displaying a toast in a very succinct way.&lt;/p&gt;
+
+&lt;p&gt;A big part of the library though, focuses on creating a &lt;a href=&quot;https://kotlinlang.org/docs/reference/type-safe-builders.html&quot;&gt;type-safe builder&lt;/a&gt; for creating view hierarchies, as an alternative to the XML-inflated view approach. Some of the benefits of defining a layout with &lt;em&gt;Anko&lt;/em&gt; are type-safety, and efficiency, since it’s not necessary to parse the XML.&lt;/p&gt;
+
+&lt;p&gt;I decided to take the DSL for a test drive by rewriting the “Navigation Drawer Activity” template from &lt;em&gt;AndroidStudio&lt;/em&gt;, replacing some of the XML layouts with the &lt;em&gt;Anko DSL&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;{% img navigation-drawer-activity-template.png %}&lt;/p&gt;
+
+&lt;p&gt;We can define an &lt;code&gt;AnkoComponent&lt;/code&gt; to create the UI:&lt;/p&gt;
+
+&lt;p&gt;{% highlight kotlin %}
+package com.maximomussini.anko&lt;/p&gt;
+
+&lt;p&gt;import android.support.design.widget.AppBarLayout
+import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
+import android.support.v4.view.GravityCompat
+import android.util.TypedValue
+import android.view.Gravity
+import android.view.View
+import com.maximomussini.anko.util.snackbar
+import org.jetbrains.anko.*
+import org.jetbrains.anko.appcompat.v7.toolbar
+import org.jetbrains.anko.design.appBarLayout
+import org.jetbrains.anko.design.coordinatorLayout
+import org.jetbrains.anko.design.floatingActionButton
+import org.jetbrains.anko.design.navigationView
+import org.jetbrains.anko.support.v4._DrawerLayout
+import org.jetbrains.anko.support.v4.drawerLayout&lt;/p&gt;
+
+&lt;p&gt;class MainUI : AnkoComponent&lt;mainactivity&gt; {&lt;/mainactivity&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;override fun createView(ui: AnkoContext&amp;lt;MainActivity&amp;gt;): View = with(ui) {
+    drawerLayout {
+        id = R.id.drawer
+        fitsSystemWindows = true
+        createAppBar(ui)
+        createNavigationView(ui)
+    }
+}
+
+fun _DrawerLayout.createAppBar(ui: AnkoContext&amp;lt;MainActivity&amp;gt;) {
+    coordinatorLayout {
+        fitsSystemWindows = true
+
+        appBarLayout {
+            toolbar {
+                id = R.id.toolbar
+                popupTheme = R.style.AppTheme_PopupOverlay
+                backgroundResource = R.color.colorPrimary
+            }.lparams(width = matchParent) {
+                val tv = TypedValue()
+                if (ui.owner.theme.resolveAttribute(R.attr.actionBarSize, tv, true)) {
+                    height = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics);
+                }
+            }
+        }.lparams(width = matchParent)
+
+        relativeLayout {
+            horizontalPadding = resources.getDimensionPixelSize(R.dimen.activity_horizontal_margin)
+            verticalPadding = resources.getDimensionPixelSize(R.dimen.activity_vertical_margin)
+            textView(&quot;Hello World!&quot;)
+        }.lparams(width = matchParent, height = matchParent) {
+            behavior = AppBarLayout.ScrollingViewBehavior()
+        }
+
+        floatingActionButton {
+            imageResource = android.R.drawable.ic_dialog_email
+            backgroundColor = ContextCompat.getColor(ui.owner, R.color.colorAccent)
+            onClick {
+                snackbar(&quot;Replace with your own action&quot;, Snackbar.LENGTH_LONG) {
+                    setAction(&quot;Action&quot;) { ui.toast(&quot;Clicked Snack&quot;) }
+                }
+            }
+        }.lparams {
+            margin = resources.getDimensionPixelSize(R.dimen.fab_margin)
+            gravity = Gravity.BOTTOM or GravityCompat.END
+        }
+    }.lparams(width = matchParent, height = matchParent)
+}
+
+fun _DrawerLayout.createNavigationView(ui: AnkoContext&amp;lt;MainActivity&amp;gt;) {
+    navigationView {
+        fitsSystemWindows = true
+        setNavigationItemSelectedListener(ui.owner)
+        inflateHeaderView(R.layout.nav_header_main)
+        inflateMenu(R.menu.activity_main_drawer)
+    }.lparams(height = matchParent, gravity = GravityCompat.START)
+} } {% endhighlight %}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And then, use the component to set the content view for the activity instead of using an XML layout:&lt;/p&gt;
+
+&lt;p&gt;{% highlight kotlin %}
+package com.maximomussini.anko&lt;/p&gt;
+
+&lt;p&gt;import android.os.Bundle
+import android.support.design.widget.NavigationView
+import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
+import org.jetbrains.anko.find
+import org.jetbrains.anko.setContentView
+import org.jetbrains.anko.toast&lt;/p&gt;
+
+&lt;p&gt;class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;lateinit var drawer: DrawerLayout
+
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    MainUI().setContentView(this)
+    drawer = find&amp;lt;DrawerLayout&amp;gt;(R.id.drawer)
+
+    val toolbar = find&amp;lt;Toolbar&amp;gt;(R.id.toolbar)
+    setSupportActionBar(toolbar)
+
+    val toggle = ActionBarDrawerToggle(this, drawer, toolbar,
+            R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+    drawer.setDrawerListener(toggle)
+    toggle.syncState()
+}
+
+override fun onBackPressed() {
+    if (drawer.isDrawerOpen(GravityCompat.START)) {
+        drawer.closeDrawer(GravityCompat.START)
+    } else {
+        super.onBackPressed()
+    }
+}
+
+override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    menuInflater.inflate(R.menu.main, menu)
+    return true
+}
+
+override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+        R.id.action_settings -&amp;gt; {
+            toast(&quot;Settings&quot;)
+            return true
+        }
+    }
+    return super.onOptionsItemSelected(item)
+}
+
+override fun onNavigationItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+        R.id.nav_camera -&amp;gt; toast(&quot;Camera&quot;)
+        R.id.nav_gallery -&amp;gt; toast(&quot;Gallery&quot;)
+        R.id.nav_slideshow -&amp;gt; toast(&quot;Slideshow&quot;)
+        R.id.nav_manage -&amp;gt; toast(&quot;Manage&quot;)
+        R.id.nav_share -&amp;gt; toast(&quot;Share&quot;)
+        R.id.nav_send -&amp;gt; toast(&quot;Send&quot;)
+    }
+    drawer.closeDrawer(GravityCompat.START)
+    return true
+} } {% endhighlight %}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In contrast with the &lt;a href=&quot;https://gist.github.com/ElMassimo/839df056c44b7c8e53b7&quot;&gt;generated version&lt;/a&gt;, the &lt;em&gt;Anko&lt;/em&gt; version does require some boilerplate to set dimensions and colors from resources, but has a lot of expressiveness when it comes to bindings. Notice how it’s not necessary to create references to most of the components, since the listeners are added to each view when they are instantiated:&lt;/p&gt;
+
+&lt;p&gt;{% highlight kotlin %}
+floatingActionButton {
+    onClick { snackbar(“FAB”, Snackbar.LENGTH_LONG) }
+}
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Compare this to the usual code, which incurs in the cost of finding the view (even if it’s a very low cost) and referencing the view id:&lt;/p&gt;
+
+&lt;p&gt;{% highlight kotlin %}
+val fab:FloatingActionButton = findViewById(R.id.fab) as FloatingActionButton
+fab.setOnClickListener {
+  Snackbar.make(it, “FAB”, Snackbar.LENGTH_LONG).show()
+}
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;Anko DSL&lt;/em&gt; exposes the native API of each View, so it’s only possible to do what &lt;em&gt;Android&lt;/em&gt; components can do, with the exception of a few synthetic properties to set text or an image from a resource.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, that means things get pretty rough once we dive into styling and theming. The &lt;em&gt;Android SDK&lt;/em&gt; and support libraries contain a lot of &lt;em&gt;hacks&lt;/em&gt; that rely on the view being created by a &lt;code&gt;LayoutInflater&lt;/code&gt; from the XML, initializing the view with a &lt;code&gt;Context&lt;/code&gt; and an &lt;code&gt;AttributeSet&lt;/code&gt;. There’s no first-class support for setting the style or theme programmatically, which means it’s not possible to set them when using &lt;em&gt;Anko&lt;/em&gt; either.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Anko&lt;/em&gt; does provide a way to &lt;a href=&quot;https://github.com/Kotlin/anko#styles&quot;&gt;style a view&lt;/a&gt;, but it leaves much to be desired since it requires targeting the different view classes manually, unlike styling in XML where valid attributes are applied automatically.&lt;/p&gt;
+
+&lt;p&gt;When it comes to theming, &lt;em&gt;Android&lt;/em&gt; uses &lt;a href=&quot;http://chris.banes.me/2014/11/12/theme-vs-style/#underlying-functionality&quot;&gt;&lt;code&gt;ContextThemeWrapper&lt;/code&gt;&lt;/a&gt; internally to override &lt;code&gt;getTheme&lt;/code&gt; for a view or its children. Since the &lt;a href=&quot;https://github.com/Kotlin/anko/releases/tag/v0.8.1&quot;&gt;current &lt;em&gt;Anko&lt;/em&gt; version&lt;/a&gt; does not allow to override the context used to create a view inside the DSL, using a theme-wrapped context manually is extremely contrived.&lt;/p&gt;
+
+&lt;p&gt;No theming support is a serious limitation, since most components in the design library need a theme to be styled properly.&lt;/p&gt;
+
+&lt;p&gt;{% img anko-vs-xml.png alt=”Anko does not have theming support” class=”square” %}&lt;/p&gt;
+
+&lt;p&gt;It should be possible to add support for theming in &lt;em&gt;Anko&lt;/em&gt;, but unfortunately theming is just one of many XML-based hacks and workarounds in the SDK.&lt;/p&gt;
+
+&lt;p&gt;Adding views with Java code is very cumbersome, so most Java developers will stick to XML, and the SDK and support library will continue to do hacks around XML inflation.&lt;/p&gt;
+
+&lt;p&gt;The idea behind the &lt;em&gt;Anko DSL&lt;/em&gt; is a very interesting one, but it seems like the &lt;em&gt;Android SDK&lt;/em&gt; is not polished enough for &lt;em&gt;Anko&lt;/em&gt; to reach its full potential.&lt;/p&gt;
+</content>
+<category term="posts" />
+<summary>Anko is a library for Android development in Kotlin. The library provides helper methods that take advantage of Kotlin’s extension functions as a way to reduce the amount of boilerplate the Android SDK requires. Those extension functions make it possible to accomplish common tasks like starting an activity or displaying a toast in a very succinct way.</summary>
+</entry>
 <entry>
 <title>CoffeeScript and JS Libraries</title>
 <link href="http://maximomussini.com/posts/coffeescript-js-libraries" rel="alternate" type="text/html" title="CoffeeScript and JS Libraries" />
@@ -84,7 +292,7 @@ selectAll = (isSelected) -&amp;gt;
 &lt;h2 id=&quot;bash-git-autocompletion&quot;&gt;Bash Git Autocompletion&lt;/h2&gt;
 &lt;p&gt;A great way to get &lt;em&gt;Git&lt;/em&gt; autocompletion is to install the &lt;code&gt;bash-completion&lt;/code&gt; package. This plugin will improve our experience when switching or pulling different branches, and is a real time-saver when using &lt;a href=&quot;https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches&quot;&gt;topic branches&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/bash-git-prompt/git-autocompletion.png&quot; alt=&quot;Checking out Branches&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;{% img git-autocompletion.png alt=’Checking out Branches’ %}&lt;/p&gt;
 
 &lt;h3 id=&quot;installation-on-os-x&quot;&gt;Installation on OS X&lt;/h3&gt;
 &lt;p&gt;First, install &lt;code&gt;bash-completion&lt;/code&gt; using &lt;a href=&quot;http://brew.sh/&quot;&gt;Homebrew&lt;/a&gt;:
@@ -108,7 +316,7 @@ sudo apt-get install bash-completion
 
 &lt;p&gt;&lt;a href=&quot;{{ page.bash_git_prompt }}&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; is a project that takes care of that, displaying the current branch and other helpful stats. It has many different themes available, which can be customized by specifying a theme through the &lt;code&gt;GIT_PROMPT_THEME&lt;/code&gt; environment variable.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/bash-git-prompt/git-prompt-default.png&quot; alt=&quot;Default Theme&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;{% img git-prompt-default.png alt=’Default Theme’ %}&lt;/p&gt;
 
 &lt;p&gt;The following are some settings I modified in my &lt;code&gt;~/.bash_profile&lt;/code&gt;:
 {% highlight bash %}
@@ -141,7 +349,7 @@ git_prompt_make_custom_theme Default
 
 &lt;p&gt;After tweaking the variables for a while, I was able to create a custom theme. The expresiveness of emojis made it a lot easier for me to understand the current git status &lt;img class=&quot;emoji&quot; title=&quot;:sweat_smile:&quot; alt=&quot;:sweat_smile:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f605.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/bash-git-prompt/git-prompt-emoji.png&quot; alt=&quot;Emoji Theme&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;{% img git-prompt-emoji.png alt=’Emoji Theme’ %}&lt;/p&gt;
 
 &lt;script src=&quot;https://gist.github.com/ElMassimo/515d12ab6db95dbb233c.js&quot;&gt;&lt;/script&gt;
 

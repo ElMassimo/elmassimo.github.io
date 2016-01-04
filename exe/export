@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+exe/proof
+
 # Commit all the latest changes
 if [ -z "$1" ]; then
   read -r -p "Please enter the commit message: " -r

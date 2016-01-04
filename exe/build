@@ -14,4 +14,4 @@ if [ ! -d _site ]; then
 fi
 
 # Rebuild site
-jekyll build
+jekyll build --trace

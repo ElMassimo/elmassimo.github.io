@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Anko DSL vs Android XML-First · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Anko DSL vs Android XML-First">
+<meta property="og:description" content="[_Anko_](https://github.com/kotlin/anko) is a library for _Android_ development in [_Kotlin_](https://kotlinlang.org)...">
+<meta property="og:url" content="http://maximomussini.com/posts/anko-vs-android-xml">
+<meta property="og:site_name" content="Máximo Mussini">
+
+
+  <body>
+    <header>
+  
+    <div class="hero" style="background-image: url(/images/posts/anko-vs-android-xml.jpg)">
+      <h1>Anko DSL vs Android XML-First</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr />
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">January 04, 2016</span>
+  <span class="reading-time">6 min read</span>
+</div>
+
+
+  <div class="post">
+    <p><a href="https://github.com/kotlin/anko"><em>Anko</em></a> is a library for <em>Android</em> development in <a href="https://kotlinlang.org"><em>Kotlin</em></a>. The library provides helper methods that take advantage of <em>Kotlin</em>’s extension functions as a way to reduce the amount of boilerplate the <em>Android SDK</em> requires. Those extension functions make it possible to accomplish common tasks like starting an activity or displaying a toast in a very succinct way.</p>
+
+<p>A big part of the library though, focuses on creating a <a href="https://kotlinlang.org/docs/reference/type-safe-builders.html">type-safe builder</a> for creating view hierarchies, as an alternative to the XML-inflated view approach. Some of the benefits of defining a layout with <em>Anko</em> are type-safety, and efficiency, since it’s not necessary to parse the XML.</p>
+
+<p>I decided to take the DSL for a test drive by rewriting the “Navigation Drawer Activity” template from <em>AndroidStudio</em>, replacing some of the XML layouts with the <em>Anko DSL</em>.</p>
+
+<p><img src="/images/posts/anko-vs-android-xml/navigation-drawer-activity-template.png" alt="Alt" class="" /></p>
+
+<p>We can define an <code>AnkoComponent</code> to create the UI:</p>
+
+<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="k">package</span> <span class="nn">com.maximomussini.anko</span>
+
+<span class="k">import</span> <span class="nn">android.support.design.widget.AppBarLayout</span>
+<span class="k">import</span> <span class="nn">android.support.design.widget.Snackbar</span>
+<span class="k">import</span> <span class="nn">android.support.v4.content.ContextCompat</span>
+<span class="k">import</span> <span class="nn">android.support.v4.view.GravityCompat</span>
+<span class="k">import</span> <span class="nn">android.util.TypedValue</span>
+<span class="k">import</span> <span class="nn">android.view.Gravity</span>
+<span class="k">import</span> <span class="nn">android.view.View</span>
+<span class="k">import</span> <span class="nn">com.maximomussini.anko.util.snackbar</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.*</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.appcompat.v7.toolbar</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.design.appBarLayout</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.design.coordinatorLayout</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.design.floatingActionButton</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.design.navigationView</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.support.v4._DrawerLayout</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.support.v4.drawerLayout</span>
+
+<span class="k">class</span> <span class="nc">MainUI</span> <span class="p">:</span> <span class="n">AnkoComponent</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">createView</span><span class="p">(</span><span class="n">ui</span><span class="p">:</span> <span class="n">AnkoContext</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;):</span> <span class="n">View</span> <span class="p">=</span> <span class="n">with</span><span class="p">(</span><span class="n">ui</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">drawerLayout</span> <span class="p">{</span>
+            <span class="n">id</span> <span class="p">=</span> <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">drawer</span>
+            <span class="n">fitsSystemWindows</span> <span class="p">=</span> <span class="k">true</span>
+            <span class="n">createAppBar</span><span class="p">(</span><span class="n">ui</span><span class="p">)</span>
+            <span class="n">createNavigationView</span><span class="p">(</span><span class="n">ui</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">_DrawerLayout</span><span class="p">.</span><span class="n">createAppBar</span><span class="p">(</span><span class="n">ui</span><span class="p">:</span> <span class="n">AnkoContext</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;)</span> <span class="p">{</span>
+        <span class="n">coordinatorLayout</span> <span class="p">{</span>
+            <span class="n">fitsSystemWindows</span> <span class="p">=</span> <span class="k">true</span>
+
+            <span class="n">appBarLayout</span> <span class="p">{</span>
+                <span class="n">toolbar</span> <span class="p">{</span>
+                    <span class="n">id</span> <span class="p">=</span> <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">toolbar</span>
+                    <span class="n">popupTheme</span> <span class="p">=</span> <span class="n">R</span><span class="p">.</span><span class="n">style</span><span class="p">.</span><span class="n">AppTheme_PopupOverlay</span>
+                    <span class="n">backgroundResource</span> <span class="p">=</span> <span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">colorPrimary</span>
+                <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">width</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">val</span> <span class="py">tv</span> <span class="p">=</span> <span class="n">TypedValue</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">ui</span><span class="p">.</span><span class="n">owner</span><span class="p">.</span><span class="n">theme</span><span class="p">.</span><span class="n">resolveAttribute</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">attr</span><span class="p">.</span><span class="n">actionBarSize</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="k">true</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="n">height</span> <span class="p">=</span> <span class="n">TypedValue</span><span class="p">.</span><span class="n">complexToDimensionPixelSize</span><span class="p">(</span><span class="n">tv</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">resources</span><span class="p">.</span><span class="n">displayMetrics</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">width</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">)</span>
+
+            <span class="n">relativeLayout</span> <span class="p">{</span>
+                <span class="n">horizontalPadding</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="n">getDimensionPixelSize</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">dimen</span><span class="p">.</span><span class="n">activity_horizontal_margin</span><span class="p">)</span>
+                <span class="n">verticalPadding</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="n">getDimensionPixelSize</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">dimen</span><span class="p">.</span><span class="n">activity_vertical_margin</span><span class="p">)</span>
+                <span class="n">textView</span><span class="p">(</span><span class="s">&quot;Hello World!&quot;</span><span class="p">)</span>
+            <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">width</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">,</span> <span class="n">height</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">behavior</span> <span class="p">=</span> <span class="n">AppBarLayout</span><span class="p">.</span><span class="n">ScrollingViewBehavior</span><span class="p">()</span>
+            <span class="p">}</span>
+
+            <span class="n">floatingActionButton</span> <span class="p">{</span>
+                <span class="n">imageResource</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">drawable</span><span class="p">.</span><span class="n">ic_dialog_email</span>
+                <span class="n">backgroundColor</span> <span class="p">=</span> <span class="n">ContextCompat</span><span class="p">.</span><span class="n">getColor</span><span class="p">(</span><span class="n">ui</span><span class="p">.</span><span class="n">owner</span><span class="p">,</span> <span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">colorAccent</span><span class="p">)</span>
+                <span class="n">onClick</span> <span class="p">{</span>
+                    <span class="n">snackbar</span><span class="p">(</span><span class="s">&quot;Replace with your own action&quot;</span><span class="p">,</span> <span class="n">Snackbar</span><span class="p">.</span><span class="n">LENGTH_LONG</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">setAction</span><span class="p">(</span><span class="s">&quot;Action&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="n">ui</span><span class="p">.</span><span class="n">toast</span><span class="p">(</span><span class="s">&quot;Clicked Snack&quot;</span><span class="p">)</span> <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}.</span><span class="n">lparams</span> <span class="p">{</span>
+                <span class="n">margin</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="n">getDimensionPixelSize</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">dimen</span><span class="p">.</span><span class="n">fab_margin</span><span class="p">)</span>
+                <span class="n">gravity</span> <span class="p">=</span> <span class="n">Gravity</span><span class="p">.</span><span class="n">BOTTOM</span> <span class="n">or</span> <span class="n">GravityCompat</span><span class="p">.</span><span class="n">END</span>
+            <span class="p">}</span>
+        <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">width</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">,</span> <span class="n">height</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">_DrawerLayout</span><span class="p">.</span><span class="n">createNavigationView</span><span class="p">(</span><span class="n">ui</span><span class="p">:</span> <span class="n">AnkoContext</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;)</span> <span class="p">{</span>
+        <span class="n">navigationView</span> <span class="p">{</span>
+            <span class="n">fitsSystemWindows</span> <span class="p">=</span> <span class="k">true</span>
+            <span class="n">setNavigationItemSelectedListener</span><span class="p">(</span><span class="n">ui</span><span class="p">.</span><span class="n">owner</span><span class="p">)</span>
+            <span class="n">inflateHeaderView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">nav_header_main</span><span class="p">)</span>
+            <span class="n">inflateMenu</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">menu</span><span class="p">.</span><span class="n">activity_main_drawer</span><span class="p">)</span>
+        <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">height</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">,</span> <span class="n">gravity</span> <span class="p">=</span> <span class="n">GravityCompat</span><span class="p">.</span><span class="n">START</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>And then, use the component to set the content view for the activity instead of using an XML layout:</p>
+
+<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="k">package</span> <span class="nn">com.maximomussini.anko</span>
+
+<span class="k">import</span> <span class="nn">android.os.Bundle</span>
+<span class="k">import</span> <span class="nn">android.support.design.widget.NavigationView</span>
+<span class="k">import</span> <span class="nn">android.support.v4.view.GravityCompat</span>
+<span class="k">import</span> <span class="nn">android.support.v4.widget.DrawerLayout</span>
+<span class="k">import</span> <span class="nn">android.support.v7.app.ActionBarDrawerToggle</span>
+<span class="k">import</span> <span class="nn">android.support.v7.app.AppCompatActivity</span>
+<span class="k">import</span> <span class="nn">android.support.v7.widget.Toolbar</span>
+<span class="k">import</span> <span class="nn">android.view.Menu</span>
+<span class="k">import</span> <span class="nn">android.view.MenuItem</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.find</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.setContentView</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.toast</span>
+
+<span class="k">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="n">AppCompatActivity</span><span class="p">(),</span> <span class="n">NavigationView</span><span class="p">.</span><span class="n">OnNavigationItemSelectedListener</span> <span class="p">{</span>
+
+    <span class="n">lateinit</span> <span class="k">var</span> <span class="py">drawer</span><span class="p">:</span> <span class="n">DrawerLayout</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+        <span class="n">MainUI</span><span class="p">().</span><span class="n">setContentView</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+        <span class="n">drawer</span> <span class="p">=</span> <span class="n">find</span><span class="p">&lt;</span><span class="n">DrawerLayout</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">drawer</span><span class="p">)</span>
+
+        <span class="k">val</span> <span class="py">toolbar</span> <span class="p">=</span> <span class="n">find</span><span class="p">&lt;</span><span class="n">Toolbar</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">toolbar</span><span class="p">)</span>
+        <span class="n">setSupportActionBar</span><span class="p">(</span><span class="n">toolbar</span><span class="p">)</span>
+
+        <span class="k">val</span> <span class="py">toggle</span> <span class="p">=</span> <span class="n">ActionBarDrawerToggle</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">drawer</span><span class="p">,</span> <span class="n">toolbar</span><span class="p">,</span>
+                <span class="n">R</span><span class="p">.</span><span class="n">string</span><span class="p">.</span><span class="n">navigation_drawer_open</span><span class="p">,</span> <span class="n">R</span><span class="p">.</span><span class="n">string</span><span class="p">.</span><span class="n">navigation_drawer_close</span><span class="p">)</span>
+        <span class="n">drawer</span><span class="p">.</span><span class="n">setDrawerListener</span><span class="p">(</span><span class="n">toggle</span><span class="p">)</span>
+        <span class="n">toggle</span><span class="p">.</span><span class="n">syncState</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onBackPressed</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">drawer</span><span class="p">.</span><span class="n">isDrawerOpen</span><span class="p">(</span><span class="n">GravityCompat</span><span class="p">.</span><span class="n">START</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">drawer</span><span class="p">.</span><span class="n">closeDrawer</span><span class="p">(</span><span class="n">GravityCompat</span><span class="p">.</span><span class="n">START</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">super</span><span class="p">.</span><span class="n">onBackPressed</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreateOptionsMenu</span><span class="p">(</span><span class="n">menu</span><span class="p">:</span> <span class="n">Menu</span><span class="p">):</span> <span class="n">Boolean</span> <span class="p">{</span>
+        <span class="n">menuInflater</span><span class="p">.</span><span class="n">inflate</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">menu</span><span class="p">.</span><span class="n">main</span><span class="p">,</span> <span class="n">menu</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">true</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onOptionsItemSelected</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">MenuItem</span><span class="p">):</span> <span class="n">Boolean</span> <span class="p">{</span>
+        <span class="k">when</span> <span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">itemId</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">action_settings</span> <span class="p">-&gt;</span> <span class="p">{</span>
+                <span class="n">toast</span><span class="p">(</span><span class="s">&quot;Settings&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="k">true</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">super</span><span class="p">.</span><span class="n">onOptionsItemSelected</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onNavigationItemSelected</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">MenuItem</span><span class="p">):</span> <span class="n">Boolean</span> <span class="p">{</span>
+        <span class="k">when</span> <span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">itemId</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_camera</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">&quot;Camera&quot;</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_gallery</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">&quot;Gallery&quot;</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_slideshow</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">&quot;Slideshow&quot;</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_manage</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">&quot;Manage&quot;</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_share</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">&quot;Share&quot;</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_send</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">&quot;Send&quot;</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">drawer</span><span class="p">.</span><span class="n">closeDrawer</span><span class="p">(</span><span class="n">GravityCompat</span><span class="p">.</span><span class="n">START</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">true</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>In contrast with the <a href="https://gist.github.com/ElMassimo/839df056c44b7c8e53b7">generated version</a>, the <em>Anko</em> version does require some boilerplate to set dimensions and colors from resources, but has a lot of expressiveness when it comes to bindings. Notice how it’s not necessary to create references to most of the components, since the listeners are added to each view when they are instantiated:</p>
+
+<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="n">floatingActionButton</span> <span class="p">{</span>
+    <span class="n">onClick</span> <span class="p">{</span> <span class="n">snackbar</span><span class="p">(</span><span class="s">&quot;FAB&quot;</span><span class="p">,</span> <span class="n">Snackbar</span><span class="p">.</span><span class="n">LENGTH_LONG</span><span class="p">)</span> <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Compare this to the usual code, which incurs in the cost of finding the view (even if it’s a very low cost) and referencing the view id:</p>
+
+<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="k">val</span> <span class="py">fab</span><span class="p">:</span><span class="n">FloatingActionButton</span> <span class="p">=</span> <span class="n">findViewById</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">fab</span><span class="p">)</span> <span class="k">as</span> <span class="n">FloatingActionButton</span>
+<span class="n">fab</span><span class="p">.</span><span class="n">setOnClickListener</span> <span class="p">{</span>
+  <span class="n">Snackbar</span><span class="p">.</span><span class="n">make</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="s">&quot;FAB&quot;</span><span class="p">,</span> <span class="n">Snackbar</span><span class="p">.</span><span class="n">LENGTH_LONG</span><span class="p">).</span><span class="n">show</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
+
+<p>The <em>Anko DSL</em> exposes the native API of each View, so it’s only possible to do what <em>Android</em> components can do, with the exception of a few synthetic properties to set text or an image from a resource.</p>
+
+<p>Unfortunately, that means things get pretty rough once we dive into styling and theming. The <em>Android SDK</em> and support libraries contain a lot of <em>hacks</em> that rely on the view being created by a <code>LayoutInflater</code> from the XML, initializing the view with a <code>Context</code> and an <code>AttributeSet</code>. There’s no first-class support for setting the style or theme programmatically, which means it’s not possible to set them when using <em>Anko</em> either.</p>
+
+<p><em>Anko</em> does provide a way to <a href="https://github.com/Kotlin/anko#styles">style a view</a>, but it leaves much to be desired since it requires targeting the different view classes manually, unlike styling in XML where valid attributes are applied automatically.</p>
+
+<p>When it comes to theming, <em>Android</em> uses <a href="http://chris.banes.me/2014/11/12/theme-vs-style/#underlying-functionality"><code>ContextThemeWrapper</code></a> internally to override <code>getTheme</code> for a view or its children. Since the <a href="https://github.com/Kotlin/anko/releases/tag/v0.8.1">current <em>Anko</em> version</a> does not allow to override the context used to create a view inside the DSL, using a theme-wrapped context manually is extremely contrived.</p>
+
+<p>No theming support is a serious limitation, since most components in the design library need a theme to be styled properly.</p>
+
+<p><img src="/images/posts/anko-vs-android-xml/anko-vs-xml.png" alt="Anko does not have theming support" class="square" /></p>
+
+<p>It should be possible to add support for theming in <em>Anko</em>, but unfortunately theming is just one of many XML-based hacks and workarounds in the SDK.</p>
+
+<p>Adding views with Java code is very cumbersome, so most Java developers will stick to XML, and the SDK and support library will continue to do hacks around XML inflation.</p>
+
+<p>The idea behind the <em>Anko DSL</em> is a very interesting one, but it seems like the <em>Android SDK</em> is not polished enough for <em>Anko</em> to reach its full potential.</p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/coffeescript-js-libraries/" class="overlay">
+        <h1>CoffeeScript and JS Libraries</h1>
+        <div class="post-info">
+  <span class="date">December 31, 2015</span>
+  <span class="reading-time">3 min read</span>
+</div>
+
+        <div class="post">
+          <p>A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.</p>
+
+<p>In the frontend this has become increasingly more common because of all the available languages that compile to JavaScript. <span href="http://coffeescript.org/"><em>CoffeeScript</em></span> was one of the first ones to gain adoption, but nowadays we have a myriad of available languages like <span href="http://elm-lang.org/"><em>Elm</em></span>, …</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>
