@@ -6,7 +6,7 @@
   <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-01-05T19:19:22-02:00</updated>
+  <updated>2016-01-07T12:35:44-02:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -203,7 +203,7 @@
 
 &lt;p&gt;The &lt;em&gt;Anko DSL&lt;/em&gt; exposes the native API of each View, so it’s only possible to do what &lt;em&gt;Android&lt;/em&gt; components can do, with the exception of a few synthetic properties to set text or an image from a resource.&lt;/p&gt;
 
-&lt;p&gt;Unfortunately, that means things get pretty rough once we dive into styling and theming. The &lt;em&gt;Android SDK&lt;/em&gt; and support libraries contain a lot of &lt;em&gt;hacks&lt;/em&gt; that rely on the view being created by a &lt;code&gt;LayoutInflater&lt;/code&gt; from the XML, initializing the view with a &lt;code&gt;Context&lt;/code&gt; and an &lt;code&gt;AttributeSet&lt;/code&gt;. There’s no first-class support for setting the style or theme programmatically, which means it’s not possible to set them when using &lt;em&gt;Anko&lt;/em&gt; either.&lt;/p&gt;
+&lt;p&gt;Unfortunately, that means things get pretty rough once we dive into styling and theming. The &lt;em&gt;Android SDK&lt;/em&gt; and support libraries contain a lot of &lt;em&gt;hacks&lt;/em&gt; that rely on the view being created by a &lt;code&gt;LayoutInflater&lt;/code&gt; from the XML, initializing the view with a &lt;code&gt;Context&lt;/code&gt; and an &lt;code&gt;AttributeSet&lt;/code&gt;. There’s no first-class support for setting the &lt;a href=&quot;https://github.com/Kotlin/anko/issues/16&quot;&gt;style&lt;/a&gt; or theme programmatically, which means it’s not possible to set them when using &lt;em&gt;Anko&lt;/em&gt; either.&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Anko&lt;/em&gt; does provide a way to &lt;a href=&quot;https://github.com/Kotlin/anko#styles&quot;&gt;style a view&lt;/a&gt;, but it leaves much to be desired since it requires targeting the different view classes manually, unlike styling in XML where valid attributes are applied automatically.&lt;/p&gt;
 

@@ -261,7 +261,7 @@
 
 <p>The <em>Anko DSL</em> exposes the native API of each View, so it’s only possible to do what <em>Android</em> components can do, with the exception of a few synthetic properties to set text or an image from a resource.</p>
 
-<p>Unfortunately, that means things get pretty rough once we dive into styling and theming. The <em>Android SDK</em> and support libraries contain a lot of <em>hacks</em> that rely on the view being created by a <code>LayoutInflater</code> from the XML, initializing the view with a <code>Context</code> and an <code>AttributeSet</code>. There’s no first-class support for setting the style or theme programmatically, which means it’s not possible to set them when using <em>Anko</em> either.</p>
+<p>Unfortunately, that means things get pretty rough once we dive into styling and theming. The <em>Android SDK</em> and support libraries contain a lot of <em>hacks</em> that rely on the view being created by a <code>LayoutInflater</code> from the XML, initializing the view with a <code>Context</code> and an <code>AttributeSet</code>. There’s no first-class support for setting the <a href="https://github.com/Kotlin/anko/issues/16">style</a> or theme programmatically, which means it’s not possible to set them when using <em>Anko</em> either.</p>
 
 <p><em>Anko</em> does provide a way to <a href="https://github.com/Kotlin/anko#styles">style a view</a>, but it leaves much to be desired since it requires targeting the different view classes manually, unlike styling in XML where valid attributes are applied automatically.</p>
 
