@@ -6,7 +6,7 @@
   <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-01-07T12:35:44-02:00</updated>
+  <updated>2016-01-12T14:23:00-02:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -16,12 +16,67 @@
   </author>
 
   <entry>
+    <title>Redirecting AJAX requests in Rails
+</title>
+    <link href="http://maximomussini.com/posts/rails-ajax_redirect" rel="alternate" type="text/html" title="Redirecting AJAX requests in Rails" />
+    <published>2016-01-11T17:00:00-02:00</published>
+  
+    <updated>2016-01-11T17:00:00-02:00</updated>
+  
+    <id>http://maximomussini.com/posts/rails-ajax_redirect</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/rails-ajax_redirect">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/rails-ajax_redirect.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;&lt;a href=&quot;https://github.com/rails/jquery-rails&quot;&gt;&lt;code&gt;jquery-rails&lt;/code&gt;&lt;/a&gt; powers links and forms in Rails: it’s what makes &lt;code&gt;remote: true&lt;/code&gt; work, allowing any link to make an AJAX request unobtrusively.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/rails-ajax_redirect&quot;&gt;&lt;code&gt;rails-ajax_redirect&lt;/code&gt;&lt;/a&gt; is an extension to this unobtrusive behaviour that adds AJAX support to &lt;code&gt;redirect_to&lt;/code&gt;. It allows us to redirect an AJAX request as usual, instead of having to perform the redirect by handling the response manually in JS every time.&lt;/p&gt;
+
+&lt;p&gt;This is helpful in many different scenarios, and just like &lt;code&gt;remote: true&lt;/code&gt;, it allows us to skip some of the boilerplate in cases where we need to redirect the user to a different page.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/rails-ajax_redirect&quot;&gt;&lt;code&gt;Rails::AjaxRedirect&lt;/code&gt;&lt;/a&gt; extends &lt;code&gt;redirect_to&lt;/code&gt; to use a custom status code for ajax
+requests, while still setting the &lt;code&gt;Location&lt;/code&gt; header. On the front-end, it adds a handler for the &lt;code&gt;ajax:success&lt;/code&gt; event, that navigates to the location in the header for responses that have the custom status code.&lt;/p&gt;
+
+&lt;p&gt;This makes it possible to write a simple redirect as usual, but without having to handle it manually every time &lt;img class=&quot;emoji&quot; title=&quot;:smiley:&quot; alt=&quot;:smiley:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f603.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;turbolinks&quot;&gt;Turbolinks&lt;/h2&gt;
+&lt;p&gt;If your application uses &lt;a href=&quot;https://github.com/rails/turbolinks&quot;&gt;&lt;em&gt;Turbolinks&lt;/em&gt;&lt;/a&gt; check out &lt;a href=&quot;https://github.com/remind101/turbolinks-redirect&quot;&gt;&lt;code&gt;turbolinks-redirect&lt;/code&gt;&lt;/a&gt;, on which &lt;a href=&quot;https://github.com/ElMassimo/rails-ajax_redirect&quot;&gt;&lt;code&gt;rails-ajax_redirect&lt;/code&gt;&lt;/a&gt; is based on. The advantage is that it will perform faster navigation by leveraging &lt;em&gt;Turbolinks&lt;/em&gt; to visit the new location.&lt;/p&gt;
+
+&lt;h2 id=&quot;angularjs&quot;&gt;AngularJS&lt;/h2&gt;
+&lt;p&gt;If your application makes the AJAX request using &lt;code&gt;$http&lt;/code&gt; instead of &lt;code&gt;jQuery&lt;/code&gt;, it will be necessary to add an interceptor similar to this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot; data-lang=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;config&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;($httpProvider) -&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;$httpProvider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;interceptors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;AjaxRedirectInterceptor&amp;#39;&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# Add a header to let Rails know that it&amp;#39;s an Ajax request.&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;$httpProvider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;common&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;X-REQUESTED-WITH&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;XMLHttpRequest&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;service&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;AjaxRedirectInterceptor&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;($window, $location, $q) -&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;interceptor =&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;response: &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(response) -&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AJAX_REDIRECT_STATUS_CODE&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$window.location = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;$q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/rails-ajax_redirect.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
+
+  <entry>
     <title>Anko DSL vs Android XML-First
 </title>
     <link href="http://maximomussini.com/posts/anko-vs-android-xml" rel="alternate" type="text/html" title="Anko DSL vs Android XML-First" />
     <published>2016-01-04T17:06:00-02:00</published>
   
-    <updated>2016-01-05T18:19:00-02:00</updated>
+    <updated>2016-01-04T17:06:00-02:00</updated>
   
     <id>http://maximomussini.com/posts/anko-vs-android-xml</id>
     <content type="html" xml:base="http://maximomussini.com/posts/anko-vs-android-xml">
@@ -236,7 +291,7 @@
     <link href="http://maximomussini.com/posts/coffeescript-js-libraries" rel="alternate" type="text/html" title="CoffeeScript and JS Libraries" />
     <published>2015-12-31T18:58:00-02:00</published>
   
-    <updated>2016-01-05T18:19:00-02:00</updated>
+    <updated>2015-12-31T18:58:00-02:00</updated>
   
     <id>http://maximomussini.com/posts/coffeescript-js-libraries</id>
     <content type="html" xml:base="http://maximomussini.com/posts/coffeescript-js-libraries">
@@ -309,7 +364,7 @@
     <link href="http://maximomussini.com/posts/bash-git-prompt" rel="alternate" type="text/html" title="Improving your Git Experience in Bash" />
     <published>2015-12-14T17:46:00-02:00</published>
   
-    <updated>2016-01-05T18:19:00-02:00</updated>
+    <updated>2015-12-14T17:46:00-02:00</updated>
   
     <id>http://maximomussini.com/posts/bash-git-prompt</id>
     <content type="html" xml:base="http://maximomussini.com/posts/bash-git-prompt">
@@ -405,7 +460,7 @@
     <link href="http://maximomussini.com/posts/ruby-to_proc" rel="alternate" type="text/html" title="Ruby &amp; to_proc" />
     <published>2015-12-07T19:22:00-02:00</published>
   
-    <updated>2016-01-05T18:19:00-02:00</updated>
+    <updated>2015-12-07T19:22:00-02:00</updated>
   
     <id>http://maximomussini.com/posts/ruby-to_proc</id>
     <content type="html" xml:base="http://maximomussini.com/posts/ruby-to_proc">
@@ -537,7 +592,7 @@
     <link href="http://maximomussini.com/posts/mongoid_includes" rel="alternate" type="text/html" title="One Does Not Simply Extend Mongoid" />
     <published>2015-11-30T22:46:00-02:00</published>
   
-    <updated>2016-01-05T18:19:00-02:00</updated>
+    <updated>2015-11-30T22:46:00-02:00</updated>
   
     <id>http://maximomussini.com/posts/mongoid_includes</id>
     <content type="html" xml:base="http://maximomussini.com/posts/mongoid_includes">
@@ -623,7 +678,7 @@
     <link href="http://maximomussini.com/posts/mongoid-n+1" rel="alternate" type="text/html" title="Avoiding the N+1 problem in Mongoid" />
     <published>2015-10-30T19:30:00-02:00</published>
   
-    <updated>2016-01-05T18:19:00-02:00</updated>
+    <updated>2015-10-30T19:30:00-02:00</updated>
   
     <id>http://maximomussini.com/posts/mongoid-n+1</id>
     <content type="html" xml:base="http://maximomussini.com/posts/mongoid-n+1">
@@ -754,7 +809,7 @@
     <link href="http://maximomussini.com/posts/mongoid-inheritance" rel="alternate" type="text/html" title="Breaking Mongoid Inheritance" />
     <published>2015-10-12T23:29:00-02:00</published>
   
-    <updated>2016-01-05T18:19:00-02:00</updated>
+    <updated>2015-10-12T23:29:00-02:00</updated>
   
     <id>http://maximomussini.com/posts/mongoid-inheritance</id>
     <content type="html" xml:base="http://maximomussini.com/posts/mongoid-inheritance">
@@ -872,7 +927,7 @@
     <link href="http://maximomussini.com/posts/less" rel="alternate" type="text/html" title="Less" />
     <published>2015-10-01T00:09:00-03:00</published>
   
-    <updated>2016-01-05T18:19:00-02:00</updated>
+    <updated>2015-10-01T00:09:00-03:00</updated>
   
     <id>http://maximomussini.com/posts/less</id>
     <content type="html" xml:base="http://maximomussini.com/posts/less">
