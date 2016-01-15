@@ -6,7 +6,7 @@
   <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-01-14T18:21:32-02:00</updated>
+  <updated>2016-01-15T15:22:44-02:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -87,7 +87,7 @@ requests, while still setting the &lt;code&gt;Location&lt;/code&gt; header. On t
 
 &lt;p&gt;I decided to take the DSL for a test drive by rewriting the “Navigation Drawer Activity” template from &lt;em&gt;AndroidStudio&lt;/em&gt;, replacing some of the XML layouts with the &lt;em&gt;Anko DSL&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/anko-vs-android-xml/navigation-drawer-activity-template.png&quot; alt=&quot;Alt&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/anko-vs-android-xml/navigation-drawer-activity-template.png&quot; alt=&quot;Alt&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;We can define an &lt;code&gt;AnkoComponent&lt;/code&gt; to create the UI:&lt;/p&gt;
 
@@ -266,7 +266,7 @@ requests, while still setting the &lt;code&gt;Location&lt;/code&gt; header. On t
 
 &lt;p&gt;No theming support is a serious limitation, since most components in the design library need a theme to be styled properly.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/anko-vs-android-xml/anko-vs-xml.png&quot; alt=&quot;Anko does not have theming support&quot; class=&quot;square&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/anko-vs-android-xml/anko-vs-xml.png&quot; alt=&quot;Anko does not have theming support&quot; class=&quot;square&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It should be possible to add support for theming in &lt;em&gt;Anko&lt;/em&gt;, but unfortunately theming is just one of many XML-based hacks and workarounds in the SDK.&lt;/p&gt;
 
@@ -376,7 +376,7 @@ requests, while still setting the &lt;code&gt;Location&lt;/code&gt; header. On t
 &lt;h2 id=&quot;bash-git-autocompletion&quot;&gt;Bash Git Autocompletion&lt;/h2&gt;
 &lt;p&gt;A great way to get &lt;em&gt;Git&lt;/em&gt; autocompletion is to install the &lt;code&gt;bash-completion&lt;/code&gt; package. This plugin will improve our experience when switching or pulling different branches, and is a real time-saver when using &lt;a href=&quot;https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches&quot;&gt;topic branches&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/bash-git-prompt/git-autocompletion.png&quot; alt=&quot;Checking out Branches&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/bash-git-prompt/git-autocompletion.png&quot; alt=&quot;Checking out Branches&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;installation-on-os-x&quot;&gt;Installation on OS X&lt;/h3&gt;
 &lt;p&gt;First, install &lt;code&gt;bash-completion&lt;/code&gt; using &lt;a href=&quot;http://brew.sh/&quot;&gt;Homebrew&lt;/a&gt;:&lt;/p&gt;
@@ -398,7 +398,7 @@ requests, while still setting the &lt;code&gt;Location&lt;/code&gt; header. On t
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt&quot;&gt;&lt;code&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; is a project that takes care of that, displaying the current branch and other helpful stats. It has many different themes available, which can be customized by specifying a theme through the &lt;code&gt;GIT_PROMPT_THEME&lt;/code&gt; environment variable.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/bash-git-prompt/git-prompt-default.png&quot; alt=&quot;Default Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/bash-git-prompt/git-prompt-default.png&quot; alt=&quot;Default Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The following are some settings I modified in my &lt;code&gt;~/.bash_profile&lt;/code&gt;:&lt;/p&gt;
 
@@ -427,7 +427,7 @@ requests, while still setting the &lt;code&gt;Location&lt;/code&gt; header. On t
 
 &lt;p&gt;After tweaking the variables for a while, I was able to create a custom theme. The expresiveness of emojis made it a lot easier for me to understand the current git status &lt;img class=&quot;emoji&quot; title=&quot;:sweat_smile:&quot; alt=&quot;:sweat_smile:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f605.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://maximomussini.com/images/posts/bash-git-prompt/git-prompt-emoji.png&quot; alt=&quot;Emoji Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/bash-git-prompt/git-prompt-emoji.png&quot; alt=&quot;Emoji Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;script src=&quot;https://gist.github.com/ElMassimo/515d12ab6db95dbb233c.js&quot;&gt;&lt;/script&gt;
 
