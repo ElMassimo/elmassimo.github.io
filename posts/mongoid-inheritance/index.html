@@ -26,12 +26,25 @@
 <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
 <!-- Facebook Stuff -->
+<meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="Breaking Mongoid Inheritance">
-<meta property="og:description" content="By default, [_Mongoid_](http://mongoid.github.io/) will use [single-collection inheritance](http://martinfowler.com/e...">
 <meta property="og:url" content="http://maximomussini.com/posts/mongoid-inheritance">
 <meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Breaking Mongoid Inheritance">
+<meta property="og:image" content="http://maximomussini.com/images/posts/mongoid-inheritance.jpg">
+<meta property="og:description" content="By default, Mongoid will use single-collection inheritance when extending a Ruby class, by storing a _type attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.
 
+In addition, it will handle the hierarchy in queries, by allowing to query the parent class to return documents from any subcla…">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Breaking Mongoid Inheritance" />
+<meta name="twitter:description" value="By default, Mongoid will use single-collection inheritance when extending a Ruby class, by storing a _type attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.
+
+In addition, it will handle the hierarchy in queries, by allowing to query the parent class to return documents from any subcla…" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/mongoid-inheritance.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/mongoid-inheritance" />
 
   <body>
     <header>

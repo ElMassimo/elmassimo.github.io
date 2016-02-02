@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-poole draft "$@"
+bundle exec poole draft "$@"

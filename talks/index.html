@@ -26,12 +26,21 @@
 <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
 <!-- Facebook Stuff -->
+<meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="Talks">
-<meta property="og:description" content="{% for talk in site.talks %}                    {{ talk.title }}        {{ talk.date | date: "%B %d, %Y" }}          ...">
 <meta property="og:url" content="http://maximomussini.com/talks/index.html">
 <meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Talks">
+<meta property="og:image" content="http://maximomussini.com/images/talks.jpg">
+<meta property="og:description" content="Thoughts about development and product design.">
 
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Talks" />
+<meta name="twitter:description" value="Thoughts about development and product design." />
+<meta name="twitter:image" content="http://maximomussini.com/images/talks.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/talks/index.html" />
 
   <body class="talks">
     <header>
