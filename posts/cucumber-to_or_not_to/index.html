@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Positive-Negative Assertions in Cucumber · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/cucumber-to_or_not_to">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Positive-Negative Assertions in Cucumber">
+<meta property="og:image" content="http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg">
+<meta property="og:description" content="Cucumber steps often involve asserting a condition or the opposite of it. For example:
+
+{% highlight ruby %}
+Then(/^I should see a “(.*?)” comment$/) do |message|
+  expect(page).to have_css(‘li.comment’, text: message)
+end
+
+Then(/^I should not see a “(.*?)” comment$/) do |message|
+  expect(page).not_to have_css(‘li.comment’, text: message)
+end
+{% endhighlight %}
+
+Not only is it boring to write steps like this: it also has the downside of introducing duplication into our test steps. If the DOM changes, we …">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Positive-Negative Assertions in Cucumber" />
+<meta name="twitter:description" value="Cucumber steps often involve asserting a condition or the opposite of it. For example:
+
+{% highlight ruby %}
+Then(/^I should see a “(.*?)” comment$/) do |message|
+  expect(page).to have_css(‘li.comment’, text: message)
+end
+
+Then(/^I should not see a “(.*?)” comment$/) do |message|
+  expect(page).not_to have_css(‘li.comment’, text: message)
+end
+{% endhighlight %}
+
+Not only is it boring to write steps like this: it also has the downside of introducing duplication into our test steps. If the DOM changes, we …" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/cucumber-to_or_not_to" />
+
+  <body>
+    <header>
+  
+    <div class="hero" style="background-image: url(/images/posts/cucumber-to_or_not_to.jpg)">
+      <h1>Positive-Negative Assertions in Cucumber</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr />
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">February 03, 2016</span>
+  <span class="reading-time">3 min read</span>
+</div>
+
+
+  <div class="post">
+    <p><a href="https://github.com/cucumber/cucumber-ruby"><em>Cucumber</em></a> steps often involve asserting a condition or the opposite of it. For example:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span><span class="p">(</span><span class="sr">/^I should see a &quot;(.*?)&quot; comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_css</span><span class="p">(</span><span class="s1">&#39;li.comment&#39;</span><span class="p">,</span> <span class="ss">text</span><span class="p">:</span> <span class="n">message</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="no">Then</span><span class="p">(</span><span class="sr">/^I should not see a &quot;(.*?)&quot; comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">not_to</span> <span class="n">have_css</span><span class="p">(</span><span class="s1">&#39;li.comment&#39;</span><span class="p">,</span> <span class="ss">text</span><span class="p">:</span> <span class="n">message</span><span class="p">)</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Not only is it boring to write steps like this: it also has the downside of introducing duplication into our test steps. If the DOM changes, we are forced to update both steps.</p>
+
+<p>Even worse, if the DOM changes and we forget to update the negative assertion, it will always pass since the element doesn’t even exist!</p>
+
+<p>Let’s give it another shot, but this time we will encapsulate the DOM references:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">have_comment</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+  <span class="n">have_css</span><span class="p">(</span><span class="s1">&#39;li.comment&#39;</span><span class="p">,</span> <span class="ss">text</span><span class="p">:</span> <span class="n">message</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="no">Then</span><span class="p">(</span><span class="sr">/^I should see a &quot;(.*?)&quot; comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_comment</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="no">Then</span><span class="p">(</span><span class="sr">/^I should not see a &quot;(.*?)&quot; comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">not_to</span> <span class="n">have_comment</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="k">end</span></code></pre></div>
+
+<p>The code is easier to read, and we solved a potential maintainability issue, nice! It’s possible to add a little touch of regular expressions to combine both steps into one:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span><span class="p">(</span><span class="sr">/^I should( not)? see a &quot;(.*?)&quot; comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">should_not</span><span class="p">,</span> <span class="n">message</span><span class="o">|</span>
+  <span class="k">if</span> <span class="n">should_not</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">not_to</span> <span class="n">have_comment</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+  <span class="k">else</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_comment</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>If we write <em>“should not see”</em> then the group will match and the <code>should_not</code> variable will contain <code>" not"</code>. If we write <em>“should see”</em> then the group won’t capture anything and <code>should_not</code> will be <code>nil</code>. This allows us to make a simple conditional check.</p>
+
+<p>We can leverage Ruby’s expressiveness and take it a bit further:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span><span class="p">(</span><span class="sr">/^I should( not)? see a &quot;(.*?)&quot; comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">should_not</span><span class="p">,</span> <span class="n">message</span><span class="o">|</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">send</span> <span class="p">(</span><span class="n">should_not</span> <span class="p">?</span> <span class="ss">:not_to</span> <span class="p">:</span> <span class="ss">:to</span><span class="p">),</span> <span class="n">have_comment</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Shorter, but not necessarily easier to understand. Fortunately, we can create our own custom RSpec matcher to encapsulate this pattern and make it easier to reuse and understand:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># features/support/to_or.rb</span>
+<span class="k">module</span> <span class="nn">PositiveNegativeExpectationHandler</span>
+  <span class="k">def</span> <span class="nf">to_or</span><span class="p">(</span><span class="n">not_to</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">not_to</span>
+      <span class="n">not_to</span><span class="p">(</span><span class="n">matcher</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="n">to</span><span class="p">(</span><span class="n">matcher</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">RSpec</span><span class="o">::</span><span class="no">Expectations</span><span class="o">::</span><span class="no">ExpectationTarget</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:include</span><span class="p">,</span> <span class="no">PositiveNegativeExpectationHandler</span><span class="p">)</span></code></pre></div>
+
+<p>Finally, we are able to express the step in a very concise and readable way:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span><span class="p">(</span><span class="sr">/^I should( not)? see a &quot;(.*?)&quot; comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">not_to</span><span class="p">,</span> <span class="n">message</span><span class="o">|</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to_or</span> <span class="n">not_to</span><span class="p">,</span> <span class="n">have_comment</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="k">end</span></code></pre></div>
+
+<blockquote>
+  <p>No magic here <img class="emoji" title=":tophat:" alt=":tophat:" src="https://assets.github.com/images/icons/emoji/unicode/1f3a9.png" height="20" width="20" align="absmiddle" />, just clever naming <img class="emoji" title=":rabbit:" alt=":rabbit:" src="https://assets.github.com/images/icons/emoji/unicode/1f430.png" height="20" width="20" align="absmiddle" /></p>
+</blockquote>
+
+<p><code>to_or</code> has been a very helpful addition to our projects, allowing us to write simple steps that read like English. You can just copy the <code>PositiveNegativeExpectationHandler</code> to a support file in your project (like <code>features/support/to_or.rb</code>) and start using it right away <img class="emoji" title=":smiley:" alt=":smiley:" src="https://assets.github.com/images/icons/emoji/unicode/1f603.png" height="20" width="20" align="absmiddle" /></p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/rails-ajax_redirect/" class="overlay">
+        <h1>Redirecting AJAX requests in Rails</h1>
+        <div class="post-info">
+  <span class="date">January 11, 2016</span>
+  <span class="reading-time">2 min read</span>
+</div>
+
+        <div class="post">
+          <p><span href="https://github.com/rails/jquery-rails"><code>jquery-rails</code></span> powers links and forms in Rails: it’s what makes <code>remote: true</code> work, allowing any link to make an AJAX request unobtrusively.</p>
+
+<p><span href="https://github.com/ElMassimo/rails-ajax_redirect"><code>rails-ajax_redirect</code></span> is an extension to this unobtrusive behaviour that adds AJAX support to <code>redirect_to</code>. It allows us to redirect an AJAX request as usual, instead of having to perform the redirect by handling the response manually in JS every time.</p>
+
+<p>This is helpful in many different scenarios, and ju…</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>

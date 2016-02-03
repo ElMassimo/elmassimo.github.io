@@ -89,6 +89,24 @@
 <ul class="posts list">
 
   <li>
+    <a href="/posts/cucumber-to_or_not_to/" class="post overlay">
+      <div>
+        <span class="title ch">Positive-Negative Assertions in Cucumber</span>
+        <span class="date ch">
+          <time datetime="2016-02-03T15:34:00-02:00" itemprop="datePublished">February 03, 2016</time>
+        </span>
+        
+          <p><span href="https://github.com/cucumber/cucumber-ruby"><em>Cucumber</em></span> steps often involve asserting a condition or the opposite of it. For example:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span><span class="p">(</span><span class="sr">/^I should see a "(.*?)" comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_css</span><span class="p">(</span><span class="s1">'li.comment'</span><span class="p">,</span> <span class="ss">text</span><span class="p">:</span> <span class="n">message</span><span class="p">)</span>
+<span class="k">end…</span></code></pre></div>
+        
+      </div>
+    </a>
+  </li>
+
+  <li>
     <a href="/posts/rails-ajax_redirect/" class="post overlay">
       <div>
         <span class="title ch">Redirecting AJAX requests in Rails</span>
