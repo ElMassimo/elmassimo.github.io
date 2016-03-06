@@ -6,7 +6,7 @@
   <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-02-26T01:31:19-02:00</updated>
+  <updated>2016-03-05T22:09:22-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -19,9 +19,9 @@
     <title>Positive-Negative Assertions in Cucumber
 </title>
     <link href="http://maximomussini.com/posts/cucumber-to_or_not_to" rel="alternate" type="text/html" title="Positive-Negative Assertions in Cucumber" />
-    <published>2016-02-03T15:34:00-02:00</published>
+    <published>2016-02-03T15:34:00-03:00</published>
   
-    <updated>2016-02-03T15:34:00-02:00</updated>
+    <updated>2016-02-03T15:34:00-03:00</updated>
   
     <id>http://maximomussini.com/posts/cucumber-to_or_not_to</id>
     <content type="html" xml:base="http://maximomussini.com/posts/cucumber-to_or_not_to">
@@ -114,9 +114,9 @@
     <title>Redirecting AJAX requests in Rails
 </title>
     <link href="http://maximomussini.com/posts/rails-ajax_redirect" rel="alternate" type="text/html" title="Redirecting AJAX requests in Rails" />
-    <published>2016-01-11T17:00:00-02:00</published>
+    <published>2016-01-11T17:00:00-03:00</published>
   
-    <updated>2016-01-11T17:00:00-02:00</updated>
+    <updated>2016-01-11T17:00:00-03:00</updated>
   
     <id>http://maximomussini.com/posts/rails-ajax_redirect</id>
     <content type="html" xml:base="http://maximomussini.com/posts/rails-ajax_redirect">
@@ -169,9 +169,9 @@ requests, while still setting the &lt;code&gt;Location&lt;/code&gt; header. On t
     <title>Anko DSL vs Android XML-First
 </title>
     <link href="http://maximomussini.com/posts/anko-vs-android-xml" rel="alternate" type="text/html" title="Anko DSL vs Android XML-First" />
-    <published>2016-01-04T17:06:00-02:00</published>
+    <published>2016-01-04T17:06:00-03:00</published>
   
-    <updated>2016-01-04T17:06:00-02:00</updated>
+    <updated>2016-01-04T17:06:00-03:00</updated>
   
     <id>http://maximomussini.com/posts/anko-vs-android-xml</id>
     <content type="html" xml:base="http://maximomussini.com/posts/anko-vs-android-xml">
