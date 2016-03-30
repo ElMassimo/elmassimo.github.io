@@ -6,7 +6,7 @@
   <generator uri="http://jekyllrb.com" version="2.4.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-03-06T23:05:26-03:00</updated>
+  <updated>2016-03-30T10:29:11-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -14,6 +14,99 @@
     <name>Máximo Mussini</name>
     <email>maximomussini@gmail.com</email>
   </author>
+
+  <entry>
+    <title>AngularJS: Watchers and the Digest Cycle
+</title>
+    <link href="http://maximomussini.com/posts/angular-intro" rel="alternate" type="text/html" title="AngularJS: Watchers and the Digest Cycle" />
+    <published>2016-03-29T22:29:00-03:00</published>
+  
+    <updated>2016-03-29T22:29:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/angular-intro</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/angular-intro">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/angular-intro.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;&lt;em&gt;AngularJS&lt;/em&gt; might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through &lt;em&gt;Angular&lt;/em&gt;’s internals: watchers and the digest cycle.&lt;/p&gt;
+
+&lt;h2 id=&quot;bindings-and-watchers&quot;&gt;Bindings and Watchers&lt;/h2&gt;
+&lt;p&gt;One of the most useful features in &lt;em&gt;AngularJS&lt;/em&gt; are data-bindings, which allow us to bind a model or property to a view; whenever the model changes, the view is updated automatically.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ng-model=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;user.name&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;text&amp;quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;{{ user.name }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;How does that work? When you write an expression like &lt;code&gt;{{ user.name }}&lt;/code&gt;, &lt;em&gt;Angular&lt;/em&gt; creates a &lt;em&gt;watcher&lt;/em&gt; that observes the &lt;code&gt;user.name&lt;/code&gt; property, which will be triggered whenever the model changes, allowing &lt;em&gt;Angular&lt;/em&gt; to update the view content.&lt;/p&gt;
+
+&lt;p&gt;We can also create watchers manually and execute arbitrary code when the model changes:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$watch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;user.name&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;oldName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;user.name changed from&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;oldName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;to&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;newName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The first argument passed to &lt;code&gt;$watch&lt;/code&gt; is known as the &lt;em&gt;model&lt;/em&gt;, and the second argument is the &lt;em&gt;listener&lt;/em&gt; function, which is called whenever the model (or more precisely, value of the watched expression) changes.&lt;/p&gt;
+
+&lt;p&gt;Now that we know what watchers can do for us, let’s dig a bit deeper and learn how they work. How does &lt;em&gt;Angular&lt;/em&gt; figure out when &lt;code&gt;user.name&lt;/code&gt; changed in order to call the &lt;em&gt;listener&lt;/em&gt;?&lt;/p&gt;
+
+&lt;h2 id=&quot;the-watch-list-and-dirty-checking&quot;&gt;The Watch List and Dirty Checking&lt;/h2&gt;
+
+&lt;p&gt;Each time a watcher is created, &lt;em&gt;Angular&lt;/em&gt; adds the expression to a &lt;em&gt;watch list&lt;/em&gt; to track changes. &lt;em&gt;Angular&lt;/em&gt; will walk down the watch list from time to time and resolve each watcher through a process called &lt;em&gt;dirty checking&lt;/em&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Keep the last value for each watched expression.&lt;/li&gt;
+  &lt;li&gt;Evaluate the expression: if the value is the same than the last one continue down the watch list.&lt;/li&gt;
+  &lt;li&gt;If the value is different the expression is &lt;strong&gt;dirty&lt;/strong&gt;, so propagate the change by calling each &lt;em&gt;listener&lt;/em&gt; with the old and the new value.&lt;/li&gt;
+  &lt;li&gt;Once the change has been synchronized across the app, replace the last value with the new value.&lt;/li&gt;
+  &lt;li&gt;Continue to the next expression in the watch list.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;For every UI element that is bound to a $scope object, a watch is created and added to the &lt;em&gt;watch list&lt;/em&gt;, which is checked on every digest loop.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;img-classemoji-titlerepeat-altrepeat-srchttpsassetsgithubcomimagesiconsemojiunicode1f501png-height20-width20-alignabsmiddle--the-digest-cycle&quot;&gt;&lt;img class=&quot;emoji&quot; title=&quot;:repeat:&quot; alt=&quot;:repeat:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f501.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt; The Digest Cycle&lt;/h2&gt;
+&lt;p&gt;And it’s in the &lt;a href=&quot;https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest&quot;&gt;&lt;code&gt;$digest&lt;/code&gt;&lt;/a&gt; cycle where every watcher in the watch list is evaluated, and the changes propagated to the &lt;em&gt;listeners&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;This cycle starts as a result of a call to &lt;code&gt;$scope.$digest()&lt;/code&gt;, which often happens as a result of an action performed by the user. For example, clicking an element with the &lt;code&gt;ng-click&lt;/code&gt; directive will explicitly call &lt;code&gt;$scope.$digest()&lt;/code&gt; and start the loop.&lt;/p&gt;
+
+&lt;p&gt;Once the cycle starts, it will go through the &lt;em&gt;watch list&lt;/em&gt;, propagating changes to &lt;em&gt;listeners&lt;/em&gt; as needed.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;There are many &lt;em&gt;Angular&lt;/em&gt; directives and services that will automatically trigger a digest cycle, such as &lt;code&gt;ng-model&lt;/code&gt; and &lt;code&gt;$timeout&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;img-classemoji-titlecrown-altcrown-srchttpsassetsgithubcomimagesiconsemojiunicode1f451png-height20-width20-alignabsmiddle--keep-calm-and-digest&quot;&gt;&lt;img class=&quot;emoji&quot; title=&quot;:crown:&quot; alt=&quot;:crown:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f451.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt; Keep Calm and Digest&lt;/h2&gt;
+&lt;p&gt;Once &lt;em&gt;Angular&lt;/em&gt; has run through the entire watch list, if any value changed, it will start a new digest cycle until no model is changed and no watchers are triggered.&lt;/p&gt;
+
+&lt;p&gt;Why does it run the loop all over again? Because any &lt;code&gt;$watch&lt;/code&gt; listener could change the value of an expression that was evaluated earlier in the digest loop, so &lt;em&gt;Angular&lt;/em&gt; wouldn’t be able to detect and propagate that change.&lt;/p&gt;
+
+&lt;p&gt;Remember that &lt;em&gt;Angular&lt;/em&gt; uses dirty-checking as a way to determine if the watched expression changed, so the only way to guarantee all changes are propagated is to go through the &lt;em&gt;watch list&lt;/em&gt; again and check that no values were changed during the previous digest cycle.&lt;/p&gt;
+
+&lt;p&gt;This means that the digest loop will run a minimum of two times, even when &lt;em&gt;listeners&lt;/em&gt; don’t change any models.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Minimize changes to watched models when inside listener functions, each change could trigger an extra digest loop.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If the loop runs ten times or more, &lt;em&gt;Angular&lt;/em&gt; will throw an exception to prevent a possible infinite loop, which would make the app unusable.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Because of the nature of &lt;em&gt;Angular&lt;/em&gt;’s internals, it’s very important to minimize the amount of watchers in order to keep the digest cycle fast.&lt;/p&gt;
+
+&lt;p&gt;At the same time, it’s important to ensure that our application doesn’t trigger more digest cycles than necessary, since each loop requires evaluating every watcher in the list.&lt;/p&gt;
+
+&lt;p&gt;While watchers are a very useful feature, the digest cycle implementation takes a brute force approach, which makes it almost magical at times, but is inefficient and can cause performance problems in complex applications.&lt;/p&gt;
+
+&lt;p&gt;In the next post, we will take a look at some techniques that help to reduce the amount of watchers and improve the performance of our app. Stay tuned! &lt;img class=&quot;emoji&quot; title=&quot;:smiley:&quot; alt=&quot;:smiley:&quot; src=&quot;https://assets.github.com/images/icons/emoji/unicode/1f603.png&quot; height=&quot;20&quot; width=&quot;20&quot; align=&quot;absmiddle&quot; /&gt;&lt;/p&gt;
+
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/angular-intro.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
 
   <entry>
     <title>Positive-Negative Assertions in Cucumber
@@ -1007,38 +1100,6 @@ requests, while still setting the &lt;code&gt;Location&lt;/code&gt; header. On t
 
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/mongoid-inheritance.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
-  
-  </entry>
-
-  <entry>
-    <title>Less
-</title>
-    <link href="http://maximomussini.com/posts/less" rel="alternate" type="text/html" title="Less" />
-    <published>2015-10-01T00:09:00-03:00</published>
-  
-    <updated>2015-10-01T00:09:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/less</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/less">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/less.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;Recently I’ve been digging into the &lt;a href=&quot;http://lesscode.is/&quot;&gt;&lt;em&gt;#lesscode&lt;/em&gt;&lt;/a&gt; movement, which proposes that software tools exist to solve real problems—a piece of code that doesn’t solve a problem is just waste. It also implies that frugality is a trademark of great designs; we should use it as an inspiration to create elegant software that focuses on solving the problem at hand.&lt;/p&gt;
-
-&lt;p&gt;This is related with other ideas like &lt;a href=&quot;http://www.amazon.com/Machine-That-Changed-World-Revolutionizing/dp/0743299795&quot;&gt;&lt;em&gt;lean manufacturing&lt;/em&gt;&lt;/a&gt;: focus all effort in the things that add value, and reduce everything else. This management philosophy was started by Toyota in the ’50s and later evolved to a business methodology called &lt;a href=&quot;http://www.amazon.com/Lean-Thinking-Banish-Create-Corporation-ebook/dp/B0048WQDIO&quot;&gt;&lt;em&gt;lean thinking&lt;/em&gt;&lt;/a&gt;, a way to apply the idea—of delivering more value while eliminating waste—to business in general.&lt;/p&gt;
-
-&lt;p&gt;While both &lt;em&gt;lesscode&lt;/em&gt; and the lean methodologies share the idea of creating something valuable and cutting down the waste, &lt;em&gt;lesscode&lt;/em&gt; has a deeper emotional perspective. As a developer, you are responsible for any complexity in the solution.&lt;/p&gt;
-
-&lt;p&gt;It’s by embracing the constraints—both natural and self-imposed, such as aiming for a great design—and gaining a sense of minimalism, that one is able to discover elegant and simple solutions, and find freedom.&lt;/p&gt;
-
-&lt;p&gt;Freedom from bloated frameworks, freedom from cargo-cult programming, freedom from the fear of not understanding. Freedom to rid your code out of &lt;em&gt;excess and complexity&lt;/em&gt;, and &lt;strong&gt;focus on what matters&lt;/strong&gt;.&lt;/p&gt;
-
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/less.jpg" />
     <author>
       <name>Máximo Mussini</name>
       <email>maximomussini@gmail.com</email>
