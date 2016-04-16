@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Optimizing AngularJS performance with events · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="In this post we take a look at effective ways to reduce the amount of watchers in our _AngularJS_ application and improve the performance of our app.">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900%7CLato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/angular-less-watchers/">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Optimizing AngularJS performance with events">
+<meta property="og:image" content="http://maximomussini.com/images/posts/angular-less-watchers.jpg">
+<meta property="og:description" content="In this post we take a look at effective ways to reduce the amount of watchers in our AngularJS application and improve the performance of our app.
+">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com">
+<meta name="twitter:title" value="Optimizing AngularJS performance with events">
+<meta name="twitter:description" value="In this post we take a look at effective ways to reduce the amount of watchers in our AngularJS application and improve the performance of our app.
+">
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/angular-less-watchers.jpg">
+<meta name="twitter:url" value="http://maximomussini.com/posts/angular-less-watchers/">
+
+  </head>
+<body>
+    <header>
+  
+    <div class="hero" style="background-image: url(/images/posts/angular-less-watchers.jpg)">
+      <h1>Optimizing AngularJS performance with events</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr>
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">April 15, 2016</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+
+  <div class="post">
+    <p>Like we saw in the <a href="/posts/angular-intro/">previous post</a>, <em>AngularJS</em> uses watchers to detect changes, allowing it to update views as needed. <em>Angular</em> will create a watcher for every expression that we add to our templates using data-bindings, <code class="highlighter-rouge">ng-repeat</code>, or similar directives.</p>
+
+<p>As we learned, each time a watcher is created <em>Angular</em> will add the expression to a <a href="/posts/angular-intro/#the-watch-list-and-dirty-checking"><em>watch list</em></a>, which is then iterated during each digest cycle to evaluate every expression and detect changes. That means, the more watchers are registered, the more <em>Angular</em> has to process during <a href="/posts/angular-intro/#repeat-the-digest-cycle">the digest cycle</a>.</p>
+
+<p>In pages that have many components—such as long lists and grids—the amount of watchers can be very high, which can negatively affect the performance of our app and make it feel unresponsive.</p>
+
+<p>In this post we will take a look at two techniques that can help us mitigate this problem and speed up our applications.</p>
+
+<h2 id="one-time-bindings">One-Time Bindings</h2>
+<p>One of the most convenient techniques that we have to reduce the amount of watchers is the use of <em>one-time bindings</em>. Any expression that starts with <code class="highlighter-rouge">::</code> is considered a <em>one-time expression</em>.</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">ng-repeat=</span><span class="s">"user in ::users"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>{{ ::user.name }}<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+</div>
+
+<p><em>Angular</em> will remove a <em>one-time expression</em> from the watch list once it has been <a href="https://docs.angularjs.org/guide/expression#value-stabilization-algorithm">resolved</a>, unlike normal expressions which are evaluated on every digest cycle.</p>
+
+<blockquote>
+  <p>If the expression will not change once set, it is a candidate for one-time binding. For example, internationalization <img class="emoji" title=":uk:" alt=":uk:" src="https://assets.github.com/images/icons/emoji/unicode/1f1ec-1f1e7.png" height="20" width="20" align="absmiddle"> <img class="emoji" title=":es:" alt=":es:" src="https://assets.github.com/images/icons/emoji/unicode/1f1ea-1f1f8.png" height="20" width="20" align="absmiddle"></p>
+</blockquote>
+
+<p>As a result, we have less expressions being watched, which makes the digest loop faster, increases the responsiveness of the app, and allows more information to be displayed at the same time.</p>
+
+<p>Using one-time bindings is an easy and effective way to reduce the amount of watchers, but there’s a catch. <em>Angular</em> won’t detect changes on each digest cycle and update the view, which makes them only suitable for values that won’t change.</p>
+
+<h2 id="recompiling-with-events">Recompiling with Events</h2>
+<p>What about expressions with a value that might change, yet remain the same most of the time? It’s a waste to evaluate them on every digest cycle, but we can’t just use one-time expressions since the value might eventually change.</p>
+
+<p>A technique that I have been using in pages where performance is critical is <em>event-driven recompilation</em>.</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="nt">&lt;h1</span> <span class="na">recompile-on=</span><span class="s">"user:changed"</span><span class="nt">&gt;</span>{{ ::user.name }}<span class="nt">&lt;/h1&gt;</span>
+</code></pre>
+</div>
+
+<p>This technique has three key aspects: one-time expressions, compilation, and event propagation. Let’s see how the <code class="highlighter-rouge">recompileOn</code> directive could be written:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="c1"># Public: Recompiles an element if an event occurs.
+#
+# NOTE: Do not use in combination with ng-if or ng-repeat, unless a one-time
+# binding is used in the expression.
+</span><span class="nx">app</span><span class="p">.</span><span class="na">directive</span> <span class="s">'recompileOn'</span><span class="p">,</span> <span class="p">(</span><span class="nx">$compile</span><span class="p">)</span> <span class="o">-&gt;</span>
+  <span class="nx">directive</span> <span class="o">=</span>
+    <span class="na">scope</span><span class="o">:</span> <span class="no">true</span>
+    <span class="na">priority</span><span class="o">:</span> <span class="mi">5</span>
+    <span class="na">restrict</span><span class="o">:</span> <span class="s">'A'</span>
+    <span class="na">compile</span><span class="o">:</span> <span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="o">-&gt;</span>
+      <span class="nx">html</span> <span class="o">=</span> <span class="nx">element</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="na">outerHTML</span>
+
+      <span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="nx">element</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span> <span class="o">-&gt;</span>
+        <span class="c1"># Internal: Will trigger a recompilation if the event is triggered.
+</span>        <span class="nx">recompileOnEvent</span> <span class="o">=</span> <span class="p">(</span><span class="nx">eventName</span><span class="p">)</span> <span class="o">-&gt;</span>
+          <span class="nx">scope</span><span class="p">.</span><span class="na">$on</span> <span class="nx">eventName</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">-&gt;</span>
+            <span class="c1"># Remove the previously added listener, if any.
+</span>            <span class="nx">removeListener</span><span class="o">?</span><span class="p">()</span>
+
+            <span class="c1"># Replace the element after the digest loop that triggered the event has ended.
+</span>            <span class="nx">scope</span><span class="p">.</span><span class="na">$evalAsync</span> <span class="o">-&gt;</span>
+              <span class="nx">newEl</span> <span class="o">=</span> <span class="nx">$compile</span><span class="p">(</span><span class="nx">html</span><span class="p">)(</span><span class="nx">scope</span><span class="p">.</span><span class="na">$parent</span><span class="p">)</span>
+              <span class="nx">element</span><span class="p">.</span><span class="na">replaceWith</span><span class="p">(</span><span class="nx">newEl</span><span class="p">)</span>
+
+              <span class="c1"># Destroy the old scope, since a new one was created by using compile.
+</span>              <span class="nx">scope</span><span class="p">.</span><span class="na">$destroy</span><span class="p">()</span>
+
+        <span class="nx">removeListener</span> <span class="o">=</span> <span class="nx">recompileOnEvent</span><span class="p">(</span><span class="nx">attrs</span><span class="p">.</span><span class="na">recompileOn</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>The directive will listen for a particular event on the current <em>scope</em>, and force a recompilation of the element when the event is triggered. This means that every directive inside the element will be processed from scratch, including our <em>one-time expressions</em>.</p>
+
+<p>Events can be triggered as usual:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="nx">$scope</span><span class="p">.</span><span class="na">$broadcast</span><span class="p">(</span><span class="s">'user:changed'</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>One-time bindings provide a very efficient way to render dynamic values once without taking up watchers, while <code class="highlighter-rouge">$on</code> and <code class="highlighter-rouge">$compile</code> provide a helpful way to render from scratch when we need to. This combination works very well for complex pages where the amount of watchers is taking a toll on performance.</p>
+
+<p>There are many variations that we can introduce to the implementation of <code class="highlighter-rouge">recompileOn</code>, such as allowing to pass several event names, or checking the event arguments for a specific value, such as an id. We can take this idea as far as we want to <img class="emoji" title=":rocket:" alt=":rocket:" src="https://assets.github.com/images/icons/emoji/unicode/1f680.png" height="20" width="20" align="absmiddle"></p>
+
+<p>As with any optimization, it’s important to consider whether the performance improvement justifies the additional complexity. Use it wisely!</p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/angular-intro/" class="overlay">
+        <h1>AngularJS: Watchers and the Digest Cycle</h1>
+        <div class="post-info">
+  <span class="date">March 29, 2016</span>
+  <span class="reading-time">5 min read</span>
+</div>
+
+        <div class="post">
+          <p><em>AngularJS</em> might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through <em>Angular</em>’s internals: watchers and the digest cycle.</p>
+
+<h2 id="bindings-and-watchers">Bindings and Watchers</h2>
+<p>One of the most useful features in <em>AngularJS</em> are d…</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>

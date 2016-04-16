@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>
 
   AngularJS: Watchers and the Digest Cycle · Máximo Mussini
 
 </title>
 <meta name="author" content="Máximo Mussini">
-<meta name="description" content="">
+<meta name="description" content="_AngularJS_ might not be hip anymore, but it's still a useful framework to create interactive web apps. In this post we will take a brief tour through _Angular_'s internals: watchers and the digest cycle.">
 <meta name="keywords" content="">
 
 <!-- http://t.co/dKP3o1e -->
@@ -17,7 +18,7 @@
 <meta http-equiv="cleartype" content="on">
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900%7CLato:300,300italic,400,400italic,700,900" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -28,27 +29,24 @@
 <!-- Facebook Stuff -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
-<meta property="og:url" content="http://maximomussini.com/posts/angular-intro">
+<meta property="og:url" content="http://maximomussini.com/posts/angular-intro/">
 <meta property="og:site_name" content="Máximo Mussini">
 <meta property="og:title" content="AngularJS: Watchers and the Digest Cycle">
 <meta property="og:image" content="http://maximomussini.com/images/posts/angular-intro.jpg">
 <meta property="og:description" content="AngularJS might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through Angular’s internals: watchers and the digest cycle.
-
-Bindings and Watchers
-One of the most useful features in AngularJS are d…">
+">
 
 <!-- Twitter Stuff -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:domain" value="maximomussini.com" />
-<meta name="twitter:title" value="AngularJS: Watchers and the Digest Cycle" />
+<meta name="twitter:domain" value="maximomussini.com">
+<meta name="twitter:title" value="AngularJS: Watchers and the Digest Cycle">
 <meta name="twitter:description" value="AngularJS might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through Angular’s internals: watchers and the digest cycle.
+">
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/angular-intro.jpg">
+<meta name="twitter:url" value="http://maximomussini.com/posts/angular-intro/">
 
-Bindings and Watchers
-One of the most useful features in AngularJS are d…" />
-<meta name="twitter:image" content="http://maximomussini.com/images/posts/angular-intro.jpg" />
-<meta name="twitter:url" value="http://maximomussini.com/posts/angular-intro" />
-
-  <body>
+  </head>
+<body>
     <header>
   
     <div class="hero" style="background-image: url(/images/posts/angular-intro.jpg)">
@@ -86,7 +84,7 @@ One of the most useful features in AngularJS are d…" />
 </li>
 
   </ul>
-  <hr />
+  <hr>
 </div>
 
     <div class="content container">
@@ -104,20 +102,23 @@ One of the most useful features in AngularJS are d…" />
 <h2 id="bindings-and-watchers">Bindings and Watchers</h2>
 <p>One of the most useful features in <em>AngularJS</em> are data-bindings, which allow us to bind a model or property to a view; whenever the model changes, the view is updated automatically.</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;input</span> <span class="na">ng-model=</span><span class="s">&quot;user.name&quot;</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="nt">/&gt;</span>
-<span class="nt">&lt;h1&gt;</span>{{ user.name }}<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="nt">&lt;input</span> <span class="na">ng-model=</span><span class="s">"user.name"</span> <span class="na">type=</span><span class="s">"text"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;h1&gt;</span>{{ user.name }}<span class="nt">&lt;/h1&gt;</span>
+</code></pre>
+</div>
 
-<p>How does that work? When you write an expression like <code>{{ user.name }}</code>, <em>Angular</em> creates a <em>watcher</em> that observes the <code>user.name</code> property, which will be triggered whenever the model changes, allowing <em>Angular</em> to update the view content.</p>
+<p>How does that work? When you write an expression like <code class="highlighter-rouge"><span class="p">{</span><span class="err">{</span><span class="w"> </span><span class="err">user.name</span><span class="w"> </span><span class="p">}</span><span class="err">}</span></code>, <em>Angular</em> creates a <em>watcher</em> that observes the <code class="highlighter-rouge">user.name</code> property, which will be triggered whenever the model changes, allowing <em>Angular</em> to update the view content.</p>
 
 <p>We can also create watchers manually and execute arbitrary code when the model changes:</p>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">$scope</span><span class="p">.</span><span class="nx">$watch</span><span class="p">(</span><span class="s1">&#39;user.name&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newName</span><span class="p">,</span> <span class="nx">oldName</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;user.name changed from&#39;</span><span class="p">,</span> <span class="nx">oldName</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nx">newName</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">$scope</span><span class="p">.</span><span class="nx">$watch</span><span class="p">(</span><span class="s1">'user.name'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newName</span><span class="p">,</span> <span class="nx">oldName</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'user.name changed from'</span><span class="p">,</span> <span class="nx">oldName</span><span class="p">,</span> <span class="s1">'to'</span><span class="p">,</span> <span class="nx">newName</span><span class="p">);</span>
+<span class="p">});</span></code></pre></figure>
 
-<p>The first argument passed to <code>$watch</code> is known as the <em>model</em>, and the second argument is the <em>listener</em> function, which is called whenever the model (or more precisely, value of the watched expression) changes.</p>
+<p>The first argument passed to <code class="highlighter-rouge">$watch</code> is known as the <em>model</em>, and the second argument is the <em>listener</em> function, which is called whenever the model (or more precisely, value of the watched expression) changes.</p>
 
-<p>Now that we know what watchers can do for us, let’s dig a bit deeper and learn how they work. How does <em>Angular</em> figure out when <code>user.name</code> changed in order to call the <em>listener</em>?</p>
+<p>Now that we know what watchers can do for us, let’s dig a bit deeper and learn how they work. How does <em>Angular</em> figure out when <code class="highlighter-rouge">user.name</code> changed in order to call the <em>listener</em>?</p>
 
 <h2 id="the-watch-list-and-dirty-checking">The Watch List and Dirty Checking</h2>
 
@@ -135,21 +136,23 @@ One of the most useful features in AngularJS are d…" />
   <p>For every UI element that is bound to a $scope object, a watch is created and added to the <em>watch list</em>, which is checked on every digest loop.</p>
 </blockquote>
 
-<h2 id="img-classemoji-titlerepeat-altrepeat-srchttpsassetsgithubcomimagesiconsemojiunicode1f501png-height20-width20-alignabsmiddle--the-digest-cycle"><img class="emoji" title=":repeat:" alt=":repeat:" src="https://assets.github.com/images/icons/emoji/unicode/1f501.png" height="20" width="20" align="absmiddle" /> The Digest Cycle</h2>
-<p>And it’s in the <a href="https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest"><code>$digest</code></a> cycle where every watcher in the watch list is evaluated, and the changes propagated to the <em>listeners</em>.</p>
+<h2 id="repeat-the-digest-cycle">
+<img class="emoji" title=":repeat:" alt=":repeat:" src="https://assets.github.com/images/icons/emoji/unicode/1f501.png" height="20" width="20" align="absmiddle"> The Digest Cycle</h2>
+<p>And it’s in the <a href="https://docs.angularjs.org/api/ng/type/%24rootScope.Scope#%24digest"><code class="highlighter-rouge">$digest</code></a> cycle where every watcher in the watch list is evaluated, and the changes propagated to the <em>listeners</em>.</p>
 
-<p>This cycle starts as a result of a call to <code>$scope.$digest()</code>, which often happens as a result of an action performed by the user. For example, clicking an element with the <code>ng-click</code> directive will explicitly call <code>$scope.$digest()</code> and start the loop.</p>
+<p>This cycle starts as a result of a call to <code class="highlighter-rouge">$scope.$digest()</code>, which often happens as a result of an action performed by the user. For example, clicking an element with the <code class="highlighter-rouge">ng-click</code> directive will explicitly call <code class="highlighter-rouge">$scope.$digest()</code> and start the loop.</p>
 
 <p>Once the cycle starts, it will go through the <em>watch list</em>, propagating changes to <em>listeners</em> as needed.</p>
 
 <blockquote>
-  <p>There are many <em>Angular</em> directives and services that will automatically trigger a digest cycle, such as <code>ng-model</code> and <code>$timeout</code>.</p>
+  <p>There are many <em>Angular</em> directives and services that will automatically trigger a digest cycle, such as <code class="highlighter-rouge">ng-model</code> and <code class="highlighter-rouge">$timeout</code>.</p>
 </blockquote>
 
-<h2 id="img-classemoji-titlecrown-altcrown-srchttpsassetsgithubcomimagesiconsemojiunicode1f451png-height20-width20-alignabsmiddle--keep-calm-and-digest"><img class="emoji" title=":crown:" alt=":crown:" src="https://assets.github.com/images/icons/emoji/unicode/1f451.png" height="20" width="20" align="absmiddle" /> Keep Calm and Digest</h2>
+<h2 id="crown-keep-calm-and-digest">
+<img class="emoji" title=":crown:" alt=":crown:" src="https://assets.github.com/images/icons/emoji/unicode/1f451.png" height="20" width="20" align="absmiddle"> Keep Calm and Digest</h2>
 <p>Once <em>Angular</em> has run through the entire watch list, if any value changed, it will start a new digest cycle until no model is changed and no watchers are triggered.</p>
 
-<p>Why does it run the loop all over again? Because any <code>$watch</code> listener could change the value of an expression that was evaluated earlier in the digest loop, so <em>Angular</em> wouldn’t be able to detect and propagate that change.</p>
+<p>Why does it run the loop all over again? Because any <code class="highlighter-rouge">$watch</code> listener could change the value of an expression that was evaluated earlier in the digest loop, so <em>Angular</em> wouldn’t be able to detect and propagate that change.</p>
 
 <p>Remember that <em>Angular</em> uses dirty-checking as a way to determine if the watched expression changed, so the only way to guarantee all changes are propagated is to go through the <em>watch list</em> again and check that no values were changed during the previous digest cycle.</p>
 
@@ -168,7 +171,7 @@ One of the most useful features in AngularJS are d…" />
 
 <p>While watchers are a very useful feature, the digest cycle implementation takes a brute force approach, which makes it almost magical at times, but is inefficient and can cause performance problems in complex applications.</p>
 
-<p>In the next post, we will take a look at some techniques that help to reduce the amount of watchers and improve the performance of our app. Stay tuned! <img class="emoji" title=":smiley:" alt=":smiley:" src="https://assets.github.com/images/icons/emoji/unicode/1f603.png" height="20" width="20" align="absmiddle" /></p>
+<p>In the next post, we will take a look at some techniques that help to reduce the amount of watchers and improve the performance of our app. Stay tuned! <img class="emoji" title=":smiley:" alt=":smiley:" src="https://assets.github.com/images/icons/emoji/unicode/1f603.png" height="20" width="20" align="absmiddle"></p>
 
   </div>
 
@@ -191,6 +194,8 @@ One of the most useful features in AngularJS are d…" />
 
 
 
+  <a id="next-post" href="/posts/angular-less-watchers/" class="hidden"></a>
+
 
 
 
@@ -206,13 +211,13 @@ One of the most useful features in AngularJS are d…" />
         <div class="post">
           <p><span href="https://github.com/cucumber/cucumber-ruby"><em>Cucumber</em></span> steps often involve asserting a condition or the opposite of it. For example:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span><span class="p">(</span><span class="sr">/^I should see a "(.*?)" comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
-  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">have_css</span><span class="p">(</span><span class="s1">'li.comment'</span><span class="p">,</span> <span class="ss">text</span><span class="p">:</span> <span class="n">message</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span><span class="p">(</span><span class="sr">/^I should see a "(.*?)" comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
+  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">).</span><span class="nf">to</span> <span class="n">have_css</span><span class="p">(</span><span class="s1">'li.comment'</span><span class="p">,</span> <span class="ss">text: </span><span class="n">message</span><span class="p">)</span>
 <span class="k">end</span>
 
 <span class="no">Then</span><span class="p">(</span><span class="sr">/^I should not see a "(.*?)" comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
-  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">not_to</span> <span class="n">have_css</span><span class="p">(</span><span class="s1">'li.comment'</span><span class="p">,</span> <span class="ss">text</span><span class="p">:</span> <span class="n">message</span><span class="p">)</span>
-<span class="k">end</span></code></pre></div>
+  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">).</span><span class="nf">not_to</span> <span class="n">have_css</span><span class="p">(</span><span class="s1">'li.comment'</span><span class="p">,</span> <span class="ss">text: </span><span class="n">message</span><span class="p">)</span>
+<span class="k">end</span></code></pre></figure>
 
 <p>Not only is it boring to write steps like this: it also has the downside of introducing duplication into…</p>
         </div>

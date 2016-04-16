@@ -1,91 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://maximomussini.com/posts/angular-intro</loc>
-    <lastmod>2016-03-29T22:29:00-03:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/cucumber-to_or_not_to</loc>
-    <lastmod>2016-02-03T15:34:00-03:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/rails-ajax_redirect</loc>
-    <lastmod>2016-01-11T17:00:00-03:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/anko-vs-android-xml</loc>
-    <lastmod>2016-01-04T17:06:00-03:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/coffeescript-js-libraries</loc>
-    <lastmod>2015-12-31T18:58:00-02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/bash-git-prompt</loc>
-    <lastmod>2015-12-14T17:46:00-02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/ruby-to_proc</loc>
-    <lastmod>2015-12-07T19:22:00-02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/mongoid_includes</loc>
-    <lastmod>2015-11-30T22:46:00-02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/mongoid-n+1</loc>
-    <lastmod>2015-10-30T19:30:00-02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/mongoid-inheritance</loc>
-    <lastmod>2015-10-12T23:29:00-02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/less</loc>
-    <lastmod>2015-10-01T00:09:00-03:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/404.html</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/about/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/birthday-roulette/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/conversions/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/posts/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/projects/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/recipes/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/talks/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/recipes/caesar-salad/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/recipes/libanese-rice/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/recipes/squash-n-bacon-pie/</loc>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/examples/posts/coffeescript-js-libraries/select_all.html</loc>
-    <lastmod>2015-12-31T18:41:55-03:00</lastmod>
-  </url>
-  <url>
-    <loc>http://maximomussini.com/examples/posts/coffeescript-js-libraries/select_all_broken.html</loc>
-    <lastmod>2015-12-31T18:32:54-03:00</lastmod>
-  </url>
+<url>
+<loc>http://maximomussini.com/posts/angular-less-watchers/</loc>
+<lastmod>2016-04-15T20:38:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/angular-intro/</loc>
+<lastmod>2016-03-29T22:29:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/cucumber-to_or_not_to/</loc>
+<lastmod>2016-02-03T15:34:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/rails-ajax_redirect/</loc>
+<lastmod>2016-01-11T17:00:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/anko-vs-android-xml/</loc>
+<lastmod>2016-01-04T17:06:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/coffeescript-js-libraries/</loc>
+<lastmod>2015-12-31T17:58:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/bash-git-prompt/</loc>
+<lastmod>2015-12-14T16:46:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/ruby-to_proc/</loc>
+<lastmod>2015-12-07T18:22:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/mongoid_includes/</loc>
+<lastmod>2015-11-30T21:46:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/mongoid-n+1/</loc>
+<lastmod>2015-10-30T18:30:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/mongoid-inheritance/</loc>
+<lastmod>2015-10-12T22:29:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/less/</loc>
+<lastmod>2015-10-01T00:09:00-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/404/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/about/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/birthday-roulette/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/conversions/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/posts/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/projects/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/recipes/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/talks/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/recipes/caesar-salad/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/recipes/libanese-rice/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/recipes/squash-n-bacon-pie/</loc>
+</url>
+<url>
+<loc>http://maximomussini.com/examples/posts/coffeescript-js-libraries/select_all.html</loc>
+<lastmod>2015-12-31T18:41:55-03:00</lastmod>
+</url>
+<url>
+<loc>http://maximomussini.com/examples/posts/coffeescript-js-libraries/select_all_broken.html</loc>
+<lastmod>2015-12-31T18:32:54-03:00</lastmod>
+</url>
 </urlset>
