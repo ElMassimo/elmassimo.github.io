@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.0.3">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-04-15T21:15:47-03:00</updated>
+  <updated>2016-05-30T21:08:16-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -12,6 +12,153 @@
     <name>Máximo Mussini</name>
     <email>maximomussini@gmail.com</email>
   </author>
+
+  <entry>
+    <title>Class Instance Variables in Ruby</title>
+    <link href="http://maximomussini.com/posts/ruby-class-variables/" rel="alternate" type="text/html" title="Class Instance Variables in Ruby" />
+    <published>2016-05-30T21:10:00-03:00</published>
+  
+    <updated>2016-05-30T21:10:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/ruby-class-variables</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/ruby-class-variables/">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-class-variables.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;Like most object-oriented languages, Ruby has both instance and class variables. The syntax is &lt;code class=&quot;highlighter-rouge&quot;&gt;@name&lt;/code&gt; for &lt;em&gt;instance variables&lt;/em&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;@@name&lt;/code&gt; for &lt;em&gt;class variables&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s look at simple example to understand how we might use &lt;em&gt;class variables&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;all&lt;/span&gt;
+    &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;other_species&lt;/span&gt;
+    &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;all&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# [Dog, Cat]&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;other_species&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# [Dog]&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;other_species&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# [Cat]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;@@animals&lt;/code&gt; &lt;em&gt;class variable&lt;/em&gt; is &lt;strong&gt;shared&lt;/strong&gt; among subclasses, and we can refer to it by using the same syntax from both class and instance methods.&lt;/p&gt;
+
+&lt;h3 id=&quot;limitations-of-class-variables&quot;&gt;Limitations of Class Variables&lt;/h3&gt;
+&lt;p&gt;Now, what happens if we wanted to do something different, like storing metadata or configuration in each subclass?&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;vc&quot;&gt;@@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;?&#39;&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
+    &lt;span class=&quot;vc&quot;&gt;@@sound&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;vc&quot;&gt;@@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;woof!&#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;vc&quot;&gt;@@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;meow!&#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# &quot;meow!&quot;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# &quot;meow!&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Because &lt;em&gt;class variables&lt;/em&gt; are shared between the parent class and its subclasses, the value of &lt;code class=&quot;highlighter-rouge&quot;&gt;@@sound&lt;/code&gt; gets stepped over by the last subclass, rather than it taking a different value for each subclass as intended.&lt;/p&gt;
+
+&lt;h2 id=&quot;class-instance-variables&quot;&gt;Class Instance Variables&lt;/h2&gt;
+&lt;p&gt;Fortunately, there’s a simple way to achieve this in Ruby:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sound&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@sound&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sound&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;vi&quot;&gt;@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;woof!&#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;vi&quot;&gt;@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;meow!&#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# &#39;woof!&#39;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# &#39;meow!&#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;By using instance variables, each subclass gets its own variable so &lt;code class=&quot;highlighter-rouge&quot;&gt;@sound&lt;/code&gt; does not get stepped over, and each subclass can configure the variable as needed. So, &lt;em&gt;how does it work&lt;/em&gt;?&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Classes in Ruby are plain objects, instances of the &lt;code class=&quot;highlighter-rouge&quot;&gt;Class&lt;/code&gt; class.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Let that sink in for a bit :smile:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Because each class is an object, it can have instance variables just like any other Ruby object.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Although they are often called &lt;em&gt;class instance variables&lt;/em&gt; to differentiate them from actual &lt;em&gt;class variables&lt;/em&gt;, there’s nothing special about them—they are just plain ole’ instance variables.&lt;/p&gt;
+
+&lt;p&gt;The key practical difference is that &lt;em&gt;class variables&lt;/em&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;@@&lt;/code&gt;) are shared among a class and all of its descendants, whereas &lt;em&gt;class instance variables&lt;/em&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;@&lt;/code&gt;) are not shared and each class has separate instance variables just like you would expect from different objects.&lt;/p&gt;
+
+&lt;h3 id=&quot;limitations-of-class-instance-variables&quot;&gt;Limitations of Class Instance Variables&lt;/h3&gt;
+&lt;p&gt;It’s worth noting that in the last example we lost the convenience of referencing the &lt;code class=&quot;highlighter-rouge&quot;&gt;@sound&lt;/code&gt; variable directly on the &lt;code class=&quot;highlighter-rouge&quot;&gt;talk&lt;/code&gt; method like we did in the &lt;a href=&quot;#limitations-of-class-variables&quot;&gt;second example&lt;/a&gt;, and instead need to define a getter method at the class level in order to access it.&lt;/p&gt;
+
+&lt;p&gt;This is because the same syntax is used for regular &lt;em&gt;instance variables&lt;/em&gt;, so we can only refer to class instance variables directly when we are in the class scope—like in &lt;strong&gt;class methods&lt;/strong&gt; and in the &lt;strong&gt;top-level context&lt;/strong&gt; of a class definition.&lt;/p&gt;
+
+&lt;p&gt;Also, since we can’t use &lt;em&gt;class instance variables&lt;/em&gt; to share values between a class and its descendants, in cases where we would like to access the variable of a parent class we will need to refer to it using a fully qualified getter (such as &lt;code class=&quot;highlighter-rouge&quot;&gt;Animal.sound&lt;/code&gt;) or use &lt;a href=&quot;https://github.com/ElMassimo/queryable/blob/7c5eb3448456e6e84a907cbf4a567c576433428a/lib/queryable/default_scope.rb#L38-L50&quot;&gt;metaprogramming&lt;/a&gt; in order to achieve that.&lt;/p&gt;
+
+&lt;h2 id=&quot;driving-it-home-house-car&quot;&gt;Driving it home :house: :car:&lt;/h2&gt;
+&lt;p&gt;In general, &lt;em&gt;class instance variables&lt;/em&gt; are the way to go because they are not shared, which is very useful when building libraries or DSLs, and we don’t run the risk of the value getting stepped over by accident in a subclass.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, when the variable must be shared by a class and its descendants we should always use &lt;em&gt;class variables&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;When inheritance is not in play we can use either, but it’s better to be consistent and pick a “default”. I always use &lt;em&gt;class instance variables&lt;/em&gt; unless I actually need the variable to be shared.&lt;/p&gt;
+
+&lt;p&gt;We should now be less fuzzy on what &lt;code class=&quot;highlighter-rouge&quot;&gt;@&lt;/code&gt; means when used in class methods or in a class definition, and when to use &lt;em&gt;class instance variables&lt;/em&gt; instead of &lt;em&gt;class variables&lt;/em&gt; :smiley:&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/ruby-class-variables.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
 
   <entry>
     <title>Optimizing AngularJS performance with events</title>
@@ -985,135 +1132,6 @@ reload_git_prompt_colors &amp;quot;Custom&amp;quot;
 &lt;p&gt;Playing with Ecto inspired me to keep looking for a better solution for eager loading in &lt;em&gt;Mongoid&lt;/em&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;Mongoid::Includes&lt;/code&gt; solves the first two limitations, but wouldn’t it be great if we could preload documents without a query? :wink:&lt;/p&gt;
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/mongoid_includes.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
-  
-  </entry>
-
-  <entry>
-    <title>Avoiding the N+1 problem in Mongoid</title>
-    <link href="http://maximomussini.com/posts/mongoid-n+1/" rel="alternate" type="text/html" title="Avoiding the N+1 problem in Mongoid" />
-    <published>2015-10-30T18:30:00-03:00</published>
-  
-    <updated>2015-10-30T18:30:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/mongoid-n+1</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/mongoid-n+1/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/mongoid-n+1.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!&lt;/p&gt;
-
-&lt;p&gt;A performance issue that is very common when using ORMs is the &lt;em&gt;N+1 query&lt;/em&gt; problem. This anti-pattern usually occurs when trying to load related information for each item in a list of results.&lt;/p&gt;
-
-&lt;p&gt;Since most ORMs don’t perform eager loading by default (to avoid fetching more data than necessary), it’s necessary to make extra queries &lt;em&gt;per item&lt;/em&gt; to fetch the related data. Imagine that we have a simple music store app:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Band&lt;/span&gt;
-  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mongoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:albums&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Album&lt;/span&gt;
-  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mongoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;belongs_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:band&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:songs&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Song&lt;/span&gt;
-  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mongoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;belongs_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:album&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;A classic appearance of the &lt;em&gt;N+1 problem&lt;/em&gt; would be:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;year: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1970&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Album: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;, Band: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;band&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;In this example, we are loading a list of albums (the first query) and then loading the related band for each album, making one query &lt;em&gt;per album&lt;/em&gt;. With a list of &lt;em&gt;N albums&lt;/em&gt;, we make 1 query to get the albums and N queries to get the bands: a total of &lt;em&gt;N+1 queries&lt;/em&gt;.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;The problem can also appear in other scenarios, such as more complex object graph traversals. In those cases, it can be much harder to spot the cause.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;To understand why this is inefficient, we need to consider the impact of latency in the response time. Even if each of the &lt;em&gt;N queries&lt;/em&gt; is executed quickly, each query requires one database round trip. This latency will add up linearly as &lt;em&gt;N&lt;/em&gt; increases, which can have a devastating effect in the response time.&lt;/p&gt;
-
-&lt;h2 id=&quot;avoiding-the-n1-problem&quot;&gt;Avoiding the N+1 problem&lt;/h2&gt;
-
-&lt;p&gt;A solution to the &lt;em&gt;N+1 problem&lt;/em&gt; is to eagerly load the documents that we need, so that when we access a relation it’s already preloaded and doesn’t trigger a query.&lt;/p&gt;
-
-&lt;p&gt;In &lt;em&gt;Mongoid&lt;/em&gt;, we can do this by running an &lt;code class=&quot;highlighter-rouge&quot;&gt;$in&lt;/code&gt; query using the relation foreign keys to fetch all the related records, and then assign the relations in memory using &lt;code class=&quot;highlighter-rouge&quot;&gt;set_relation&lt;/code&gt;. This way, we only perform a single query to fetch a relation, regardless of the amount of documents returned by the first query.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;band_ids&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:band_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Band&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;id: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;band_ids&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;index_by&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;set_relation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:band&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bands&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;band_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;The algorithm changes slightly depending on the type of relation we want to &lt;em&gt;include&lt;/em&gt;, and how the foreign keys are stored, but the idea is the same: get a list of foreign keys, use them to make a query to fetch the related documents, and assign the relations in memory using the foreign keys to match the objects.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;album_ids&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;songs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Song&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;album_id: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album_ids&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;album_songs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;songs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;group_by&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:album_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;set_relation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:songs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;album_songs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Although eager loading the documents manually is not very complex, writing this logic every time is cumbersome, error-prone, and hard to maintain.&lt;/p&gt;
-
-&lt;p&gt;Fortunately, &lt;em&gt;Mongoid&lt;/em&gt; has baked-in support to eager load relations using the &lt;code class=&quot;highlighter-rouge&quot;&gt;includes&lt;/code&gt; method, which allows to specify all the relations that we want to eager load once the query is made. The following is equivalent to the two snippets above:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:band&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:songs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Easy, right? This becomes extremely useful when trying to avoid those sneaky &lt;em&gt;N+1 queries&lt;/em&gt; we were talking about :wink:&lt;/p&gt;
-
-&lt;h2 id=&quot;performance-considerations&quot;&gt;Performance Considerations&lt;/h2&gt;
-
-&lt;p&gt;Although eager loading can be helpful, it’s important to be aware that:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;It takes a lot of processing to obtain the foreign keys, fetch the documents from the database, traverse them, and assign them to the objects in memory.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$in&lt;/code&gt; queries are usually slower, and get slower as the amount of values increases.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Most of the times, the overhead of processing in memory and making a more complex query is lower than the latency of issuing a lot of queries separately. Rewriting the code to eager load the relations that we need will usually improve the performance.&lt;/p&gt;
-
-&lt;p&gt;As with any performance optimization, there might be some corner cases where eager loading is slower. It’s important to run benchmarks and measure the response time to verify that it’s worth it to use eager loading :bar_chart:&lt;/p&gt;
-
-&lt;p&gt;Always keep an eye out for this anti-pattern; accessing the database in a naive way will hurt the performance. Using a tool like &lt;a href=&quot;https://github.com/flyerhzm/bullet&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bullet&lt;/code&gt;&lt;/a&gt; can help to detect N+1 queries or unused includes, but it’s better to use it as a safety net for the cases that slipped past our manual control.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Have in mind that in &lt;em&gt;mongodb&lt;/em&gt; it’s possible to embed the related documents instead of storing them in separate collections. Depending on the domain requirements, it can be a very good way to get the best out of the database, and avoid the problem entirely.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Thinking about data access from the beginning yields the best results, because it allow us to spot potential inefficiencies, and find alternative queries that perform better.&lt;/p&gt;
-
-&lt;h2 id=&quot;limitations-in-mongoid&quot;&gt;Limitations in Mongoid&lt;/h2&gt;
-
-&lt;p&gt;Eager loading in &lt;em&gt;Mongoid&lt;/em&gt; has some limitations:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Criteria-only&lt;/strong&gt;: It’s only possible to use eager loading with a &lt;code class=&quot;highlighter-rouge&quot;&gt;Mongoid::Criteria&lt;/code&gt; object. We can’t leverage the functionality if we have a list of objects.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;No Nested&lt;/strong&gt;: Only direct relations can be included, nested relations can’t be eagerly loaded (like &lt;code class=&quot;highlighter-rouge&quot;&gt;band.albums.songs&lt;/code&gt;).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;No Polymorphic&lt;/strong&gt;: Polymorphic relations can’t be included.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The first limitation exists because &lt;em&gt;Mongoid&lt;/em&gt; relies on the metadata to pick the appropriate eager loading algorithm. The relation metadata allows to infer things like foreign key names, the name of the database collection, and the name of the setter method for the relation.&lt;/p&gt;
-
-&lt;p&gt;I have solved the other limitations in &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt; :gem:, which extends the &lt;code class=&quot;highlighter-rouge&quot;&gt;includes&lt;/code&gt; method to support eager loading polymorphic and nested associations.&lt;/p&gt;
-
-&lt;p&gt;You can check &lt;a href=&quot;/posts/mongoid_includes/&quot;&gt;the next post&lt;/a&gt; where I talk about this gem and explain the motivation behind it, as well as the difficulties of extending &lt;em&gt;Mongoid&lt;/em&gt; :smiley:&lt;/p&gt;
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/mongoid-n+1.jpg" />
     <author>
       <name>Máximo Mussini</name>
       <email>maximomussini@gmail.com</email>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Class Instance Variables in Ruby · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900%7CLato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/ruby-class-variables/">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Class Instance Variables in Ruby">
+<meta property="og:image" content="http://maximomussini.com/images/posts/ruby-class-variables.jpg">
+<meta property="og:description" content="Like most object-oriented languages, Ruby has both instance and class variables. The syntax is @name for instance variables, and @@name for class variables.
+
+Let’s look at simple example to understand how we might use class variables:
+
+class Animal
+  @@animals = []
+
+  def self.all
+    @@animals
+  end
+
+  def other_species
+    @@animals - [self.class]
+  end
+end
+
+class Dog &lt; Animal
+  @@animals &lt;&lt; sel…">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com">
+<meta name="twitter:title" value="Class Instance Variables in Ruby">
+<meta name="twitter:description" value="Like most object-oriented languages, Ruby has both instance and class variables. The syntax is @name for instance variables, and @@name for class variables.
+
+Let’s look at simple example to understand how we might use class variables:
+
+class Animal
+  @@animals = []
+
+  def self.all
+    @@animals
+  end
+
+  def other_species
+    @@animals - [self.class]
+  end
+end
+
+class Dog &lt; Animal
+  @@animals &lt;&lt; sel…">
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/ruby-class-variables.jpg">
+<meta name="twitter:url" value="http://maximomussini.com/posts/ruby-class-variables/">
+
+  </head>
+<body>
+    <header>
+  
+    <div class="hero" style="background-image: url(/images/posts/ruby-class-variables.jpg)">
+      <h1>Class Instance Variables in Ruby</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr>
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">May 30, 2016</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+
+  <div class="post">
+    <p>Like most object-oriented languages, Ruby has both instance and class variables. The syntax is <code class="highlighter-rouge">@name</code> for <em>instance variables</em>, and <code class="highlighter-rouge">@@name</code> for <em>class variables</em>.</p>
+
+<p>Let’s look at simple example to understand how we might use <em>class variables</em>:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
+  <span class="vc">@@animals</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
+    <span class="vc">@@animals</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">other_species</span>
+    <span class="vc">@@animals</span> <span class="o">-</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+  <span class="vc">@@animals</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Cat</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+  <span class="vc">@@animals</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+<span class="k">end</span>
+
+<span class="no">Animal</span><span class="p">.</span><span class="nf">all</span>
+<span class="c1"># [Dog, Cat]</span>
+
+<span class="no">Cat</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">other_species</span>
+<span class="c1"># [Dog]</span>
+
+<span class="no">Dog</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">other_species</span>
+<span class="c1"># [Cat]</span>
+</code></pre>
+</div>
+
+<p>The <code class="highlighter-rouge">@@animals</code> <em>class variable</em> is <strong>shared</strong> among subclasses, and we can refer to it by using the same syntax from both class and instance methods.</p>
+
+<h3 id="limitations-of-class-variables">Limitations of Class Variables</h3>
+<p>Now, what happens if we wanted to do something different, like storing metadata or configuration in each subclass?</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
+  <span class="vc">@@sound</span> <span class="o">=</span> <span class="s1">'?'</span>
+
+  <span class="k">def</span> <span class="nf">talk</span>
+    <span class="vc">@@sound</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+  <span class="vc">@@sound</span> <span class="o">=</span> <span class="s1">'woof!'</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Cat</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+  <span class="vc">@@sound</span> <span class="o">=</span> <span class="s1">'meow!'</span>
+<span class="k">end</span>
+
+<span class="no">Dog</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">talk</span>
+<span class="c1"># "meow!"</span>
+
+<span class="no">Cat</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">talk</span>
+<span class="c1"># "meow!"</span>
+</code></pre>
+</div>
+
+<p>Because <em>class variables</em> are shared between the parent class and its subclasses, the value of <code class="highlighter-rouge">@@sound</code> gets stepped over by the last subclass, rather than it taking a different value for each subclass as intended.</p>
+
+<h2 id="class-instance-variables">Class Instance Variables</h2>
+<p>Fortunately, there’s a simple way to achieve this in Ruby:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">sound</span>
+    <span class="vi">@sound</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">talk</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">sound</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+  <span class="vi">@sound</span> <span class="o">=</span> <span class="s1">'woof!'</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Cat</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+  <span class="vi">@sound</span> <span class="o">=</span> <span class="s1">'meow!'</span>
+<span class="k">end</span>
+
+<span class="no">Dog</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">talk</span>
+<span class="c1"># 'woof!'</span>
+
+<span class="no">Cat</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">talk</span>
+<span class="c1"># 'meow!'</span>
+</code></pre>
+</div>
+
+<p>By using instance variables, each subclass gets its own variable so <code class="highlighter-rouge">@sound</code> does not get stepped over, and each subclass can configure the variable as needed. So, <em>how does it work</em>?</p>
+
+<blockquote>
+  <p>Classes in Ruby are plain objects, instances of the <code class="highlighter-rouge">Class</code> class.</p>
+</blockquote>
+
+<p>Let that sink in for a bit <img class="emoji" title=":smile:" alt=":smile:" src="https://assets.github.com/images/icons/emoji/unicode/1f604.png" height="20" width="20" align="absmiddle"></p>
+
+<blockquote>
+  <p>Because each class is an object, it can have instance variables just like any other Ruby object.</p>
+</blockquote>
+
+<p>Although they are often called <em>class instance variables</em> to differentiate them from actual <em>class variables</em>, there’s nothing special about them—they are just plain ole’ instance variables.</p>
+
+<p>The key practical difference is that <em>class variables</em> (<code class="highlighter-rouge">@@</code>) are shared among a class and all of its descendants, whereas <em>class instance variables</em> (<code class="highlighter-rouge">@</code>) are not shared and each class has separate instance variables just like you would expect from different objects.</p>
+
+<h3 id="limitations-of-class-instance-variables">Limitations of Class Instance Variables</h3>
+<p>It’s worth noting that in the last example we lost the convenience of referencing the <code class="highlighter-rouge">@sound</code> variable directly on the <code class="highlighter-rouge">talk</code> method like we did in the <a href="#limitations-of-class-variables">second example</a>, and instead need to define a getter method at the class level in order to access it.</p>
+
+<p>This is because the same syntax is used for regular <em>instance variables</em>, so we can only refer to class instance variables directly when we are in the class scope—like in <strong>class methods</strong> and in the <strong>top-level context</strong> of a class definition.</p>
+
+<p>Also, since we can’t use <em>class instance variables</em> to share values between a class and its descendants, in cases where we would like to access the variable of a parent class we will need to refer to it using a fully qualified getter (such as <code class="highlighter-rouge">Animal.sound</code>) or use <a href="https://github.com/ElMassimo/queryable/blob/7c5eb3448456e6e84a907cbf4a567c576433428a/lib/queryable/default_scope.rb#L38-L50">metaprogramming</a> in order to achieve that.</p>
+
+<h2 id="driving-it-home-house-car">Driving it home <img class="emoji" title=":house:" alt=":house:" src="https://assets.github.com/images/icons/emoji/unicode/1f3e0.png" height="20" width="20" align="absmiddle"> <img class="emoji" title=":car:" alt=":car:" src="https://assets.github.com/images/icons/emoji/unicode/1f697.png" height="20" width="20" align="absmiddle">
+</h2>
+<p>In general, <em>class instance variables</em> are the way to go because they are not shared, which is very useful when building libraries or DSLs, and we don’t run the risk of the value getting stepped over by accident in a subclass.</p>
+
+<p>On the other hand, when the variable must be shared by a class and its descendants we should always use <em>class variables</em>.</p>
+
+<p>When inheritance is not in play we can use either, but it’s better to be consistent and pick a “default”. I always use <em>class instance variables</em> unless I actually need the variable to be shared.</p>
+
+<p>We should now be less fuzzy on what <code class="highlighter-rouge">@</code> means when used in class methods or in a class definition, and when to use <em>class instance variables</em> instead of <em>class variables</em> <img class="emoji" title=":smiley:" alt=":smiley:" src="https://assets.github.com/images/icons/emoji/unicode/1f603.png" height="20" width="20" align="absmiddle"></p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/angular-less-watchers/" class="overlay">
+        <h1>Optimizing AngularJS performance with events</h1>
+        <div class="post-info">
+  <span class="date">April 15, 2016</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+        <div class="post">
+          <p>Like we saw in the <span href="/posts/angular-intro/">previous post</span>, <em>AngularJS</em> uses watchers to detect changes, allowing it to update views as needed. <em>Angular</em> will create a watcher for every expression that we add to our templates using data-bindings, <code class="highlighter-rouge">ng-repeat</code>, or similar directives.</p>
+
+<p>As we learned, each time a watcher is created <em>Angular</em> will add the expression to a <span href="/posts/angular-intro/#the-watch-list-and-dirty-checking"><em>watch list</em></span>, which is then iterated during each digest cycle to evaluate every expression and detect changes. Th…</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>
