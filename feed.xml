@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.0.3">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-05-30T21:08:16-03:00</updated>
+  <updated>2016-06-30T21:21:11-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -12,6 +12,101 @@
     <name>Máximo Mussini</name>
     <email>maximomussini@gmail.com</email>
   </author>
+
+  <entry>
+    <title>Aggregation DSL in Mongoid</title>
+    <link href="http://maximomussini.com/posts/mongoid-aggregation-dsl/" rel="alternate" type="text/html" title="Aggregation DSL in Mongoid" />
+    <published>2016-06-30T16:19:00-03:00</published>
+  
+    <updated>2016-06-30T16:19:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/mongoid-aggregation-dsl</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/mongoid-aggregation-dsl/">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/mongoid-aggregation-dsl.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;&lt;em&gt;Mongoid&lt;/em&gt; provides support for &lt;a href=&quot;https://docs.mongodb.com/manual/core/aggregation-pipeline/&quot;&gt;&lt;em&gt;MongoDB’s Aggregation Framework&lt;/em&gt;&lt;/a&gt;, but writing raw queries can be confusing and is extremely verbose:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;aggregate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$match&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;country&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;US&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$project&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;categories&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;price&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$unwind&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$category_ids&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&#39;$group&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;s1&quot;&gt;&#39;_id&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$category_ids&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;s1&quot;&gt;&#39;avg_price&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$avg&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$price&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$sort&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;avg_price&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$limit&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Turns out &lt;a href=&quot;https://github.com/mongoid/origin&quot;&gt;&lt;em&gt;Origin&lt;/em&gt;&lt;/a&gt;—the gem that powers &lt;em&gt;Mongoid’s&lt;/em&gt; query DSL—already provides methods for each aggregation operation. The only problem is that it doesn’t provide a way to execute the aggregation, and there’s no documentation about it :grimacing:&lt;/p&gt;
+
+&lt;p&gt;Every aggregation method call adds an operation to an internal pipeline, which we can manually retrieve by calling the &lt;code class=&quot;highlighter-rouge&quot;&gt;pipeline&lt;/code&gt; method:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;products&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;country: :US&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;categories: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;price: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;unwind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;$category_ids&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;group&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;_id: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;$category_ids&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:avg_price&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;avg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$price&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;desc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:avg_price&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;products&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pipeline&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# {&quot;$match&quot;=&amp;gt;{&quot;country&quot;=&amp;gt;:US}}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# {&quot;$project&quot;=&amp;gt;{&quot;categories&quot;=&amp;gt;1, &quot;price&quot;=&amp;gt;1}}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# {&quot;$unwind&quot;=&amp;gt;&quot;$category_ids&quot;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# {&quot;$group&quot;=&amp;gt;{&quot;_id&quot;=&amp;gt;&quot;$category_ids&quot;, &quot;avg_price&quot;=&amp;gt;{&quot;$avg&quot;=&amp;gt;&quot;$price&quot;}}}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# {&quot;$sort&quot;=&amp;gt;{&quot;avg_price&quot;=&amp;gt;-1}}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# {&quot;$limit&quot;=&amp;gt;30}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Notice how using the DSL we obtain the same aggregation pipeline that we have in the first example, except it’s way more concise, and we are able to use &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; extensions like &lt;code class=&quot;highlighter-rouge&quot;&gt;avg&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;max&lt;/code&gt;, or &lt;code class=&quot;highlighter-rouge&quot;&gt;add_to_set&lt;/code&gt;, which add a great deal of expressiveness and make our queries more concise.&lt;/p&gt;
+
+&lt;p&gt;Now all we have to do is pass the pipeline to the &lt;code class=&quot;highlighter-rouge&quot;&gt;aggregate&lt;/code&gt; method:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;aggregate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;products&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pipeline&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We can add a little syntax sugar using refinements and make it even more convenient:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;AggregationRefinements&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;refine&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Mongoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Criteria&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;aggregate&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;aggregate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pipeline&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AggregationRefinements&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;categories: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;price: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;unwind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;$category_ids&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;group&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;_id: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;$category_ids&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:avg_price&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;avg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;$price&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+  &lt;span class=&quot;nf&quot;&gt;aggregate&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Or if you are using &lt;a href=&quot;https://github.com/ElMassimo/queryable&quot;&gt;&lt;strong&gt;query objects&lt;/strong&gt;&lt;/a&gt;, it’s as simple as adding a method to the objects where you need to perform aggregations:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;aggregate&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;queryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;aggregate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;queryable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pipeline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now we can enjoy &lt;em&gt;Mongoid’s&lt;/em&gt; fluent DSL for aggregations :smiley:&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/mongoid-aggregation-dsl.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
 
   <entry>
     <title>Class Instance Variables in Ruby</title>
@@ -1054,90 +1149,6 @@ reload_git_prompt_colors &amp;quot;Custom&amp;quot;
   
   
     <summary>Blocks are a very unique part of Ruby&#39;s syntax, but sometimes it can be tedious to write a block to perform a simple method call. An extremely common idiom in Ruby uses symbols to specify the method that should be called, but.. how does it work?</summary>
-  
-  </entry>
-
-  <entry>
-    <title>One Does Not Simply Extend Mongoid</title>
-    <link href="http://maximomussini.com/posts/mongoid_includes/" rel="alternate" type="text/html" title="One Does Not Simply Extend Mongoid" />
-    <published>2015-11-30T21:46:00-03:00</published>
-  
-    <updated>2015-11-30T21:46:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/mongoid_includes</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/mongoid_includes/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/mongoid_includes.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;&lt;em&gt;Mongoid&lt;/em&gt; is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to &lt;em&gt;monkey-patch&lt;/em&gt; it.&lt;/p&gt;
-
-&lt;p&gt;A while ago I was working on a feature that required displaying information from several &lt;em&gt;mongodb&lt;/em&gt; collections. The performance was pretty bad, since for each item being displayed it was necessary to traverse nested and polymorphic associations to get the rest of the data.&lt;/p&gt;
-
-&lt;p&gt;Although &lt;em&gt;Mongoid&lt;/em&gt; provides eager loading support &lt;a href=&quot;/posts/mongoid-n+1/&quot;&gt;out of the box&lt;/a&gt;, it has a few limitations:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;No Nested&lt;/strong&gt;: Only direct relations can be eager loaded.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;No Polymorphic&lt;/strong&gt;: Polymorphic relations can’t be included.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Criteria-only&lt;/strong&gt;: It’s only possible to use eager loading with a &lt;code class=&quot;highlighter-rouge&quot;&gt;Mongoid::Criteria&lt;/code&gt; object. We can’t leverage the functionality if we have a list of objects.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Unfortunately, one of those traversed associations was both &lt;strong&gt;nested &amp;amp; polymorphic&lt;/strong&gt;, so in the beginning the only available solution was to eager load the relations manually.&lt;/p&gt;
-
-&lt;p&gt;After thinking about it for a while, I decided to give it a shot and come up with an extension to eager load polymorphic and nested associations, and do away with all the boilerplate that is necessary to perform eager loading.&lt;/p&gt;
-
-&lt;h2 id=&quot;mongoidincludes-gem&quot;&gt;Mongoid::Includes :gem:&lt;/h2&gt;
-&lt;p&gt;When writing the library, I picked a few constraints in order to give the project a clear direction:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Reuse &lt;em&gt;Mongoid’s&lt;/em&gt; eager loading functionality as building blocks.&lt;/li&gt;
-  &lt;li&gt;Fail-fast, or as early as possible.&lt;/li&gt;
-  &lt;li&gt;Cover only the most common use cases.&lt;/li&gt;
-  &lt;li&gt;Allow to override eager loading for the not so common ones.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Choosing these constraints allowed me to keep the library fairly small, without compromising its usefulness in more complex scenarios.&lt;/p&gt;
-
-&lt;p&gt;The result is &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt;, a gem that enhances support for eager loading in &lt;em&gt;Mongoid&lt;/em&gt;, allowing to include polymorphic and nested associations, and modify eager loading queries on the fly.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:songs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:musicians&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;from: :band&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Band&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;includes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;with: &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;albums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;gt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;release: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1970&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Mongoid::Includes&lt;/code&gt; extends the &lt;code class=&quot;highlighter-rouge&quot;&gt;includes&lt;/code&gt; method to support polymorphic associations without any syntax change. For nested includes, it expects a &lt;code class=&quot;highlighter-rouge&quot;&gt;:from&lt;/code&gt; option, indicating from which relation the include is going to be performed, eager loading it as well.&lt;/p&gt;
-
-&lt;p&gt;While those are the most typical cases, it also supports a &lt;code class=&quot;highlighter-rouge&quot;&gt;:with&lt;/code&gt; option which conveniently allows to modify the default query, and a &lt;code class=&quot;highlighter-rouge&quot;&gt;:loader&lt;/code&gt; option which receives the foreign keys of the documents to include.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Polymorphic or nested includes might be a sign of a poorly designed schema. &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt; is very easy to use, but it should only be used if it’s truly necessary.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;extending-mongoid&quot;&gt;Extending Mongoid&lt;/h2&gt;
-&lt;p&gt;Although it was possible to reuse the eager loading logic in &lt;em&gt;Mongoid&lt;/em&gt;, doing so required a lot of fiddling and monkey-patching (using &lt;code class=&quot;highlighter-rouge&quot;&gt;prepend&lt;/code&gt;), since the library does not provide any point of extension.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Mongoid’s&lt;/em&gt; eager loading was written to work with queries, and assumes that the included documents will match an association on the model, so it relies on the association metadata to perform the includes. There is no simple way to reuse the logic without using relation metadata.&lt;/p&gt;
-
-&lt;p&gt;The biggest downside though, is that there is no way to perform eager loading for a set of documents, since the code relies on the contract of &lt;code class=&quot;highlighter-rouge&quot;&gt;Mongoid::Criteria&lt;/code&gt;. We can’t use eager loading if we triggered the query by using any &lt;code class=&quot;highlighter-rouge&quot;&gt;Enumerable&lt;/code&gt; method, or got the models by aggregation or any in-memory operation :disappointed_relieved:&lt;/p&gt;
-
-&lt;p&gt;It would be a lot easier to extend &lt;em&gt;Mongoid’s&lt;/em&gt; functionality if it had a more modular design. Adding support for plugins that can be attached to the query lifecycle would be a huge step in that direction—less patching means more and better extensions.&lt;/p&gt;
-
-&lt;h2 id=&quot;a-better-way&quot;&gt;A Better Way&lt;/h2&gt;
-&lt;p&gt;Some ORMs take a very different approach when it comes to eager loading. &lt;a href=&quot;https://github.com/elixir-lang/ecto&quot;&gt;Ecto&lt;/a&gt;, a popular database wrapper for the &lt;a href=&quot;http://elixir-lang.org/&quot;&gt;Elixir&lt;/a&gt; language, has a different &lt;a href=&quot;http://hexdocs.pm/ecto/Ecto.html&quot;&gt;philosophy&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;NOTE: Ecto does not lazy load associations. While lazily loading associations may sound convenient at first, in the long run it becomes a source of confusion and performance issues.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;As a long time &lt;em&gt;Mongoid&lt;/em&gt; user, I can painfully relate to this statement. &lt;a href=&quot;/posts/mongoid-n+1/&quot;&gt;N+1 queries&lt;/a&gt; are one of the fastest ways to degrade performance, and lazy loading associations makes it a lot easier to introduce them by accident. By not implementing lazy loading, the library becomes a lot simpler, and it encourages good practices and efficient data access patterns :tropical_drink:&lt;/p&gt;
-
-&lt;p&gt;Ecto also allows you to modify which models will be included for an association—like the &lt;code class=&quot;highlighter-rouge&quot;&gt;:with&lt;/code&gt; option in &lt;a href=&quot;https://github.com/ElMassimo/mongoid_includes&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mongoid_includes&lt;/code&gt;&lt;/a&gt;—and you can also preload associations on a given model or models after they have been fetched from the database using the &lt;a href=&quot;http://hexdocs.pm/ecto/Ecto.Repo.html#c:preload/2&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Repo.preload/2&lt;/code&gt;&lt;/a&gt; method. So much win!&lt;/p&gt;
-
-&lt;p&gt;Playing with Ecto inspired me to keep looking for a better solution for eager loading in &lt;em&gt;Mongoid&lt;/em&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;Mongoid::Includes&lt;/code&gt; solves the first two limitations, but wouldn’t it be great if we could preload documents without a query? :wink:&lt;/p&gt;
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/mongoid_includes.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
   
   </entry>
 

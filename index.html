@@ -89,6 +89,23 @@
 <ul class="posts list">
 
   <li>
+    <a href="/posts/mongoid-aggregation-dsl/" class="post overlay">
+      <div>
+        <span class="title ch">Aggregation DSL in Mongoid</span>
+        <span class="date ch">
+          <time datetime="2016-06-30T16:19:00-03:00" itemprop="datePublished">June 30, 2016</time>
+        </span>
+        
+          <p><em>Mongoid</em> provides support for <span href="https://docs.mongodb.com/manual/core/aggregation-pipeline/"><em>MongoDB’s Aggregation Framework</em></span>, but writing raw queries can be confusing and is extremely verbose:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="no">Product</span><span class="p">.</span><span class="nf">collection</span><span class="p">.</span><span class="nf">aggregate</span> <span class="p">[</span>
+  <span class="p">{</span> <span class="s1">'$match'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'country'</span> <span class="o">=&gt;</span> <span class="s1">'US'</span> <span class="p">}</span> <span class="p">},…</span></code></pre></div>
+        
+      </div>
+    </a>
+  </li>
+
+  <li>
     <a href="/posts/ruby-class-variables/" class="post overlay">
       <div>
         <span class="title ch">Class Instance Variables in Ruby</span>

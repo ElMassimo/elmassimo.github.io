@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Aggregation DSL in Mongoid · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900%7CLato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/mongoid-aggregation-dsl/">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Aggregation DSL in Mongoid">
+<meta property="og:image" content="http://maximomussini.com/images/posts/mongoid-aggregation-dsl.jpg">
+<meta property="og:description" content="Mongoid provides support for MongoDB’s Aggregation Framework, but writing raw queries can be confusing and is extremely verbose:
+
+Product.collection.aggregate [
+  { '$match' =&gt; { 'country' =&gt; 'US' } },
+  { '$project' =&gt; { 'categories' =&gt; 1, 'price' =&gt; 1 } },
+  { '$unwind' =&gt; '$category_ids' },
+  {
+    '$group' =&gt; {
+      '_id' =&gt; '$category_ids',
+      'avg_price' =&gt; { '$avg' =&gt; '$price' }
+    }
+  …">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com">
+<meta name="twitter:title" value="Aggregation DSL in Mongoid">
+<meta name="twitter:description" value="Mongoid provides support for MongoDB’s Aggregation Framework, but writing raw queries can be confusing and is extremely verbose:
+
+Product.collection.aggregate [
+  { '$match' =&gt; { 'country' =&gt; 'US' } },
+  { '$project' =&gt; { 'categories' =&gt; 1, 'price' =&gt; 1 } },
+  { '$unwind' =&gt; '$category_ids' },
+  {
+    '$group' =&gt; {
+      '_id' =&gt; '$category_ids',
+      'avg_price' =&gt; { '$avg' =&gt; '$price' }
+    }
+  …">
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/mongoid-aggregation-dsl.jpg">
+<meta name="twitter:url" value="http://maximomussini.com/posts/mongoid-aggregation-dsl/">
+
+  </head>
+<body>
+    <header>
+  
+    <div class="hero" style="background-image: url(/images/posts/mongoid-aggregation-dsl.jpg)">
+      <h1>Aggregation DSL in Mongoid</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr>
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">June 30, 2016</span>
+  <span class="reading-time">2 min read</span>
+</div>
+
+
+  <div class="post">
+    <p><em>Mongoid</em> provides support for <a href="https://docs.mongodb.com/manual/core/aggregation-pipeline/"><em>MongoDB’s Aggregation Framework</em></a>, but writing raw queries can be confusing and is extremely verbose:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="no">Product</span><span class="p">.</span><span class="nf">collection</span><span class="p">.</span><span class="nf">aggregate</span> <span class="p">[</span>
+  <span class="p">{</span> <span class="s1">'$match'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'country'</span> <span class="o">=&gt;</span> <span class="s1">'US'</span> <span class="p">}</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="s1">'$project'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'categories'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="s1">'$unwind'</span> <span class="o">=&gt;</span> <span class="s1">'$category_ids'</span> <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s1">'$group'</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="s1">'_id'</span> <span class="o">=&gt;</span> <span class="s1">'$category_ids'</span><span class="p">,</span>
+      <span class="s1">'avg_price'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'$avg'</span> <span class="o">=&gt;</span> <span class="s1">'$price'</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="p">{</span> <span class="s1">'$sort'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'avg_price'</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="s1">'$limit'</span> <span class="o">=&gt;</span> <span class="mi">30</span> <span class="p">}</span>
+<span class="p">]</span>
+</code></pre>
+</div>
+
+<p>Turns out <a href="https://github.com/mongoid/origin"><em>Origin</em></a>—the gem that powers <em>Mongoid’s</em> query DSL—already provides methods for each aggregation operation. The only problem is that it doesn’t provide a way to execute the aggregation, and there’s no documentation about it <img class="emoji" title=":grimacing:" alt=":grimacing:" src="https://assets.github.com/images/icons/emoji/unicode/1f62c.png" height="20" width="20" align="absmiddle"></p>
+
+<p>Every aggregation method call adds an operation to an internal pipeline, which we can manually retrieve by calling the <code class="highlighter-rouge">pipeline</code> method:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="n">products</span> <span class="o">=</span> <span class="no">Product</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">country: :US</span><span class="p">).</span>
+  <span class="nf">project</span><span class="p">(</span><span class="ss">categories: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">price: </span><span class="mi">1</span><span class="p">).</span>
+  <span class="nf">unwind</span><span class="p">(</span><span class="s1">'$category_ids'</span><span class="p">).</span>
+  <span class="nf">group</span><span class="p">(</span><span class="ss">_id: </span><span class="s1">'$category_ids'</span><span class="p">,</span> <span class="ss">:avg_price</span><span class="p">.</span><span class="nf">avg</span> <span class="o">=&gt;</span> <span class="s1">'$price'</span><span class="p">).</span>
+  <span class="nf">desc</span><span class="p">(</span><span class="ss">:avg_price</span><span class="p">).</span>
+  <span class="nf">limit</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="n">products</span><span class="p">.</span><span class="nf">pipeline</span>
+<span class="c1"># {"$match"=&gt;{"country"=&gt;:US}}</span>
+<span class="c1"># {"$project"=&gt;{"categories"=&gt;1, "price"=&gt;1}}</span>
+<span class="c1"># {"$unwind"=&gt;"$category_ids"}</span>
+<span class="c1"># {"$group"=&gt;{"_id"=&gt;"$category_ids", "avg_price"=&gt;{"$avg"=&gt;"$price"}}}</span>
+<span class="c1"># {"$sort"=&gt;{"avg_price"=&gt;-1}}</span>
+<span class="c1"># {"$limit"=&gt;30}</span>
+</code></pre>
+</div>
+<p>Notice how using the DSL we obtain the same aggregation pipeline that we have in the first example, except it’s way more concise, and we are able to use <code class="highlighter-rouge">Symbol</code> extensions like <code class="highlighter-rouge">avg</code>, <code class="highlighter-rouge">max</code>, or <code class="highlighter-rouge">add_to_set</code>, which add a great deal of expressiveness and make our queries more concise.</p>
+
+<p>Now all we have to do is pass the pipeline to the <code class="highlighter-rouge">aggregate</code> method:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="no">Product</span><span class="p">.</span><span class="nf">collection</span><span class="p">.</span><span class="nf">aggregate</span> <span class="n">products</span><span class="p">.</span><span class="nf">pipeline</span>
+</code></pre>
+</div>
+
+<p>We can add a little syntax sugar using refinements and make it even more convenient:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="k">module</span> <span class="nn">AggregationRefinements</span>
+  <span class="n">refine</span> <span class="no">Mongoid</span><span class="o">::</span><span class="no">Criteria</span> <span class="k">do</span>
+    <span class="k">def</span> <span class="nf">aggregate</span>
+      <span class="n">collection</span><span class="p">.</span><span class="nf">aggregate</span> <span class="n">pipeline</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">using</span> <span class="no">AggregationRefinements</span>
+
+<span class="no">Product</span><span class="p">.</span><span class="nf">project</span><span class="p">(</span><span class="ss">categories: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">price: </span><span class="mi">1</span><span class="p">).</span>
+  <span class="nf">unwind</span><span class="p">(</span><span class="s1">'$category_ids'</span><span class="p">).</span>
+  <span class="nf">group</span><span class="p">(</span><span class="ss">_id: </span><span class="s1">'$category_ids'</span><span class="p">,</span> <span class="ss">:avg_price</span><span class="p">.</span><span class="nf">avg</span> <span class="o">=&gt;</span> <span class="s1">'$price'</span><span class="p">).</span>
+  <span class="nf">aggregate</span>
+</code></pre>
+</div>
+
+<p>Or if you are using <a href="https://github.com/ElMassimo/queryable"><strong>query objects</strong></a>, it’s as simple as adding a method to the objects where you need to perform aggregations:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="k">def</span> <span class="nf">aggregate</span>
+  <span class="n">queryable</span><span class="p">.</span><span class="nf">collection</span><span class="p">.</span><span class="nf">aggregate</span><span class="p">(</span><span class="n">queryable</span><span class="p">.</span><span class="nf">pipeline</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>Now we can enjoy <em>Mongoid’s</em> fluent DSL for aggregations <img class="emoji" title=":smiley:" alt=":smiley:" src="https://assets.github.com/images/icons/emoji/unicode/1f603.png" height="20" width="20" align="absmiddle"></p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/ruby-class-variables/" class="overlay">
+        <h1>Class Instance Variables in Ruby</h1>
+        <div class="post-info">
+  <span class="date">May 30, 2016</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+        <div class="post">
+          <p>Like most object-oriented languages, Ruby has both instance and class variables. The syntax is <code class="highlighter-rouge">@name</code> for <em>instance variables</em>, and <code class="highlighter-rouge">@@name</code> for <em>class variables</em>.</p>
+
+<p>Let’s look at simple example to understand how we might use <em>class variables</em>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
+  <span class="vc">@@animals</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
+    <span class="vc">@@animals</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">other_species</span>
+    <span class="vc">@@animals</span> <span class="o">-</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+  <span class="vc">@@animals</span> <span class="o">&lt;&lt;</span> <span class="nb">sel…</span></code></pre></div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>
