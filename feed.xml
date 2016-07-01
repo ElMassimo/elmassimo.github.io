@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.0.3">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-06-30T21:21:11-03:00</updated>
+  <updated>2016-06-30T21:24:12-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -120,7 +120,7 @@
       &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-class-variables.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
       &lt;p&gt;Like most object-oriented languages, Ruby has both instance and class variables. The syntax is &lt;code class=&quot;highlighter-rouge&quot;&gt;@name&lt;/code&gt; for &lt;em&gt;instance variables&lt;/em&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;@@name&lt;/code&gt; for &lt;em&gt;class variables&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;Let’s look at simple example to understand how we might use &lt;em&gt;class variables&lt;/em&gt;:&lt;/p&gt;
+&lt;p&gt;Let’s look at a simple example to understand how we might use &lt;em&gt;class variables&lt;/em&gt;:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
   &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;

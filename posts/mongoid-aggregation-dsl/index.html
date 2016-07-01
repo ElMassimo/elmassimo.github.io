@@ -233,7 +233,7 @@ Product.collection.aggregate [
         <div class="post">
           <p>Like most object-oriented languages, Ruby has both instance and class variables. The syntax is <code class="highlighter-rouge">@name</code> for <em>instance variables</em>, and <code class="highlighter-rouge">@@name</code> for <em>class variables</em>.</p>
 
-<p>Let’s look at simple example to understand how we might use <em>class variables</em>:</p>
+<p>Let’s look at a simple example to understand how we might use <em>class variables</em>:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
   <span class="vc">@@animals</span> <span class="o">=</span> <span class="p">[]</span>
@@ -248,7 +248,7 @@ Product.collection.aggregate [
 <span class="k">end</span>
 
 <span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">Animal</span>
-  <span class="vc">@@animals</span> <span class="o">&lt;&lt;</span> <span class="nb">sel…</span></code></pre></div>
+  <span class="vc">@@animals</span> <span class="o">&lt;&lt;</span> <span class="nb">self…</span></code></pre></div>
         </div>
       </a>
     </div>
