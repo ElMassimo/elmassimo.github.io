@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.0.3">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-06-30T21:24:12-03:00</updated>
+  <updated>2016-10-04T20:11:23-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -971,6 +971,7 @@ fab.setOnClickListener {
 
   # Skip remote branch
   GIT_PROMPT_REMOTE=&amp;quot;${ResetColor}&amp;quot;
+  GIT_PROMPT_UPSTREAM=&amp;quot;${ResetColor}&amp;quot;
 
   # Use yellow for the current branch
   GIT_PROMPT_BRANCH=&amp;quot;${Yellow}&amp;quot;
