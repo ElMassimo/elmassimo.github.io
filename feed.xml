@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.0.3">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2016-10-31T01:30:36-03:00</updated>
+  <updated>2016-11-08T17:46:21-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -346,7 +346,7 @@
 
 &lt;p&gt;There are many variations that we can introduce to the implementation of &lt;code class=&quot;highlighter-rouge&quot;&gt;recompileOn&lt;/code&gt;, such as allowing to pass several event names, or checking the event arguments for a specific value, such as an id. We can take this idea as far as we want to :rocket:&lt;/p&gt;
 
-&lt;p&gt;As with any optimization, it’s important to consider whether the performance improvement justifies the additional complexity. Use it wisely!&lt;/p&gt;
+&lt;p&gt;As with any optimization, it’s important to consider whether the performance improvement justifies the additional complexity. &lt;em&gt;Use it wisely!&lt;/em&gt;&lt;/p&gt;
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/angular-less-watchers.jpg" />
     <author>
