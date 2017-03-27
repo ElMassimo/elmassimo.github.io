@@ -138,6 +138,25 @@ A great way to get Git autocompletion is to install th…">
 
 <p><img src="/images/posts/bash-git-prompt/git-prompt-default.png" alt="Default Theme" class=""></p>
 
+<h3 id="installation-on-os-x-1">Installation on OS X</h3>
+<p>First, install <code class="highlighter-rouge">bash-git-prompt</code> using <a href="http://brew.sh/">Homebrew</a>:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code>brew install bash-git-prompt
+</code></pre>
+</div>
+
+<p>And then source the file in your ~/.bash_profile as follows:</p>
+
+<div class="highlighter-rouge">
+<pre class="highlight"><code><span class="o">[[</span> -f <span class="s2">"</span><span class="k">$(</span>brew --prefix<span class="k">)</span><span class="s2">/opt/bash-git-prompt/share/gitprompt.sh"</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">source</span> <span class="s2">"</span><span class="k">$(</span>brew --prefix<span class="k">)</span><span class="s2">/opt/bash-git-prompt/share/gitprompt.sh"</span>
+</code></pre>
+</div>
+
+<h4 id="installation-on-ubuntu-1">Installation on Ubuntu</h4>
+<p>It might be necessary to <a href="https://github.com/magicmonty/bash-git-prompt#via-git-clone">clone the project’s git repo</a>, and source <code class="highlighter-rouge">gitprompt.sh</code> into the <code class="highlighter-rouge">~/.bashrc</code> file.</p>
+
+<h4 id="basic-customization">Basic Customization</h4>
 <p>The following are some settings I modified in my <code class="highlighter-rouge">~/.bash_profile</code>:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">GIT_PROMPT_ONLY_IN_REPO</span><span class="o">=</span>1 <span class="c"># Use the default prompt when not in a git repo.</span>
@@ -145,14 +164,7 @@ A great way to get Git autocompletion is to install th…">
 <span class="nv">GIT_PROMPT_SHOW_UPSTREAM</span><span class="o">=</span>0 <span class="c"># Don't display upstream tracking branch</span>
 <span class="nv">GIT_SHOW_UNTRACKED_FILES</span><span class="o">=</span>no <span class="c"># Don't count untracked files (no, normal, all)</span></code></pre></figure>
 
-<h3 id="installation-on-os-x-1">Installation on OS X</h3>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">if</span> <span class="o">[</span> -f <span class="s2">"</span><span class="k">$(</span>brew --prefix<span class="k">)</span><span class="s2">/opt/bash-git-prompt/share/gitprompt.sh"</span> <span class="o">]</span>; <span class="k">then
-  </span><span class="nb">source</span> <span class="s2">"</span><span class="k">$(</span>brew --prefix<span class="k">)</span><span class="s2">/opt/bash-git-prompt/share/gitprompt.sh"</span>
-<span class="k">fi</span></code></pre></figure>
-
-<h4 id="installation-on-ubuntu-1">Installation on Ubuntu</h4>
-<p>It might be necessary to <a href="https://github.com/magicmonty/bash-git-prompt#via-git-clone">clone the project’s git repo</a>, and source <code class="highlighter-rouge">gitprompt.sh</code> into the <code class="highlighter-rouge">~/.bashrc</code> file.</p>
+<p>These constants must be defined before sourcing <code class="highlighter-rouge">bash-git-prompt</code> in the <code class="highlighter-rouge">~/.bash_profile</code> or <code class="highlighter-rouge">~/.bashrc</code> file.</p>
 
 <h2 id="customizing-the-git-prompt">Customizing the Git Prompt</h2>
 <p>The themes that come bundled with <a href="https://github.com/magicmonty/bash-git-prompt"><code class="highlighter-rouge">bash-git-prompt</code></a> displayed too much information for my taste, and the symbols in the default theme are not particularly meaningful.</p>

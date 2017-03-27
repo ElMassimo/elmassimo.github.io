@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.0.3">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2017-03-01T19:55:58-03:00</updated>
+  <updated>2017-03-27T10:06:17-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -925,6 +925,23 @@ fab.setOnClickListener {
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/bash-git-prompt/git-prompt-default.png&quot; alt=&quot;Default Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
+&lt;h3 id=&quot;installation-on-os-x-1&quot;&gt;Installation on OS X&lt;/h3&gt;
+&lt;p&gt;First, install &lt;code class=&quot;highlighter-rouge&quot;&gt;bash-git-prompt&lt;/code&gt; using &lt;a href=&quot;http://brew.sh/&quot;&gt;Homebrew&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install bash-git-prompt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And then source the file in your ~/.bash_profile as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; -f &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;brew --prefix&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/opt/bash-git-prompt/share/gitprompt.sh&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;brew --prefix&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/opt/bash-git-prompt/share/gitprompt.sh&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;installation-on-ubuntu-1&quot;&gt;Installation on Ubuntu&lt;/h4&gt;
+&lt;p&gt;It might be necessary to &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt#via-git-clone&quot;&gt;clone the project’s git repo&lt;/a&gt;, and source &lt;code class=&quot;highlighter-rouge&quot;&gt;gitprompt.sh&lt;/code&gt; into the &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bashrc&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;h4 id=&quot;basic-customization&quot;&gt;Basic Customization&lt;/h4&gt;
 &lt;p&gt;The following are some settings I modified in my &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bash_profile&lt;/code&gt;:&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;GIT_PROMPT_ONLY_IN_REPO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;c&quot;&gt;# Use the default prompt when not in a git repo.&lt;/span&gt;
@@ -932,14 +949,7 @@ fab.setOnClickListener {
 &lt;span class=&quot;nv&quot;&gt;GIT_PROMPT_SHOW_UPSTREAM&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0 &lt;span class=&quot;c&quot;&gt;# Don&#39;t display upstream tracking branch&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;GIT_SHOW_UNTRACKED_FILES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;no &lt;span class=&quot;c&quot;&gt;# Don&#39;t count untracked files (no, normal, all)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h3 id=&quot;installation-on-os-x-1&quot;&gt;Installation on OS X&lt;/h3&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; -f &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;brew --prefix&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/opt/bash-git-prompt/share/gitprompt.sh&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
-  &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;brew --prefix&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/opt/bash-git-prompt/share/gitprompt.sh&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h4 id=&quot;installation-on-ubuntu-1&quot;&gt;Installation on Ubuntu&lt;/h4&gt;
-&lt;p&gt;It might be necessary to &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt#via-git-clone&quot;&gt;clone the project’s git repo&lt;/a&gt;, and source &lt;code class=&quot;highlighter-rouge&quot;&gt;gitprompt.sh&lt;/code&gt; into the &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bashrc&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;These constants must be defined before sourcing &lt;code class=&quot;highlighter-rouge&quot;&gt;bash-git-prompt&lt;/code&gt; in the &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bash_profile&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bashrc&lt;/code&gt; file.&lt;/p&gt;
 
 &lt;h2 id=&quot;customizing-the-git-prompt&quot;&gt;Customizing the Git Prompt&lt;/h2&gt;
 &lt;p&gt;The themes that come bundled with &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; displayed too much information for my taste, and the symbols in the default theme are not particularly meaningful.&lt;/p&gt;
