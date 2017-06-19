@@ -5,7 +5,7 @@ Twitter: https://twitter.com/MaximoMussini
 Location: Montevideo, UY
 
 /* SITE */
-Last update: 2017-03-27
+Last update: 2017-06-19
 Language: English / Español / Castellano
 Doctype: HTML5
 Software: Jekyll, Sublime Text, Photoshop
