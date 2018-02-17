@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.0.3">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2018-02-10T13:50:19-03:00</updated>
+  <updated>2018-02-17T15:34:53-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -964,7 +964,52 @@ fab.setOnClickListener {
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/bash-git-prompt/git-prompt-emoji.png&quot; alt=&quot;Emoji Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;true&lt;script src=&quot;https://gist.github.com/ElMassimo/515d12ab6db95dbb233c.js&quot;&gt; &lt;/script&gt;&lt;/p&gt;
+&lt;noscript&gt;&lt;pre&gt;override_git_prompt_colors() {
+  GIT_PROMPT_THEME_NAME=&amp;quot;Custom&amp;quot;
+
+  PathShort=&amp;quot;\W&amp;quot; # Display only the current folder
+
+  # Display the current folder first
+  GIT_PROMPT_START_USER=&amp;quot;${Green}${PathShort}&amp;quot;
+  GIT_PROMPT_START_ROOT=&amp;quot;${Green}${PathShort}&amp;quot;
+
+  # Skip the default prefix
+  GIT_PROMPT_PREFIX=&amp;quot;${ResetColor}&amp;quot;
+
+  # Use whitespace as separator
+  GIT_PROMPT_SEPARATOR=&amp;quot; &amp;quot;
+
+  # Skip remote branch
+  GIT_PROMPT_REMOTE=&amp;quot;${ResetColor}&amp;quot;
+  GIT_PROMPT_UPSTREAM=&amp;quot;${ResetColor}&amp;quot;
+
+  # Use yellow for the current branch
+  GIT_PROMPT_BRANCH=&amp;quot;${Yellow}&amp;quot;
+
+  # Use red and green for behind and ahead origin
+  GIT_PROMPT_SYMBOLS_BEHIND=&amp;quot;${Red} ↓&amp;quot;
+  GIT_PROMPT_SYMBOLS_AHEAD=&amp;quot;${Green} ↑&amp;quot;
+
+  # Add a few emojis to make it fun!
+  GIT_PROMPT_STAGED=&amp;quot;${Yellow}👍 &amp;quot;
+  GIT_PROMPT_CONFLICTS=&amp;quot;${Red}❌ &amp;quot;
+  GIT_PROMPT_CHANGED=&amp;quot;${Yellow}✏️ &amp;quot;
+  GIT_PROMPT_UNTRACKED=&amp;quot;❔ &amp;quot;
+  GIT_PROMPT_STASHED=&amp;quot;${Yellow}📦 &amp;quot; # A lot nicer than the default flag
+  GIT_PROMPT_CLEAN=&amp;quot;${ResetColor}✅ &amp;quot;  
+  GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING=&amp;quot; 🔒 &amp;quot; # Displayed for untracked brances
+
+  # Skip the default suffix
+  GIT_PROMPT_SUFFIX=&amp;quot; &amp;quot;
+
+  # Skip the default ending
+  GIT_PROMPT_END_USER=&amp;quot;${ResetColor}&amp;quot;
+  GIT_PROMPT_END_ROOT=&amp;quot;${ResetColor}&amp;quot;
+}
+
+reload_git_prompt_colors &amp;quot;Custom&amp;quot;
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ElMassimo/515d12ab6db95dbb233c.js&quot;&gt; &lt;/script&gt;
 
 &lt;p&gt;Emojis are a great way to make ye olde terminal a bit more fun! :tada:&lt;/p&gt;
 
