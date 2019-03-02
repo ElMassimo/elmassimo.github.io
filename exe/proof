@@ -1,17 +1,11 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # Build the site.
 `exe/build`
 
 # Check all the links in the site.
-require 'html/proofer'
+require 'html-proofer'
 
-class HtmlProofer < HTML::Proofer
-  def run
-    super
-    @failed_tests.empty?
-  end
-end
-
-valid = HtmlProofer.new('./_site', url_ignore: ['#']).run
+valid = HTMLProofer.check_directory('./_site', url_ignore: ['#']).run
 `exit 1` unless valid

@@ -24,7 +24,7 @@
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
-<link rel="icon" sizes="192x192" href="icon.png">
+<link rel="icon" sizes="192x192" href="/icon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
 <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
@@ -93,6 +93,22 @@
 <ul class="posts list">
 
   <li>
+    <a href="/posts/better-settings/" class="post overlay">
+      <div>
+        <span class="title ch">Better Settings in Ruby apps</span>
+        <span class="date ch">
+          <time datetime="2019-03-02T13:32:00-03:00" itemprop="datePublished">March 02, 2019</time>
+        </span>
+        
+          <p><span href="https://github.com/ElMassimo/better_settings"><em>BetterSettings</em></span> is a settings-management library for Ruby apps, which was
+designed in response to certain issues we faced when using <span href="https://github.com/hashrocket/settingslogic"><em>settingslogic</em></span>
+(one of the most popular…</p>
+        
+      </div>
+    </a>
+  </li>
+
+  <li>
     <a href="/posts/mongoid-aggregation-dsl/" class="post overlay">
       <div>
         <span class="title ch">Aggregation DSL in Mongoid</span>
@@ -102,8 +118,8 @@
         
           <p><em>Mongoid</em> provides support for <span href="https://docs.mongodb.com/manual/core/aggregation-pipeline/"><em>MongoDB’s Aggregation Framework</em></span>, but writing raw queries can be confusing and is extremely verbose:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="no">Product</span><span class="p">.</span><span class="nf">collection</span><span class="p">.</span><span class="nf">aggregate</span> <span class="p">[</span>
-  <span class="p">{</span> <span class="s1">'$match'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'country'</span> <span class="o">=&gt;</span> <span class="s1">'US'</span> <span class="p">}</span> <span class="p">},…</span></code></pre></div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Product</span><span class="p">.</span><span class="nf">collection</span><span class="p">.</span><span class="nf">aggregate</span> <span class="p">[</span>
+  <span class="p">{</span> <span class="s1">'$match'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'country'</span> <span class="o">=&gt;</span> <span class="s1">'US'</span> <span class="p">}</span> <span class="p">},…</span></code></pre></div></div>
         
       </div>
     </a>
@@ -208,7 +224,7 @@
       <div>
         <span class="title ch">CoffeeScript and JS Libraries</span>
         <span class="date ch">
-          <time datetime="2015-12-31T17:58:00-03:00" itemprop="datePublished">December 31, 2015</time>
+          <time datetime="2015-12-31T18:58:00-03:00" itemprop="datePublished">December 31, 2015</time>
         </span>
         
           <p>A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.</p>
@@ -224,7 +240,7 @@
       <div>
         <span class="title ch">Improving your Git Experience in Bash</span>
         <span class="date ch">
-          <time datetime="2015-12-14T16:46:00-03:00" itemprop="datePublished">December 14, 2015</time>
+          <time datetime="2015-12-14T17:46:00-03:00" itemprop="datePublished">December 14, 2015</time>
         </span>
         
           <p><em>Bash</em> is the default terminal for most Unix distributions, so it’s very appealing to get the best out of it. If you enjoy customizing your setup, you might want to try something like <span href="http://ohmyz.sh/">zsh</span> instead, which comes with similar functionality ou…</p>
@@ -238,7 +254,7 @@
       <div>
         <span class="title ch">Ruby & to_proc</span>
         <span class="date ch">
-          <time datetime="2015-12-07T18:22:00-03:00" itemprop="datePublished">December 07, 2015</time>
+          <time datetime="2015-12-07T19:22:00-03:00" itemprop="datePublished">December 07, 2015</time>
         </span>
         
           <p class="description"><p>Blocks are a very unique part of Ruby’s syntax, but sometimes it can be tedious to write a block to perform a simple method call. An extremely common idiom in Ruby uses symbols to specify the method that should be called, but.. how does it work?</p>
@@ -253,7 +269,7 @@
       <div>
         <span class="title ch">One Does Not Simply Extend Mongoid</span>
         <span class="date ch">
-          <time datetime="2015-11-30T21:46:00-03:00" itemprop="datePublished">November 30, 2015</time>
+          <time datetime="2015-11-30T22:46:00-03:00" itemprop="datePublished">November 30, 2015</time>
         </span>
         
           <p><em>Mongoid</em> is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to <em>monkey-patch</em> it.</p>
@@ -269,7 +285,7 @@
       <div>
         <span class="title ch">Avoiding the N+1 problem in Mongoid</span>
         <span class="date ch">
-          <time datetime="2015-10-30T18:30:00-03:00" itemprop="datePublished">October 30, 2015</time>
+          <time datetime="2015-10-30T19:30:00-03:00" itemprop="datePublished">October 30, 2015</time>
         </span>
         
           <p>One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!</p>
@@ -285,7 +301,7 @@
       <div>
         <span class="title ch">Breaking Mongoid Inheritance</span>
         <span class="date ch">
-          <time datetime="2015-10-12T22:29:00-03:00" itemprop="datePublished">October 12, 2015</time>
+          <time datetime="2015-10-12T23:29:00-03:00" itemprop="datePublished">October 12, 2015</time>
         </span>
         
           <p>By default, <span href="http://mongoid.github.io/"><em>Mongoid</em></span> will use <span href="http://martinfowler.com/eaaCatalog/singleTableInheritance.html">single-collection inheritance</span> when extending a Ruby class, by storing a <code class="highlighter-rouge">_type</code> attribute in every document in the collection that contains the concrete class name,…</p>

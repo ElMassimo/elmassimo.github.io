@@ -16,15 +16,15 @@
 <meta name="MobileOptimized" content="320">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="cleartype" content="on">
-<meta name="theme-color" content="#5C7E8F">
+<meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900%7CLato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
-<link rel="icon" sizes="192x192" href="icon.png">
+<link rel="icon" sizes="192x192" href="/icon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
 <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
@@ -41,13 +41,13 @@ A while ago I was working on a feature that required displaying information from
 
 <!-- Twitter Stuff -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:domain" value="maximomussini.com">
-<meta name="twitter:title" value="One Does Not Simply Extend Mongoid">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="One Does Not Simply Extend Mongoid" />
 <meta name="twitter:description" value="Mongoid is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to monkey-patch it.
 
-A while ago I was working on a feature that required displaying information from several mongodb collections. The performan…">
-<meta name="twitter:image" content="http://maximomussini.com/images/posts/mongoid_includes.jpg">
-<meta name="twitter:url" value="http://maximomussini.com/posts/mongoid_includes/">
+A while ago I was working on a feature that required displaying information from several mongodb collections. The performan…" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/mongoid_includes.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/mongoid_includes/" />
 
   </head>
   <body>
@@ -120,7 +120,7 @@ A while ago I was working on a feature that required displaying information from
 
 <p>After thinking about it for a while, I decided to give it a shot and come up with an extension to eager load polymorphic and nested associations, and do away with all the boilerplate that is necessary to perform eager loading.</p>
 
-<h2 id="mongoidincludes-gem">Mongoid::Includes <img class="emoji" title=":gem:" alt=":gem:" src="https://assets.github.com/images/icons/emoji/unicode/1f48e.png" height="20" width="20" align="absmiddle">
+<h2 id="mongoidincludes-gem">Mongoid::Includes <img class="emoji" title=":gem:" alt=":gem:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f48e.png" height="20" width="20">
 </h2>
 <p>When writing the library, I picked a few constraints in order to give the project a clear direction:</p>
 
@@ -152,7 +152,7 @@ A while ago I was working on a feature that required displaying information from
 
 <p><em>Mongoid’s</em> eager loading was written to work with queries, and assumes that the included documents will match an association on the model, so it relies on the association metadata to perform the includes. There is no simple way to reuse the logic without using relation metadata.</p>
 
-<p>The biggest downside though, is that there is no way to perform eager loading for a set of documents, since the code relies on the contract of <code class="highlighter-rouge">Mongoid::Criteria</code>. We can’t use eager loading if we triggered the query by using any <code class="highlighter-rouge">Enumerable</code> method, or got the models by aggregation or any in-memory operation <img class="emoji" title=":disappointed_relieved:" alt=":disappointed_relieved:" src="https://assets.github.com/images/icons/emoji/unicode/1f625.png" height="20" width="20" align="absmiddle"></p>
+<p>The biggest downside though, is that there is no way to perform eager loading for a set of documents, since the code relies on the contract of <code class="highlighter-rouge">Mongoid::Criteria</code>. We can’t use eager loading if we triggered the query by using any <code class="highlighter-rouge">Enumerable</code> method, or got the models by aggregation or any in-memory operation <img class="emoji" title=":disappointed_relieved:" alt=":disappointed_relieved:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f625.png" height="20" width="20"></p>
 
 <p>It would be a lot easier to extend <em>Mongoid’s</em> functionality if it had a more modular design. Adding support for plugins that can be attached to the query lifecycle would be a huge step in that direction—less patching means more and better extensions.</p>
 
@@ -163,11 +163,11 @@ A while ago I was working on a feature that required displaying information from
   <p>NOTE: Ecto does not lazy load associations. While lazily loading associations may sound convenient at first, in the long run it becomes a source of confusion and performance issues.</p>
 </blockquote>
 
-<p>As a long time <em>Mongoid</em> user, I can painfully relate to this statement. <a href="/posts/mongoid-n+1/">N+1 queries</a> are one of the fastest ways to degrade performance, and lazy loading associations makes it a lot easier to introduce them by accident. By not implementing lazy loading, the library becomes a lot simpler, and it encourages good practices and efficient data access patterns <img class="emoji" title=":tropical_drink:" alt=":tropical_drink:" src="https://assets.github.com/images/icons/emoji/unicode/1f379.png" height="20" width="20" align="absmiddle"></p>
+<p>As a long time <em>Mongoid</em> user, I can painfully relate to this statement. <a href="/posts/mongoid-n+1/">N+1 queries</a> are one of the fastest ways to degrade performance, and lazy loading associations makes it a lot easier to introduce them by accident. By not implementing lazy loading, the library becomes a lot simpler, and it encourages good practices and efficient data access patterns <img class="emoji" title=":tropical_drink:" alt=":tropical_drink:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f379.png" height="20" width="20"></p>
 
 <p>Ecto also allows you to modify which models will be included for an association—like the <code class="highlighter-rouge">:with</code> option in <a href="https://github.com/ElMassimo/mongoid_includes"><code class="highlighter-rouge">mongoid_includes</code></a>—and you can also preload associations on a given model or models after they have been fetched from the database using the <a href="http://hexdocs.pm/ecto/Ecto.Repo.html#c:preload/2"><code class="highlighter-rouge">Repo.preload/2</code></a> method. So much win!</p>
 
-<p>Playing with Ecto inspired me to keep looking for a better solution for eager loading in <em>Mongoid</em>. <code class="highlighter-rouge">Mongoid::Includes</code> solves the first two limitations, but wouldn’t it be great if we could preload documents without a query? <img class="emoji" title=":wink:" alt=":wink:" src="https://assets.github.com/images/icons/emoji/unicode/1f609.png" height="20" width="20" align="absmiddle"></p>
+<p>Playing with Ecto inspired me to keep looking for a better solution for eager loading in <em>Mongoid</em>. <code class="highlighter-rouge">Mongoid::Includes</code> solves the first two limitations, but wouldn’t it be great if we could preload documents without a query? <img class="emoji" title=":wink:" alt=":wink:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f609.png" height="20" width="20"></p>
 
   </div>
 

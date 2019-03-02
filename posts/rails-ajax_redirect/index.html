@@ -16,15 +16,15 @@
 <meta name="MobileOptimized" content="320">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="cleartype" content="on">
-<meta name="theme-color" content="#5C7E8F">
+<meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900%7CLato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
-<link rel="icon" sizes="192x192" href="icon.png">
+<link rel="icon" sizes="192x192" href="/icon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
 <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
@@ -43,15 +43,15 @@ This is helpful in many different scenarios, and ju…">
 
 <!-- Twitter Stuff -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:domain" value="maximomussini.com">
-<meta name="twitter:title" value="Redirecting AJAX requests in Rails">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Redirecting AJAX requests in Rails" />
 <meta name="twitter:description" value="jquery-rails powers links and forms in Rails: it’s what makes remote: true work, allowing any link to make an AJAX request unobtrusively.
 
 rails-ajax_redirect is an extension to this unobtrusive behaviour that adds AJAX support to redirect_to. It allows us to redirect an AJAX request as usual, instead of having to perform the redirect by handling the response manually in JS every time.
 
-This is helpful in many different scenarios, and ju…">
-<meta name="twitter:image" content="http://maximomussini.com/images/posts/rails-ajax_redirect.jpg">
-<meta name="twitter:url" value="http://maximomussini.com/posts/rails-ajax_redirect/">
+This is helpful in many different scenarios, and ju…" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/rails-ajax_redirect.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/rails-ajax_redirect/" />
 
   </head>
   <body>
@@ -114,7 +114,7 @@ This is helpful in many different scenarios, and ju…">
 <p><a href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="highlighter-rouge">Rails::AjaxRedirect</code></a> extends <code class="highlighter-rouge">redirect_to</code> to use a custom status code for ajax
 requests, while still setting the <code class="highlighter-rouge">Location</code> header. On the front-end, it adds a handler for the <code class="highlighter-rouge">ajax:success</code> event, that navigates to the location in the header for responses that have the custom status code.</p>
 
-<p>This makes it possible to write a simple redirect as usual, but without having to handle it manually every time <img class="emoji" title=":smiley:" alt=":smiley:" src="https://assets.github.com/images/icons/emoji/unicode/1f603.png" height="20" width="20" align="absmiddle"></p>
+<p>This makes it possible to write a simple redirect as usual, but without having to handle it manually every time <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20"></p>
 
 <h2 id="turbolinks">Turbolinks</h2>
 <p>If your application uses <a href="https://github.com/rails/turbolinks"><em>Turbolinks</em></a> check out <a href="https://github.com/remind101/turbolinks-redirect"><code class="highlighter-rouge">turbolinks-redirect</code></a>, on which <a href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="highlighter-rouge">rails-ajax_redirect</code></a> is based on. The advantage is that it will perform faster navigation by leveraging <em>Turbolinks</em> to visit the new location.</p>
@@ -125,8 +125,8 @@ requests, while still setting the <code class="highlighter-rouge">Location</code
 <figure class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">app</span><span class="p">.</span><span class="na">config</span> <span class="p">(</span><span class="nx">$httpProvider</span><span class="p">)</span> <span class="o">-&gt;</span>
   <span class="nx">$httpProvider</span><span class="p">.</span><span class="na">interceptors</span><span class="p">.</span><span class="na">push</span> <span class="s">'AjaxRedirectInterceptor'</span>
 
-  <span class="c1"># Add a header to let Rails know that it's an Ajax request.
-</span>  <span class="nx">$httpProvider</span><span class="p">.</span><span class="na">defaults</span><span class="p">.</span><span class="na">headers</span><span class="p">.</span><span class="na">common</span><span class="p">[</span><span class="s">'X-REQUESTED-WITH'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'XMLHttpRequest'</span>
+  <span class="c1"># Add a header to let Rails know that it's an Ajax request.</span>
+  <span class="nx">$httpProvider</span><span class="p">.</span><span class="na">defaults</span><span class="p">.</span><span class="na">headers</span><span class="p">.</span><span class="na">common</span><span class="p">[</span><span class="s">'X-REQUESTED-WITH'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'XMLHttpRequest'</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="na">service</span> <span class="s">'AjaxRedirectInterceptor'</span><span class="p">,</span> <span class="p">(</span><span class="nx">$window</span><span class="p">,</span> <span class="nx">$location</span><span class="p">,</span> <span class="nx">$q</span><span class="p">)</span> <span class="o">-&gt;</span>
   <span class="nx">interceptor</span> <span class="o">=</span>

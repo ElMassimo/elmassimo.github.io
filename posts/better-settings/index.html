@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Better Settings in Ruby apps · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+<meta name="theme-color" content="#5C7E8F" />
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="icon" sizes="192x192" href="/icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/better-settings/">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Better Settings in Ruby apps">
+<meta property="og:image" content="http://maximomussini.com/images/posts/better-settings.jpg">
+<meta property="og:description" content="BetterSettings is a settings-management library for Ruby apps, which was
+designed in response to certain issues we faced when using settingslogic
+(one of the most popular libraries to manage settings in Rails applications).
+
+In this post we’ll talk about settingslogic and its design decisions, how they
+affect reliability, and how we can overcome them.
+
+Even if you are not familiar with these libraries, reading this article might
+help you to learn about potentially harmful practic…">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Better Settings in Ruby apps" />
+<meta name="twitter:description" value="BetterSettings is a settings-management library for Ruby apps, which was
+designed in response to certain issues we faced when using settingslogic
+(one of the most popular libraries to manage settings in Rails applications).
+
+In this post we’ll talk about settingslogic and its design decisions, how they
+affect reliability, and how we can overcome them.
+
+Even if you are not familiar with these libraries, reading this article might
+help you to learn about potentially harmful practic…" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/better-settings.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/better-settings/" />
+
+  </head>
+  <body>
+    <header>
+  
+    <div class="hero" style="background-image: url(/images/posts/better-settings.jpg)">
+      <h1>Better Settings in Ruby apps</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr />
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">March 02, 2019</span>
+  <span class="reading-time">7 min read</span>
+</div>
+
+
+  <div class="post">
+    <p><a href="https://github.com/ElMassimo/better_settings"><em>BetterSettings</em></a> is a settings-management library for Ruby apps, which was
+designed in response to certain issues we faced when using <a href="https://github.com/hashrocket/settingslogic"><em>settingslogic</em></a>
+(one of the most popular libraries to manage settings in Rails applications).</p>
+
+<p>In this post we’ll talk about <em>settingslogic</em> and its design decisions, how they
+affect reliability, and how we can overcome them.</p>
+
+<p>Even if you are not familiar with these libraries, reading this article might
+help you to learn about potentially harmful practices, and how to avoid them in
+your own code.</p>
+
+<h2 id="settingslogic">Settingslogic</h2>
+<p><em>Settingslogic</em> can read a <em>.yml</em> file and turn it into a Ruby object, which
+provides access to settings by indexing it as a Hash, or by using method calls.</p>
+
+<h3 id="settings-can-be-modified">Settings can be modified</h3>
+<p>The library aims to be flexible, by allowing to create a setting that is not
+present in the file or modify an existing one, by using:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Settings</span><span class="p">[</span><span class="s1">'property'</span><span class="p">]</span> <span class="o">||=</span> <span class="s1">'value'</span>
+</code></pre></div></div>
+
+<p>Although it might seem like a good idea, this behavior introduces uncertainty
+about whether a setting will be available or not when accessing it, and the
+value it might have, since that depends on the execution order of the program.</p>
+
+<p>Because the library is not thread-safe, modifying settings makes them suceptible
+to race conditions in multi-threaded apps or multi-threaded app containers.</p>
+
+<h3 id="values-are-mutable">Values are mutable</h3>
+<p>Even when not creating or modifying a setting at runtime, the values read from
+the <em>.yml</em> file can be accidentally modified since the settings are not frozen
+(specially <code class="highlighter-rouge">String</code>, <code class="highlighter-rouge">Hash</code>, and <code class="highlighter-rouge">Array</code> values).</p>
+
+<p>For example, when working with a <code class="highlighter-rouge">Hash</code> or <code class="highlighter-rouge">Array</code> setting, calling <code class="highlighter-rouge">merge!</code> or
+<code class="highlighter-rouge">push</code> causes the setting to be changed on every subsequent access, which can
+have unpredictable consequences in the application.</p>
+
+<p>These accidental mutations are usually very hard to detect, and can cause bugs
+that are difficult to replicate and track down.</p>
+
+<p>Writing code carefully to avoid mutating the data structures is not enough,
+since we have no guarantee that third-party libraries will be as careful. To
+solve this we would need to always clone settings before handing them over,
+which is cumbersome and error-prone.</p>
+
+<h3 id="limited-to-a-single-file">Limited to a single file</h3>
+<p>Only one <em>.yml</em> file can be specified, so there’s no way to read configuration
+from multiple files. Because settings are necessary to run the application, it’s
+important that the file is versioned under source control.</p>
+
+<p>In our case, this meant that when developers changed a setting based on their
+local setup, or to perform a manual test, they had to manually skip it when
+making a commit.</p>
+
+<p>As a result, many times a developer would accidentally push these changes that
+should not be merged upstream, and we had to be on the lookout during code
+reviews to prevent unwanted changes.</p>
+
+<h3 id="error-prone-design">Error-prone design</h3>
+<p>These problems we experienced with <em>settingslogic</em>, related with reliability and
+collaboration, are a consequence of the design decisions in the library.</p>
+
+<p>The library defaults are troublesome, such as deferring the load of the <em>.yml</em>
+file until the settings are accessed, making it possible for an app to start
+successfully and fail later at runtime.</p>
+
+<p>In the end, it has the same disadvantages of simpler approaches, like using a
+plain <code class="highlighter-rouge">OpenStruct</code> to manage settings.</p>
+
+<h2 id="a-better-way">A <em>Better</em> Way</h2>
+<p>With that in mind, we decided to design a new solution from scratch, that could
+handle these shortcomings, and actively prevent bugs and misusage.</p>
+
+<p>The result is <a href="https://github.com/ElMassimo/better_settings"><em><code class="highlighter-rouge">BetterSettings</code></em></a>, designed after the following concerns:</p>
+
+<ul>
+  <li><strong>Predictability</strong>: Once created, settings can not be added or modified, which
+prevents race conditions and makes usage safe and predictable.</li>
+  <li><strong>Immutability</strong>: All setting values are frozen, preventing an entire category
+of bugs related to accidental mutation.</li>
+  <li><strong>Multiple sources</strong>: Settings can be read from different files. This allows
+to split settings as needed, or create additional files for development purposes.</li>
+  <li><strong>Better errors</strong>: Accessing a missing setting is treated as an error, helping
+developers to easily detect typos and other mistakes with a clear error message.</li>
+  <li><strong>Fail-fast</strong>: Source files should be eager loaded by default, so that
+problems in the environment are detected during deployment.</li>
+</ul>
+
+<p>The setup for the <em>.yml</em> file is very similar to <em>settingslogic</em>, you can find
+more information and examples in the <a href="https://github.com/ElMassimo/better_settings">README</a>.</p>
+
+<h3 id="reading-from-multiple-files-">Reading from multiple files ⚙</h3>
+<p>Not being limited to a single source file opens up the possiblities.</p>
+
+<p>We usually read two optional files: <code class="highlighter-rouge">development.yml</code> and <code class="highlighter-rouge">test.yml</code> that are
+loaded in the <em>development</em> and <em>test</em> environments respectively, allowing each
+developer to easily override settings in their local setup.</p>
+
+<p>In a Rails app with the typical setup, the configuration looks like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Settings</span> <span class="o">&lt;</span> <span class="no">BetterSettings</span>
+  <span class="n">source</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">'config/application.yml'</span><span class="p">),</span> <span class="ss">namespace: </span><span class="no">Rails</span><span class="p">.</span><span class="nf">env</span>
+
+  <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">development?</span>
+    <span class="n">source</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">'config/development.yml'</span><span class="p">),</span> <span class="ss">namespace: </span><span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">,</span> <span class="ss">optional: </span><span class="kp">true</span>
+  <span class="k">end</span>
+
+  <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">test?</span>
+    <span class="n">source</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">'config/test.yml'</span><span class="p">),</span> <span class="ss">namespace: </span><span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">,</span> <span class="ss">optional: </span><span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Having a <code class="highlighter-rouge">development.yml</code> file comes in handy when making changes that should
+not be shared, such as a temporary change to test a different configuration, or
+a permanent one that is only relevant in a specific local setup (such as
+different host names or port numbers).</p>
+
+<p>This could also be achieved by reading environment variables (<a href="#environment-variables">see the next
+section</a>), but for development using an optional file is
+more convenient, as it’s located in the same folder than the main one, and
+settings can be copied and tweaked.</p>
+
+<p>On the other hand, <code class="highlighter-rouge">test.yml</code> makes it possible to configure tests to run with a
+different formatter for the results, or configure optional behavior, like
+automatically opening the screenshots that are captured when integration tests
+fail.</p>
+
+<p>This flexibility enables us to provide awesome defaults, while still allowing
+everyone to modify the configuration according to their personal preference or
+local setup, without having to worry about pushing those changes by accident.</p>
+
+<h3 id="environment-variables">Environment Variables</h3>
+<p>In server environments, such as <em>staging</em> and <em>production</em>, we use environment
+variables for any sensitive information, such as passwords.</p>
+
+<p>In order to ensure that missing environment variables are quickly detected, we
+use this simple helper:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Env</span>
+  <span class="c1"># Public: Read an environment variable by name.</span>
+  <span class="c1"># NOTE: Defaults are only used in the development and test environments.</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">require</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">development?</span> <span class="o">||</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">test?</span>
+      <span class="no">ENV</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="no">ENV</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="nf">first</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>and then in <code class="highlighter-rouge">application.yml</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">mailer</span><span class="pi">:</span> <span class="s">&lt;%= Env.require('MAILER_PORT', 587) %&gt;</span>
+</code></pre></div></div>
+
+<p>By using this helper, we can be very <em>strict on servers</em>－where we need
+everything to be configured (such as hosts, ports, and third-party integrations)－and
+<em>lenient in development</em>－where we can just provide a default value and then
+override it by using <code class="highlighter-rouge">development.yml</code> if necessary.</p>
+
+<p>We prefer this pattern over using <code class="highlighter-rouge">ENV.fetch</code> with a default value as a
+fallback, since that would cover up a missing environment variable in the servers.</p>
+
+<h2 id="summary">Summary</h2>
+<p>So there you have it, <a href="https://github.com/ElMassimo/better_settings"><em>BetterSettings</em></a> is a settings solution
+for Ruby apps that encourages good practices, is friendlier for team
+collaboration and source-control, and prevents bugs.</p>
+
+<p><a href="https://github.com/ElMassimo/better_settings"><em><code class="highlighter-rouge">BetterSettings</code></em></a>: simple, immutable, better.</p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/mongoid-aggregation-dsl/" class="overlay">
+        <h1>Aggregation DSL in Mongoid</h1>
+        <div class="post-info">
+  <span class="date">June 30, 2016</span>
+  <span class="reading-time">2 min read</span>
+</div>
+
+        <div class="post">
+          <p><em>Mongoid</em> provides support for <span href="https://docs.mongodb.com/manual/core/aggregation-pipeline/"><em>MongoDB’s Aggregation Framework</em></span>, but writing raw queries can be confusing and is extremely verbose:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Product</span><span class="p">.</span><span class="nf">collection</span><span class="p">.</span><span class="nf">aggregate</span> <span class="p">[</span>
+  <span class="p">{</span> <span class="s1">'$match'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'country'</span> <span class="o">=&gt;</span> <span class="s1">'US'</span> <span class="p">}</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="s1">'$project'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'categories'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="s1">'$unwind'</span> <span class="o">=&gt;</span> <span class="s1">'$category_ids'</span> <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s1">'$group'</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="s1">'_id'</span> <span class="o">=&gt;</span> <span class="s1">'$category_ids'</span><span class="p">,</span>
+      <span class="s1">'avg_price'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'$avg'</span> <span class="o">=&gt;</span> <span class="s1">'$price'</span> <span class="p">}</span>
+    <span class="p">}</span>
+  …</code></pre></div></div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>

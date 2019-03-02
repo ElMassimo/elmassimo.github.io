@@ -16,15 +16,15 @@
 <meta name="MobileOptimized" content="320">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="cleartype" content="on">
-<meta name="theme-color" content="#5C7E8F">
+<meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900%7CLato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
-<link rel="icon" sizes="192x192" href="icon.png">
+<link rel="icon" sizes="192x192" href="/icon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
 <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
@@ -40,12 +40,12 @@
 
 <!-- Twitter Stuff -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:domain" value="maximomussini.com">
-<meta name="twitter:title" value="Optimizing AngularJS performance with events">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Optimizing AngularJS performance with events" />
 <meta name="twitter:description" value="In this post we take a look at effective ways to reduce the amount of watchers in our AngularJS application and improve the performance of our app.
-">
-<meta name="twitter:image" content="http://maximomussini.com/images/posts/angular-less-watchers.jpg">
-<meta name="twitter:url" value="http://maximomussini.com/posts/angular-less-watchers/">
+" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/angular-less-watchers.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/angular-less-watchers/" />
 
   </head>
   <body>
@@ -110,17 +110,15 @@
 <h2 id="one-time-bindings">One-Time Bindings</h2>
 <p>One of the most convenient techniques that we have to reduce the amount of watchers is the use of <em>one-time bindings</em>. Any expression that starts with <code class="highlighter-rouge">::</code> is considered a <em>one-time expression</em>.</p>
 
-<div class="highlighter-rouge">
-<pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">ng-repeat=</span><span class="s">"user in ::users"</span><span class="nt">&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">ng-repeat=</span><span class="s">"user in ::users"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;h1&gt;</span>{{ ::user.name }}<span class="nt">&lt;/h1&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><em>Angular</em> will remove a <em>one-time expression</em> from the watch list once it has been <a href="https://docs.angularjs.org/guide/expression#value-stabilization-algorithm">resolved</a>, unlike normal expressions which are evaluated on every digest cycle.</p>
 
 <blockquote>
-  <p>If the expression will not change once set, it is a candidate for one-time binding. For example, internationalization <img class="emoji" title=":uk:" alt=":uk:" src="https://assets.github.com/images/icons/emoji/unicode/1f1ec-1f1e7.png" height="20" width="20" align="absmiddle"> <img class="emoji" title=":es:" alt=":es:" src="https://assets.github.com/images/icons/emoji/unicode/1f1ea-1f1f8.png" height="20" width="20" align="absmiddle"></p>
+  <p>If the expression will not change once set, it is a candidate for one-time binding. For example, internationalization <img class="emoji" title=":uk:" alt=":uk:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1ec-1f1e7.png" height="20" width="20"> <img class="emoji" title=":es:" alt=":es:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1ea-1f1f8.png" height="20" width="20"></p>
 </blockquote>
 
 <p>As a result, we have less expressions being watched, which makes the digest loop faster, increases the responsiveness of the app, and allows more information to be displayed at the same time.</p>
@@ -132,19 +130,16 @@
 
 <p>A technique that I have been using in pages where performance is critical is <em>event-driven recompilation</em>.</p>
 
-<div class="highlighter-rouge">
-<pre class="highlight"><code><span class="nt">&lt;h1</span> <span class="na">recompile-on=</span><span class="s">"user:changed"</span><span class="nt">&gt;</span>{{ ::user.name }}<span class="nt">&lt;/h1&gt;</span>
-</code></pre>
-</div>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h1</span> <span class="na">recompile-on=</span><span class="s">"user:changed"</span><span class="nt">&gt;</span>{{ ::user.name }}<span class="nt">&lt;/h1&gt;</span>
+</code></pre></div></div>
 
 <p>This technique has three key aspects: one-time expressions, compilation, and event propagation. Let’s see how the <code class="highlighter-rouge">recompileOn</code> directive could be written:</p>
 
-<div class="highlighter-rouge">
-<pre class="highlight"><code><span class="c1"># Public: Recompiles an element if an event occurs.
-#
-# NOTE: Do not use in combination with ng-if or ng-repeat, unless a one-time
-# binding is used in the expression.
-</span><span class="nx">app</span><span class="p">.</span><span class="na">directive</span> <span class="s">'recompileOn'</span><span class="p">,</span> <span class="p">(</span><span class="nx">$compile</span><span class="p">)</span> <span class="o">-&gt;</span>
+<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Public: Recompiles an element if an event occurs.</span>
+<span class="c1">#</span>
+<span class="c1"># NOTE: Do not use in combination with ng-if or ng-repeat, unless a one-time</span>
+<span class="c1"># binding is used in the expression.</span>
+<span class="nx">app</span><span class="p">.</span><span class="na">directive</span> <span class="s">'recompileOn'</span><span class="p">,</span> <span class="p">(</span><span class="nx">$compile</span><span class="p">)</span> <span class="o">-&gt;</span>
   <span class="nx">directive</span> <span class="o">=</span>
     <span class="na">scope</span><span class="o">:</span> <span class="no">true</span>
     <span class="na">priority</span><span class="o">:</span> <span class="mi">5</span>
@@ -153,36 +148,33 @@
       <span class="nx">html</span> <span class="o">=</span> <span class="nx">element</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="na">outerHTML</span>
 
       <span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="nx">element</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span> <span class="o">-&gt;</span>
-        <span class="c1"># Internal: Will trigger a recompilation if the event is triggered.
-</span>        <span class="nx">recompileOnEvent</span> <span class="o">=</span> <span class="p">(</span><span class="nx">eventName</span><span class="p">)</span> <span class="o">-&gt;</span>
+        <span class="c1"># Internal: Will trigger a recompilation if the event is triggered.</span>
+        <span class="nx">recompileOnEvent</span> <span class="o">=</span> <span class="p">(</span><span class="nx">eventName</span><span class="p">)</span> <span class="o">-&gt;</span>
           <span class="nx">scope</span><span class="p">.</span><span class="na">$on</span> <span class="nx">eventName</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">-&gt;</span>
-            <span class="c1"># Remove the previously added listener, if any.
-</span>            <span class="nx">removeListener</span><span class="o">?</span><span class="p">()</span>
+            <span class="c1"># Remove the previously added listener, if any.</span>
+            <span class="nx">removeListener</span><span class="o">?</span><span class="p">()</span>
 
-            <span class="c1"># Replace the element after the digest loop that triggered the event has ended.
-</span>            <span class="nx">scope</span><span class="p">.</span><span class="na">$evalAsync</span> <span class="o">-&gt;</span>
+            <span class="c1"># Replace the element after the digest loop that triggered the event has ended.</span>
+            <span class="nx">scope</span><span class="p">.</span><span class="na">$evalAsync</span> <span class="o">-&gt;</span>
               <span class="nx">newEl</span> <span class="o">=</span> <span class="nx">$compile</span><span class="p">(</span><span class="nx">html</span><span class="p">)(</span><span class="nx">scope</span><span class="p">.</span><span class="na">$parent</span><span class="p">)</span>
               <span class="nx">element</span><span class="p">.</span><span class="na">replaceWith</span><span class="p">(</span><span class="nx">newEl</span><span class="p">)</span>
 
-              <span class="c1"># Destroy the old scope, since a new one was created by using compile.
-</span>              <span class="nx">scope</span><span class="p">.</span><span class="na">$destroy</span><span class="p">()</span>
+              <span class="c1"># Destroy the old scope, since a new one was created by using compile.</span>
+              <span class="nx">scope</span><span class="p">.</span><span class="na">$destroy</span><span class="p">()</span>
 
         <span class="nx">removeListener</span> <span class="o">=</span> <span class="nx">recompileOnEvent</span><span class="p">(</span><span class="nx">attrs</span><span class="p">.</span><span class="na">recompileOn</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>The directive will listen for a particular event on the current <em>scope</em>, and force a recompilation of the element when the event is triggered. This means that every directive inside the element will be processed from scratch, including our <em>one-time expressions</em>.</p>
 
 <p>Events can be triggered as usual:</p>
 
-<div class="highlighter-rouge">
-<pre class="highlight"><code><span class="nx">$scope</span><span class="p">.</span><span class="na">$broadcast</span><span class="p">(</span><span class="s">'user:changed'</span><span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$scope</span><span class="p">.</span><span class="na">$broadcast</span><span class="p">(</span><span class="s">'user:changed'</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h2 id="conclusion">Conclusion</h2>
 <p>One-time bindings provide a very efficient way to render dynamic values once without taking up watchers, while <code class="highlighter-rouge">$on</code> and <code class="highlighter-rouge">$compile</code> provide a helpful way to render from scratch when we need to. This combination works very well for complex pages where the amount of watchers is taking a toll on performance.</p>
 
-<p>There are many variations that we can introduce to the implementation of <code class="highlighter-rouge">recompileOn</code>, such as allowing to pass several event names, or checking the event arguments for a specific value, such as an id. We can take this idea as far as we want to <img class="emoji" title=":rocket:" alt=":rocket:" src="https://assets.github.com/images/icons/emoji/unicode/1f680.png" height="20" width="20" align="absmiddle"></p>
+<p>There are many variations that we can introduce to the implementation of <code class="highlighter-rouge">recompileOn</code>, such as allowing to pass several event names, or checking the event arguments for a specific value, such as an id. We can take this idea as far as we want to <img class="emoji" title=":rocket:" alt=":rocket:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f680.png" height="20" width="20"></p>
 
 <p>As with any optimization, it’s important to consider whether the performance improvement justifies the additional complexity. Use it wisely!</p>
 

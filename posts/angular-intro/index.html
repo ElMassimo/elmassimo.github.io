@@ -16,15 +16,15 @@
 <meta name="MobileOptimized" content="320">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="cleartype" content="on">
-<meta name="theme-color" content="#5C7E8F">
+<meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900%7CLato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
-<link rel="icon" sizes="192x192" href="icon.png">
+<link rel="icon" sizes="192x192" href="/icon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
 <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
@@ -40,12 +40,12 @@
 
 <!-- Twitter Stuff -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:domain" value="maximomussini.com">
-<meta name="twitter:title" value="AngularJS: Watchers and the Digest Cycle">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="AngularJS: Watchers and the Digest Cycle" />
 <meta name="twitter:description" value="AngularJS might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through Angular’s internals: watchers and the digest cycle.
-">
-<meta name="twitter:image" content="http://maximomussini.com/images/posts/angular-intro.jpg">
-<meta name="twitter:url" value="http://maximomussini.com/posts/angular-intro/">
+" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/angular-intro.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/angular-intro/" />
 
   </head>
   <body>
@@ -104,13 +104,11 @@
 <h2 id="bindings-and-watchers">Bindings and Watchers</h2>
 <p>One of the most useful features in <em>AngularJS</em> are data-bindings, which allow us to bind a model or property to a view; whenever the model changes, the view is updated automatically.</p>
 
-<div class="highlighter-rouge">
-<pre class="highlight"><code><span class="nt">&lt;input</span> <span class="na">ng-model=</span><span class="s">"user.name"</span> <span class="na">type=</span><span class="s">"text"</span> <span class="nt">/&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;input</span> <span class="na">ng-model=</span><span class="s">"user.name"</span> <span class="na">type=</span><span class="s">"text"</span> <span class="nt">/&gt;</span>
 <span class="nt">&lt;h1&gt;</span>{{ user.name }}<span class="nt">&lt;/h1&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>How does that work? When you write an expression like <code class="highlighter-rouge"><span class="p">{</span><span class="err">{</span><span class="w"> </span><span class="err">user.name</span><span class="w"> </span><span class="p">}</span><span class="err">}</span></code>, <em>Angular</em> creates a <em>watcher</em> that observes the <code class="highlighter-rouge">user.name</code> property, which will be triggered whenever the model changes, allowing <em>Angular</em> to update the view content.</p>
+<p>How does that work? When you write an expression like <code class="highlighter-rouge">{{ user.name }}</code>, <em>Angular</em> creates a <em>watcher</em> that observes the <code class="highlighter-rouge">user.name</code> property, which will be triggered whenever the model changes, allowing <em>Angular</em> to update the view content.</p>
 
 <p>We can also create watchers manually and execute arbitrary code when the model changes:</p>
 
@@ -139,7 +137,7 @@
 </blockquote>
 
 <h2 id="repeat-the-digest-cycle">
-<img class="emoji" title=":repeat:" alt=":repeat:" src="https://assets.github.com/images/icons/emoji/unicode/1f501.png" height="20" width="20" align="absmiddle"> The Digest Cycle</h2>
+<img class="emoji" title=":repeat:" alt=":repeat:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f501.png" height="20" width="20"> The Digest Cycle</h2>
 <p>And it’s in the <a href="https://docs.angularjs.org/api/ng/type/%24rootScope.Scope#%24digest"><code class="highlighter-rouge">$digest</code></a> cycle where every watcher in the watch list is evaluated, and the changes propagated to the <em>listeners</em>.</p>
 
 <p>This cycle starts as a result of a call to <code class="highlighter-rouge">$scope.$digest()</code>, which often happens as a result of an action performed by the user. For example, clicking an element with the <code class="highlighter-rouge">ng-click</code> directive will explicitly call <code class="highlighter-rouge">$scope.$digest()</code> and start the loop.</p>
@@ -151,7 +149,7 @@
 </blockquote>
 
 <h2 id="crown-keep-calm-and-digest">
-<img class="emoji" title=":crown:" alt=":crown:" src="https://assets.github.com/images/icons/emoji/unicode/1f451.png" height="20" width="20" align="absmiddle"> Keep Calm and Digest</h2>
+<img class="emoji" title=":crown:" alt=":crown:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f451.png" height="20" width="20"> Keep Calm and Digest</h2>
 <p>Once <em>Angular</em> has run through the entire watch list, if any value changed, it will start a new digest cycle until no model is changed and no watchers are triggered.</p>
 
 <p>Why does it run the loop all over again? Because any <code class="highlighter-rouge">$watch</code> listener could change the value of an expression that was evaluated earlier in the digest loop, so <em>Angular</em> wouldn’t be able to detect and propagate that change.</p>
@@ -173,7 +171,7 @@
 
 <p>While watchers are a very useful feature, the digest cycle implementation takes a brute force approach, which makes it almost magical at times, but is inefficient and can cause performance problems in complex applications.</p>
 
-<p>In the next post, we will take a look at some techniques that help to reduce the amount of watchers and improve the performance of our app. Stay tuned! <img class="emoji" title=":smiley:" alt=":smiley:" src="https://assets.github.com/images/icons/emoji/unicode/1f603.png" height="20" width="20" align="absmiddle"></p>
+<p>In the next post, we will take a look at some techniques that help to reduce the amount of watchers and improve the performance of our app. Stay tuned! <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20"></p>
 
   </div>
 

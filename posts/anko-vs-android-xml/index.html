@@ -24,7 +24,7 @@
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
-<link rel="icon" sizes="192x192" href="icon.png">
+<link rel="icon" sizes="192x192" href="/icon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
 <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
@@ -107,174 +107,174 @@ A big part of…" />
 
 <p>I decided to take the DSL for a test drive by rewriting the “Navigation Drawer Activity” template from <em>AndroidStudio</em>, replacing some of the XML layouts with the <em>Anko DSL</em>.</p>
 
-<p><img src="/images/posts/anko-vs-android-xml/navigation-drawer-activity-template.png" alt="Alt" class="" /></p>
+<p><img src="/images/posts/anko-vs-android-xml/navigation-drawer-activity-template.png" alt="Android Studio Activity Wizard" class="" /></p>
 
 <p>We can define an <code class="highlighter-rouge">AnkoComponent</code> to create the UI:</p>
 
-<figure class="highlight"><pre><code class="language-kotlin" data-lang="kotlin">package com.maximomussini.anko
+<figure class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="k">package</span> <span class="nn">com.maximomussini.anko</span>
 
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.GravityCompat
-import android.util.TypedValue
-import android.view.Gravity
-import android.view.View
-import com.maximomussini.anko.util.snackbar
-import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.toolbar
-import org.jetbrains.anko.design.appBarLayout
-import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.design.floatingActionButton
-import org.jetbrains.anko.design.navigationView
-import org.jetbrains.anko.support.v4._DrawerLayout
-import org.jetbrains.anko.support.v4.drawerLayout
+<span class="k">import</span> <span class="nn">android.support.design.widget.AppBarLayout</span>
+<span class="k">import</span> <span class="nn">android.support.design.widget.Snackbar</span>
+<span class="k">import</span> <span class="nn">android.support.v4.content.ContextCompat</span>
+<span class="k">import</span> <span class="nn">android.support.v4.view.GravityCompat</span>
+<span class="k">import</span> <span class="nn">android.util.TypedValue</span>
+<span class="k">import</span> <span class="nn">android.view.Gravity</span>
+<span class="k">import</span> <span class="nn">android.view.View</span>
+<span class="k">import</span> <span class="nn">com.maximomussini.anko.util.snackbar</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.*</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.appcompat.v7.toolbar</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.design.appBarLayout</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.design.coordinatorLayout</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.design.floatingActionButton</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.design.navigationView</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.support.v4._DrawerLayout</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.support.v4.drawerLayout</span>
 
-class MainUI : AnkoComponent&lt;MainActivity&gt; {
+<span class="kd">class</span> <span class="nc">MainUI</span> <span class="p">:</span> <span class="n">AnkoComponent</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;</span> <span class="p">{</span>
 
-    override fun createView(ui: AnkoContext&lt;MainActivity&gt;): View = with(ui) {
-        drawerLayout {
-            id = R.id.drawer
-            fitsSystemWindows = true
-            createAppBar(ui)
-            createNavigationView(ui)
-        }
-    }
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">createView</span><span class="p">(</span><span class="n">ui</span><span class="p">:</span> <span class="n">AnkoContext</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;):</span> <span class="n">View</span> <span class="p">=</span> <span class="n">with</span><span class="p">(</span><span class="n">ui</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">drawerLayout</span> <span class="p">{</span>
+            <span class="n">id</span> <span class="p">=</span> <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">drawer</span>
+            <span class="n">fitsSystemWindows</span> <span class="p">=</span> <span class="k">true</span>
+            <span class="n">createAppBar</span><span class="p">(</span><span class="n">ui</span><span class="p">)</span>
+            <span class="n">createNavigationView</span><span class="p">(</span><span class="n">ui</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 
-    fun _DrawerLayout.createAppBar(ui: AnkoContext&lt;MainActivity&gt;) {
-        coordinatorLayout {
-            fitsSystemWindows = true
+    <span class="k">fun</span> <span class="nf">_DrawerLayout</span><span class="p">.</span><span class="n">createAppBar</span><span class="p">(</span><span class="n">ui</span><span class="p">:</span> <span class="n">AnkoContext</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;)</span> <span class="p">{</span>
+        <span class="n">coordinatorLayout</span> <span class="p">{</span>
+            <span class="n">fitsSystemWindows</span> <span class="p">=</span> <span class="k">true</span>
 
-            appBarLayout {
-                toolbar {
-                    id = R.id.toolbar
-                    popupTheme = R.style.AppTheme_PopupOverlay
-                    backgroundResource = R.color.colorPrimary
-                }.lparams(width = matchParent) {
-                    val tv = TypedValue()
-                    if (ui.owner.theme.resolveAttribute(R.attr.actionBarSize, tv, true)) {
-                        height = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics);
-                    }
-                }
-            }.lparams(width = matchParent)
+            <span class="n">appBarLayout</span> <span class="p">{</span>
+                <span class="n">toolbar</span> <span class="p">{</span>
+                    <span class="n">id</span> <span class="p">=</span> <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">toolbar</span>
+                    <span class="n">popupTheme</span> <span class="p">=</span> <span class="n">R</span><span class="p">.</span><span class="n">style</span><span class="p">.</span><span class="n">AppTheme_PopupOverlay</span>
+                    <span class="n">backgroundResource</span> <span class="p">=</span> <span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">colorPrimary</span>
+                <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">width</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="kd">val</span> <span class="py">tv</span> <span class="p">=</span> <span class="n">TypedValue</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">ui</span><span class="p">.</span><span class="n">owner</span><span class="p">.</span><span class="n">theme</span><span class="p">.</span><span class="n">resolveAttribute</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">attr</span><span class="p">.</span><span class="n">actionBarSize</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="k">true</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="n">height</span> <span class="p">=</span> <span class="n">TypedValue</span><span class="p">.</span><span class="n">complexToDimensionPixelSize</span><span class="p">(</span><span class="n">tv</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">resources</span><span class="p">.</span><span class="n">displayMetrics</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">width</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">)</span>
 
-            relativeLayout {
-                horizontalPadding = resources.getDimensionPixelSize(R.dimen.activity_horizontal_margin)
-                verticalPadding = resources.getDimensionPixelSize(R.dimen.activity_vertical_margin)
-                textView("Hello World!")
-            }.lparams(width = matchParent, height = matchParent) {
-                behavior = AppBarLayout.ScrollingViewBehavior()
-            }
+            <span class="n">relativeLayout</span> <span class="p">{</span>
+                <span class="n">horizontalPadding</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="n">getDimensionPixelSize</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">dimen</span><span class="p">.</span><span class="n">activity_horizontal_margin</span><span class="p">)</span>
+                <span class="n">verticalPadding</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="n">getDimensionPixelSize</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">dimen</span><span class="p">.</span><span class="n">activity_vertical_margin</span><span class="p">)</span>
+                <span class="n">textView</span><span class="p">(</span><span class="s">"Hello World!"</span><span class="p">)</span>
+            <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">width</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">,</span> <span class="n">height</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">behavior</span> <span class="p">=</span> <span class="n">AppBarLayout</span><span class="p">.</span><span class="n">ScrollingViewBehavior</span><span class="p">()</span>
+            <span class="p">}</span>
 
-            floatingActionButton {
-                imageResource = android.R.drawable.ic_dialog_email
-                backgroundColor = ContextCompat.getColor(ui.owner, R.color.colorAccent)
-                onClick {
-                    snackbar("Replace with your own action", Snackbar.LENGTH_LONG) {
-                        setAction("Action") { ui.toast("Clicked Snack") }
-                    }
-                }
-            }.lparams {
-                margin = resources.getDimensionPixelSize(R.dimen.fab_margin)
-                gravity = Gravity.BOTTOM or GravityCompat.END
-            }
-        }.lparams(width = matchParent, height = matchParent)
-    }
+            <span class="n">floatingActionButton</span> <span class="p">{</span>
+                <span class="n">imageResource</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">drawable</span><span class="p">.</span><span class="n">ic_dialog_email</span>
+                <span class="n">backgroundColor</span> <span class="p">=</span> <span class="n">ContextCompat</span><span class="p">.</span><span class="n">getColor</span><span class="p">(</span><span class="n">ui</span><span class="p">.</span><span class="n">owner</span><span class="p">,</span> <span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">colorAccent</span><span class="p">)</span>
+                <span class="n">onClick</span> <span class="p">{</span>
+                    <span class="n">snackbar</span><span class="p">(</span><span class="s">"Replace with your own action"</span><span class="p">,</span> <span class="n">Snackbar</span><span class="p">.</span><span class="n">LENGTH_LONG</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">setAction</span><span class="p">(</span><span class="s">"Action"</span><span class="p">)</span> <span class="p">{</span> <span class="n">ui</span><span class="p">.</span><span class="n">toast</span><span class="p">(</span><span class="s">"Clicked Snack"</span><span class="p">)</span> <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}.</span><span class="n">lparams</span> <span class="p">{</span>
+                <span class="n">margin</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="n">getDimensionPixelSize</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">dimen</span><span class="p">.</span><span class="n">fab_margin</span><span class="p">)</span>
+                <span class="n">gravity</span> <span class="p">=</span> <span class="n">Gravity</span><span class="p">.</span><span class="n">BOTTOM</span> <span class="n">or</span> <span class="n">GravityCompat</span><span class="p">.</span><span class="n">END</span>
+            <span class="p">}</span>
+        <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">width</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">,</span> <span class="n">height</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">)</span>
+    <span class="p">}</span>
 
-    fun _DrawerLayout.createNavigationView(ui: AnkoContext&lt;MainActivity&gt;) {
-        navigationView {
-            fitsSystemWindows = true
-            setNavigationItemSelectedListener(ui.owner)
-            inflateHeaderView(R.layout.nav_header_main)
-            inflateMenu(R.menu.activity_main_drawer)
-        }.lparams(height = matchParent, gravity = GravityCompat.START)
-    }
-}</code></pre></figure>
+    <span class="k">fun</span> <span class="nf">_DrawerLayout</span><span class="p">.</span><span class="n">createNavigationView</span><span class="p">(</span><span class="n">ui</span><span class="p">:</span> <span class="n">AnkoContext</span><span class="p">&lt;</span><span class="n">MainActivity</span><span class="p">&gt;)</span> <span class="p">{</span>
+        <span class="n">navigationView</span> <span class="p">{</span>
+            <span class="n">fitsSystemWindows</span> <span class="p">=</span> <span class="k">true</span>
+            <span class="n">setNavigationItemSelectedListener</span><span class="p">(</span><span class="n">ui</span><span class="p">.</span><span class="n">owner</span><span class="p">)</span>
+            <span class="n">inflateHeaderView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">nav_header_main</span><span class="p">)</span>
+            <span class="n">inflateMenu</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">menu</span><span class="p">.</span><span class="n">activity_main_drawer</span><span class="p">)</span>
+        <span class="p">}.</span><span class="n">lparams</span><span class="p">(</span><span class="n">height</span> <span class="p">=</span> <span class="n">matchParent</span><span class="p">,</span> <span class="n">gravity</span> <span class="p">=</span> <span class="n">GravityCompat</span><span class="p">.</span><span class="n">START</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
 
 <p>And then, use the component to set the content view for the activity instead of using an XML layout:</p>
 
-<figure class="highlight"><pre><code class="language-kotlin" data-lang="kotlin">package com.maximomussini.anko
+<figure class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="k">package</span> <span class="nn">com.maximomussini.anko</span>
 
-import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import org.jetbrains.anko.find
-import org.jetbrains.anko.setContentView
-import org.jetbrains.anko.toast
+<span class="k">import</span> <span class="nn">android.os.Bundle</span>
+<span class="k">import</span> <span class="nn">android.support.design.widget.NavigationView</span>
+<span class="k">import</span> <span class="nn">android.support.v4.view.GravityCompat</span>
+<span class="k">import</span> <span class="nn">android.support.v4.widget.DrawerLayout</span>
+<span class="k">import</span> <span class="nn">android.support.v7.app.ActionBarDrawerToggle</span>
+<span class="k">import</span> <span class="nn">android.support.v7.app.AppCompatActivity</span>
+<span class="k">import</span> <span class="nn">android.support.v7.widget.Toolbar</span>
+<span class="k">import</span> <span class="nn">android.view.Menu</span>
+<span class="k">import</span> <span class="nn">android.view.MenuItem</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.find</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.setContentView</span>
+<span class="k">import</span> <span class="nn">org.jetbrains.anko.toast</span>
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+<span class="kd">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="n">AppCompatActivity</span><span class="p">(),</span> <span class="n">NavigationView</span><span class="p">.</span><span class="n">OnNavigationItemSelectedListener</span> <span class="p">{</span>
 
-    lateinit var drawer: DrawerLayout
+    <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">drawer</span><span class="p">:</span> <span class="n">DrawerLayout</span>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        MainUI().setContentView(this)
-        drawer = find&lt;DrawerLayout&gt;(R.id.drawer)
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+        <span class="n">MainUI</span><span class="p">().</span><span class="n">setContentView</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+        <span class="n">drawer</span> <span class="p">=</span> <span class="n">find</span><span class="p">&lt;</span><span class="n">DrawerLayout</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">drawer</span><span class="p">)</span>
 
-        val toolbar = find&lt;Toolbar&gt;(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        <span class="kd">val</span> <span class="py">toolbar</span> <span class="p">=</span> <span class="n">find</span><span class="p">&lt;</span><span class="n">Toolbar</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">toolbar</span><span class="p">)</span>
+        <span class="n">setSupportActionBar</span><span class="p">(</span><span class="n">toolbar</span><span class="p">)</span>
 
-        val toggle = ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer.setDrawerListener(toggle)
-        toggle.syncState()
-    }
+        <span class="kd">val</span> <span class="py">toggle</span> <span class="p">=</span> <span class="n">ActionBarDrawerToggle</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">drawer</span><span class="p">,</span> <span class="n">toolbar</span><span class="p">,</span>
+                <span class="n">R</span><span class="p">.</span><span class="n">string</span><span class="p">.</span><span class="n">navigation_drawer_open</span><span class="p">,</span> <span class="n">R</span><span class="p">.</span><span class="n">string</span><span class="p">.</span><span class="n">navigation_drawer_close</span><span class="p">)</span>
+        <span class="n">drawer</span><span class="p">.</span><span class="n">setDrawerListener</span><span class="p">(</span><span class="n">toggle</span><span class="p">)</span>
+        <span class="n">toggle</span><span class="p">.</span><span class="n">syncState</span><span class="p">()</span>
+    <span class="p">}</span>
 
-    override fun onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onBackPressed</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">drawer</span><span class="p">.</span><span class="n">isDrawerOpen</span><span class="p">(</span><span class="n">GravityCompat</span><span class="p">.</span><span class="n">START</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">drawer</span><span class="p">.</span><span class="n">closeDrawer</span><span class="p">(</span><span class="n">GravityCompat</span><span class="p">.</span><span class="n">START</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">super</span><span class="p">.</span><span class="n">onBackPressed</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreateOptionsMenu</span><span class="p">(</span><span class="n">menu</span><span class="p">:</span> <span class="n">Menu</span><span class="p">):</span> <span class="n">Boolean</span> <span class="p">{</span>
+        <span class="n">menuInflater</span><span class="p">.</span><span class="n">inflate</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">menu</span><span class="p">.</span><span class="n">main</span><span class="p">,</span> <span class="n">menu</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">true</span>
+    <span class="p">}</span>
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_settings -&gt; {
-                toast("Settings")
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onOptionsItemSelected</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">MenuItem</span><span class="p">):</span> <span class="n">Boolean</span> <span class="p">{</span>
+        <span class="k">when</span> <span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">itemId</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">action_settings</span> <span class="p">-&gt;</span> <span class="p">{</span>
+                <span class="n">toast</span><span class="p">(</span><span class="s">"Settings"</span><span class="p">)</span>
+                <span class="k">return</span> <span class="k">true</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">super</span><span class="p">.</span><span class="n">onOptionsItemSelected</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="p">}</span>
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_camera -&gt; toast("Camera")
-            R.id.nav_gallery -&gt; toast("Gallery")
-            R.id.nav_slideshow -&gt; toast("Slideshow")
-            R.id.nav_manage -&gt; toast("Manage")
-            R.id.nav_share -&gt; toast("Share")
-            R.id.nav_send -&gt; toast("Send")
-        }
-        drawer.closeDrawer(GravityCompat.START)
-        return true
-    }
-}</code></pre></figure>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onNavigationItemSelected</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">MenuItem</span><span class="p">):</span> <span class="n">Boolean</span> <span class="p">{</span>
+        <span class="k">when</span> <span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">itemId</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_camera</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">"Camera"</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_gallery</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">"Gallery"</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_slideshow</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">"Slideshow"</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_manage</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">"Manage"</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_share</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">"Share"</span><span class="p">)</span>
+            <span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">nav_send</span> <span class="p">-&gt;</span> <span class="n">toast</span><span class="p">(</span><span class="s">"Send"</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">drawer</span><span class="p">.</span><span class="n">closeDrawer</span><span class="p">(</span><span class="n">GravityCompat</span><span class="p">.</span><span class="n">START</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">true</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
 
 <p>In contrast with the <a href="https://gist.github.com/ElMassimo/839df056c44b7c8e53b7">generated version</a>, the <em>Anko</em> version does require some boilerplate to set dimensions and colors from resources, but has a lot of expressiveness when it comes to bindings. Notice how it’s not necessary to create references to most of the components, since the listeners are added to each view when they are instantiated:</p>
 
-<figure class="highlight"><pre><code class="language-kotlin" data-lang="kotlin">floatingActionButton {
-    onClick { snackbar("FAB", Snackbar.LENGTH_LONG) }
-}</code></pre></figure>
+<figure class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="n">floatingActionButton</span> <span class="p">{</span>
+    <span class="n">onClick</span> <span class="p">{</span> <span class="n">snackbar</span><span class="p">(</span><span class="s">"FAB"</span><span class="p">,</span> <span class="n">Snackbar</span><span class="p">.</span><span class="n">LENGTH_LONG</span><span class="p">)</span> <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
 
 <p>Compare this to the usual code, which incurs in the cost of finding the view (even if it’s a very low cost) and referencing the view id:</p>
 
-<figure class="highlight"><pre><code class="language-kotlin" data-lang="kotlin">val fab:FloatingActionButton = findViewById(R.id.fab) as FloatingActionButton
-fab.setOnClickListener {
-  Snackbar.make(it, "FAB", Snackbar.LENGTH_LONG).show()
-}</code></pre></figure>
+<figure class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="kd">val</span> <span class="py">fab</span><span class="p">:</span><span class="n">FloatingActionButton</span> <span class="p">=</span> <span class="n">findViewById</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">fab</span><span class="p">)</span> <span class="k">as</span> <span class="n">FloatingActionButton</span>
+<span class="n">fab</span><span class="p">.</span><span class="n">setOnClickListener</span> <span class="p">{</span>
+  <span class="n">Snackbar</span><span class="p">.</span><span class="n">make</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="s">"FAB"</span><span class="p">,</span> <span class="n">Snackbar</span><span class="p">.</span><span class="n">LENGTH_LONG</span><span class="p">).</span><span class="n">show</span><span class="p">()</span>
+<span class="p">}</span></code></pre></figure>
 
 <p>The <em>Anko DSL</em> exposes the native API of each View, so it’s only possible to do what <em>Android</em> components can do, with the exception of a few synthetic properties to set text or an image from a resource.</p>
 

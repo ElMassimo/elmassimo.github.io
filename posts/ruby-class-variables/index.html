@@ -16,15 +16,15 @@
 <meta name="MobileOptimized" content="320">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="cleartype" content="on">
-<meta name="theme-color" content="#5C7E8F">
+<meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900%7CLato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
-<link rel="icon" sizes="192x192" href="icon.png">
+<link rel="icon" sizes="192x192" href="/icon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
 <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
 
@@ -56,8 +56,8 @@ class Dog &lt; Animal
 
 <!-- Twitter Stuff -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:domain" value="maximomussini.com">
-<meta name="twitter:title" value="Class Instance Variables in Ruby">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Class Instance Variables in Ruby" />
 <meta name="twitter:description" value="Like most object-oriented languages, Ruby has both instance and class variables. The syntax is @name for instance variables, and @@name for class variables.
 
 Let’s look at a simple example to understand how we might use class variables:
@@ -75,9 +75,9 @@ class Animal
 end
 
 class Dog &lt; Animal
-  @@animals &lt;&lt; self…">
-<meta name="twitter:image" content="http://maximomussini.com/images/posts/ruby-class-variables.jpg">
-<meta name="twitter:url" value="http://maximomussini.com/posts/ruby-class-variables/">
+  @@animals &lt;&lt; self…" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/ruby-class-variables.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/ruby-class-variables/" />
 
   </head>
   <body>
@@ -135,8 +135,7 @@ class Dog &lt; Animal
 
 <p>Let’s look at a simple example to understand how we might use <em>class variables</em>:</p>
 
-<div class="highlighter-rouge">
-<pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
   <span class="vc">@@animals</span> <span class="o">=</span> <span class="p">[]</span>
 
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
@@ -164,16 +163,14 @@ class Dog &lt; Animal
 
 <span class="no">Dog</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">other_species</span>
 <span class="c1"># [Cat]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The <code class="highlighter-rouge">@@animals</code> <em>class variable</em> is <strong>shared</strong> among subclasses, and we can refer to it by using the same syntax from both class and instance methods.</p>
 
 <h3 id="limitations-of-class-variables">Limitations of Class Variables</h3>
 <p>Now, what happens if we wanted to do something different, like storing metadata or configuration in each subclass?</p>
 
-<div class="highlighter-rouge">
-<pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
   <span class="vc">@@sound</span> <span class="o">=</span> <span class="s1">'?'</span>
 
   <span class="k">def</span> <span class="nf">talk</span>
@@ -194,16 +191,14 @@ class Dog &lt; Animal
 
 <span class="no">Cat</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">talk</span>
 <span class="c1"># "meow!"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Because <em>class variables</em> are shared between the parent class and its subclasses, the value of <code class="highlighter-rouge">@@sound</code> gets stepped over by the last subclass, rather than it taking a different value for each subclass as intended.</p>
 
 <h2 id="class-instance-variables">Class Instance Variables</h2>
 <p>Fortunately, there’s a simple way to achieve this in Ruby:</p>
 
-<div class="highlighter-rouge">
-<pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">sound</span>
     <span class="vi">@sound</span>
   <span class="k">end</span>
@@ -226,8 +221,7 @@ class Dog &lt; Animal
 
 <span class="no">Cat</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">talk</span>
 <span class="c1"># 'meow!'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>By using instance variables, each subclass gets its own variable so <code class="highlighter-rouge">@sound</code> does not get stepped over, and each subclass can configure the variable as needed. So, <em>how does it work</em>?</p>
 
@@ -235,7 +229,7 @@ class Dog &lt; Animal
   <p>Classes in Ruby are plain objects, instances of the <code class="highlighter-rouge">Class</code> class.</p>
 </blockquote>
 
-<p>Let that sink in for a bit <img class="emoji" title=":smile:" alt=":smile:" src="https://assets.github.com/images/icons/emoji/unicode/1f604.png" height="20" width="20" align="absmiddle"></p>
+<p>Let that sink in for a bit <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20"></p>
 
 <blockquote>
   <p>Because each class is an object, it can have instance variables just like any other Ruby object.</p>
@@ -252,7 +246,7 @@ class Dog &lt; Animal
 
 <p>Also, since we can’t use <em>class instance variables</em> to share values between a class and its descendants, in cases where we would like to access the variable of a parent class we will need to refer to it using a fully qualified getter (such as <code class="highlighter-rouge">Animal.sound</code>) or use <a href="https://github.com/ElMassimo/queryable/blob/7c5eb3448456e6e84a907cbf4a567c576433428a/lib/queryable/default_scope.rb#L38-L50">metaprogramming</a> in order to achieve that.</p>
 
-<h2 id="driving-it-home-house-car">Driving it home <img class="emoji" title=":house:" alt=":house:" src="https://assets.github.com/images/icons/emoji/unicode/1f3e0.png" height="20" width="20" align="absmiddle"> <img class="emoji" title=":car:" alt=":car:" src="https://assets.github.com/images/icons/emoji/unicode/1f697.png" height="20" width="20" align="absmiddle">
+<h2 id="driving-it-home-house-car">Driving it home <img class="emoji" title=":house:" alt=":house:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f3e0.png" height="20" width="20"> <img class="emoji" title=":car:" alt=":car:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f697.png" height="20" width="20">
 </h2>
 <p>In general, <em>class instance variables</em> are the way to go because they are not shared, which is very useful when building libraries or DSLs, and we don’t run the risk of the value getting stepped over by accident in a subclass.</p>
 
@@ -260,7 +254,7 @@ class Dog &lt; Animal
 
 <p>When inheritance is not in play we can use either, but it’s better to be consistent and pick a “default”. I always use <em>class instance variables</em> unless I actually need the variable to be shared.</p>
 
-<p>We should now be less fuzzy on what <code class="highlighter-rouge">@</code> means when used in class methods or in a class definition, and when to use <em>class instance variables</em> instead of <em>class variables</em> <img class="emoji" title=":smiley:" alt=":smiley:" src="https://assets.github.com/images/icons/emoji/unicode/1f603.png" height="20" width="20" align="absmiddle"></p>
+<p>We should now be less fuzzy on what <code class="highlighter-rouge">@</code> means when used in class methods or in a class definition, and when to use <em>class instance variables</em> instead of <em>class variables</em> <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20"></p>
 
   </div>
 
