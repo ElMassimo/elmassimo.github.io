@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.7.4">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2019-03-02T13:42:12-03:00</updated>
+  <updated>2019-04-04T10:38:25-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -12,6 +12,91 @@
     <name>Máximo Mussini</name>
     <email>maximomussini@gmail.com</email>
   </author>
+
+  <entry>
+    <title>Automatic Trailing Commas for Version Control</title>
+    <link href="http://maximomussini.com/posts/trailing-commas/" rel="alternate" type="text/html" title="Automatic Trailing Commas for Version Control" />
+    <published>2019-04-03T23:50:00-03:00</published>
+  
+    <updated>2019-04-03T23:50:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/trailing-commas</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/trailing-commas/">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/trailing-commas.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;Today I’d like to share a simple but very useful practice for managing Ruby and
+JS code under version control.&lt;/p&gt;
+
+&lt;p&gt;In our team, we always use trailing commas when defining multi-line literals for
+arrays and hash (object in JS) literals.&lt;/p&gt;
+
+&lt;p&gt;It’s great that both Ruby and JS allow this in their syntax, because as a result
+we are able to get cleaner diffs:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/trailing-commas/standard-vs-trailing.png&quot; alt=&quot;Standard vs Trailing&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice how the same code change results in a drastically simpler diff: &lt;em&gt;adding
+or removing an item changes a single line, nothing more&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;automation-&quot;&gt;Automation 🤖&lt;/h3&gt;
+&lt;p&gt;To make this practice effortless, we have modified the configuration of the
+static analysis tools (&lt;a href=&quot;https://github.com/rubocop-hq/rubocop&quot;&gt;&lt;em&gt;Rubocop&lt;/em&gt;&lt;/a&gt; and &lt;a href=&quot;https://eslint.org/&quot;&gt;&lt;em&gt;ESLint&lt;/em&gt;&lt;/a&gt;),
+to require trailing commas in multi-line literals.&lt;/p&gt;
+
+&lt;p&gt;We have also set up &lt;a href=&quot;https://github.com/guard/guard&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Guard&lt;/code&gt;&lt;/a&gt; to listen for file changes and automatically run
+the tools with &lt;code class=&quot;highlighter-rouge&quot;&gt;--autofix&lt;/code&gt;, so that commas are automatically added when we
+forget; we don’t really need to think about it.&lt;/p&gt;
+
+&lt;p&gt;In &lt;em&gt;ESLint&lt;/em&gt; for JS:&lt;/p&gt;
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;s2&quot;&gt;&quot;comma-dangle&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;error&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;always-multiline&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In &lt;em&gt;Rubocop&lt;/em&gt; for Ruby:&lt;/p&gt;
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;Style/TrailingCommaInArrayLiteral&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;EnforcedStyleForMultiline&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;comma&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;Style/TrailingCommaInHashLiteral&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;EnforcedStyleForMultiline&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;comma&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;An example &lt;code class=&quot;highlighter-rouge&quot;&gt;Guardfile&lt;/code&gt; configuration:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Run Rubocop every time we change a file, and autofix it if possible.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:rubocop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;all_on_start: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;cli: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'-a'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;other-benefits-&quot;&gt;Other Benefits 👩‍💻👨‍💻&lt;/h3&gt;
+
+&lt;p&gt;Reordering lines, or sorting them alphabetically with the help of an editor
+(like &lt;a href=&quot;https://www.sublimetext.com/&quot;&gt;&lt;em&gt;Sublime Text&lt;/em&gt;&lt;/a&gt;), will always result in valid code,
+without the need to manually add the missing comma to avoid a syntax error.&lt;/p&gt;
+
+&lt;p&gt;Also, conflicts in &lt;a href=&quot;https://git-scm.com/&quot;&gt;source control&lt;/a&gt; are less likely to happen,
+since each line change becomes independent, unlike the usual approach where we
+are actually removing the last line without a comma to add two lines.&lt;/p&gt;
+
+&lt;p&gt;Finally, tools like &lt;a href=&quot;https://git-scm.com/docs/git-blame&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;git blame&lt;/code&gt;&lt;/a&gt; are more likely to display relevant commit
+information, rather than the commit that added the comma.&lt;/p&gt;
+
+&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+&lt;p&gt;Using trailing commas in multi-line literals results in code that is
+syntactically more stable to changes, and keeps a cleaner history in source control.&lt;/p&gt;
+
+&lt;p&gt;Developers make less syntax errors, since they can add and remove items, sort or
+reorder them, without having to manage missing (or extra) trailing commas.&lt;/p&gt;
+
+&lt;p&gt;We’ve been using this approach for years now, and haven’t run into any issues in
+practice. It’s been great so far 😃&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/trailing-commas.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
 
   <entry>
     <title>Better Settings in Ruby apps</title>
@@ -114,6 +199,28 @@ problems in the environment are detected during deployment.&lt;/li&gt;
 
 &lt;p&gt;The setup for the &lt;em&gt;.yml&lt;/em&gt; file is very similar to &lt;em&gt;settingslogic&lt;/em&gt;, you can find
 more information and examples in the &lt;a href=&quot;https://github.com/ElMassimo/better_settings&quot;&gt;README&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h3&gt;
+&lt;p&gt;Internally, settings are stored in a frozen &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt;, which is an instance
+variable in the &lt;code class=&quot;highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt; object. We delegate &lt;code class=&quot;highlighter-rouge&quot;&gt;to_h&lt;/code&gt; to this internal
+hash for easy access, but other than that, we don’t expose any &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; methods.&lt;/p&gt;
+
+&lt;p&gt;We go through every hash &lt;em&gt;entry&lt;/em&gt;, processing any nested &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; objects,
+freezing every wrapped &lt;em&gt;value&lt;/em&gt;, setting it in an instance variable, and making it
+accessible by defining a getter for that &lt;em&gt;key&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;It’s worth noting that we wrap nested &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; values in instances of your
+&lt;code class=&quot;highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt; class, which will recursively repeat the process.&lt;/p&gt;
+
+&lt;p&gt;As a result, the entire settings graph is readable but immutable, and each
+nested object exposes getters for the available keys.&lt;/p&gt;
+
+&lt;p&gt;To make errors a bit friendlier, we implement &lt;code class=&quot;highlighter-rouge&quot;&gt;method_missing&lt;/code&gt; to provide
+context on where a setting is missing, instead of an unhelpful &lt;code class=&quot;highlighter-rouge&quot;&gt;NoMethodError&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, we sprinkle some syntax sugar by making every top-level key available
+as a method in the &lt;code class=&quot;highlighter-rouge&quot;&gt;Settings&lt;/code&gt; class, by delegating it to a &lt;code class=&quot;highlighter-rouge&quot;&gt;root_settings&lt;/code&gt;
+instance that is populated when calling &lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt; in the class.&lt;/p&gt;
 
 &lt;h3 id=&quot;reading-from-multiple-files-&quot;&gt;Reading from multiple files ⚙&lt;/h3&gt;
 &lt;p&gt;Not being limited to a single source file opens up the possiblities.&lt;/p&gt;
@@ -1055,153 +1162,6 @@ requests, while still setting the &lt;code class=&quot;highlighter-rouge&quot;&g
 &lt;p&gt;Watch out for language differences when using libraries written for another language, they will bite sooner or later.&lt;/p&gt;
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/coffeescript-js-libraries.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
-  
-  </entry>
-
-  <entry>
-    <title>Improving your Git Experience in Bash</title>
-    <link href="http://maximomussini.com/posts/bash-git-prompt/" rel="alternate" type="text/html" title="Improving your Git Experience in Bash" />
-    <published>2015-12-14T17:46:00-03:00</published>
-  
-    <updated>2015-12-14T17:46:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/bash-git-prompt</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/bash-git-prompt/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/bash-git-prompt.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;&lt;em&gt;Bash&lt;/em&gt; is the default terminal for most Unix distributions, so it’s very appealing to get the best out of it. If you enjoy customizing your setup, you might want to try something like &lt;a href=&quot;http://ohmyz.sh/&quot;&gt;zsh&lt;/a&gt; instead, which comes with similar functionality out of the box.&lt;/p&gt;
-
-&lt;p&gt;Let’s take a look at how we can improve our &lt;em&gt;Git&lt;/em&gt; usage in &lt;em&gt;bash&lt;/em&gt; by adding a few plugins :neckbeard:&lt;/p&gt;
-
-&lt;h2 id=&quot;bash-git-autocompletion&quot;&gt;Bash Git Autocompletion&lt;/h2&gt;
-&lt;p&gt;A great way to get &lt;em&gt;Git&lt;/em&gt; autocompletion is to install the &lt;code class=&quot;highlighter-rouge&quot;&gt;bash-completion&lt;/code&gt; package. This plugin will improve our experience when switching or pulling different branches, and is a real time-saver when using &lt;a href=&quot;https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches&quot;&gt;topic branches&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/bash-git-prompt/git-autocompletion.png&quot; alt=&quot;Checking out Branches&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;installation-on-os-x&quot;&gt;Installation on OS X&lt;/h3&gt;
-&lt;p&gt;First, install &lt;code class=&quot;highlighter-rouge&quot;&gt;bash-completion&lt;/code&gt; using &lt;a href=&quot;http://brew.sh/&quot;&gt;Homebrew&lt;/a&gt;:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;brew install bash-completion&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;and then add this line to &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bash_profile&lt;/code&gt; to load the plugin:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;brew &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/etc/bash_completion&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;brew &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/etc/bash_completion&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;installation-on-ubuntu&quot;&gt;Installation on Ubuntu&lt;/h3&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get install bash-completion&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;bash-git-prompt&quot;&gt;Bash Git Prompt&lt;/h2&gt;
-&lt;p&gt;Running a &lt;em&gt;Git&lt;/em&gt; command without knowing the current branch is like running &lt;code class=&quot;highlighter-rouge&quot;&gt;rm&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;mkdir&lt;/code&gt; in the terminal without knowning the current directory: it’s dangerous and error-prone.&lt;/p&gt;
-
-&lt;p&gt;Sure, we could type &lt;code class=&quot;highlighter-rouge&quot;&gt;pwd&lt;/code&gt; every time before running those commands, but it wouldn’t be practical. Why not take the same approach for &lt;em&gt;Git&lt;/em&gt;, and display the current branch in the terminal prompt?&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; is a project that takes care of that, displaying the current branch and other helpful stats. It has many different themes available, which can be customized by specifying a theme through the &lt;code class=&quot;highlighter-rouge&quot;&gt;GIT_PROMPT_THEME&lt;/code&gt; environment variable.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/bash-git-prompt/git-prompt-default.png&quot; alt=&quot;Default Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;installation-on-os-x-1&quot;&gt;Installation on OS X&lt;/h3&gt;
-&lt;p&gt;First, install &lt;code class=&quot;highlighter-rouge&quot;&gt;bash-git-prompt&lt;/code&gt; using &lt;a href=&quot;http://brew.sh/&quot;&gt;Homebrew&lt;/a&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install bash-git-prompt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And then source the file in your ~/.bash_profile as follows:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;brew &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/opt/bash-git-prompt/share/gitprompt.sh&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;brew &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/opt/bash-git-prompt/share/gitprompt.sh&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;installation-on-ubuntu-1&quot;&gt;Installation on Ubuntu&lt;/h4&gt;
-&lt;p&gt;It might be necessary to &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt#via-git-clone&quot;&gt;clone the project’s git repo&lt;/a&gt;, and source &lt;code class=&quot;highlighter-rouge&quot;&gt;gitprompt.sh&lt;/code&gt; into the &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bashrc&lt;/code&gt; file.&lt;/p&gt;
-
-&lt;h4 id=&quot;basic-customization&quot;&gt;Basic Customization&lt;/h4&gt;
-&lt;p&gt;The following are some settings I modified in my &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bash_profile&lt;/code&gt;:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;GIT_PROMPT_ONLY_IN_REPO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;c&quot;&gt;# Use the default prompt when not in a git repo.&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GIT_PROMPT_FETCH_REMOTE_STATUS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0 &lt;span class=&quot;c&quot;&gt;# Avoid fetching remote status&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GIT_PROMPT_SHOW_UPSTREAM&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0 &lt;span class=&quot;c&quot;&gt;# Don't display upstream tracking branch&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;GIT_SHOW_UNTRACKED_FILES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;no &lt;span class=&quot;c&quot;&gt;# Don't count untracked files (no, normal, all)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;These constants must be defined before sourcing &lt;code class=&quot;highlighter-rouge&quot;&gt;bash-git-prompt&lt;/code&gt; in the &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bash_profile&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.bashrc&lt;/code&gt; file.&lt;/p&gt;
-
-&lt;h2 id=&quot;customizing-the-git-prompt&quot;&gt;Customizing the Git Prompt&lt;/h2&gt;
-&lt;p&gt;The themes that come bundled with &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; displayed too much information for my taste, and the symbols in the default theme are not particularly meaningful.&lt;/p&gt;
-
-&lt;p&gt;After trying different themes, I decided to bake my own. I wanted something that emphasized the important bits and pieces, looked clean, and was easy to understand. Fortunately, the plugin provides a command to generate a custom theme file:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git_prompt_make_custom_theme Default&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;The command creates a &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.git-prompt-colors.sh&lt;/code&gt; based on the default theme and will get loaded by the plugin automatically, so you can start playing with the variables right away. However, you may need to dive into the source code to figure out how each variable is used, and find the ones you want to customize.&lt;/p&gt;
-
-&lt;p&gt;After tweaking the variables for a while, I was able to create a custom theme. The expresiveness of emojis made it a lot easier for me to understand the current git status :sweat_smile:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/bash-git-prompt/git-prompt-emoji.png&quot; alt=&quot;Emoji Theme&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;noscript&gt;&lt;pre&gt;override_git_prompt_colors() {
-  GIT_PROMPT_THEME_NAME=&amp;quot;Custom&amp;quot;
-
-  PathShort=&amp;quot;\W&amp;quot; # Display only the current folder
-
-  # Display the current folder first
-  GIT_PROMPT_START_USER=&amp;quot;${Green}${PathShort}&amp;quot;
-  GIT_PROMPT_START_ROOT=&amp;quot;${Green}${PathShort}&amp;quot;
-
-  # Skip the default prefix
-  GIT_PROMPT_PREFIX=&amp;quot;${ResetColor}&amp;quot;
-
-  # Use whitespace as separator
-  GIT_PROMPT_SEPARATOR=&amp;quot; &amp;quot;
-
-  # Skip remote branch
-  GIT_PROMPT_REMOTE=&amp;quot;${ResetColor}&amp;quot;
-  GIT_PROMPT_UPSTREAM=&amp;quot;${ResetColor}&amp;quot;
-
-  # Use yellow for the current branch
-  GIT_PROMPT_BRANCH=&amp;quot;${Yellow}&amp;quot;
-
-  # Use red and green for behind and ahead origin
-  GIT_PROMPT_SYMBOLS_BEHIND=&amp;quot;${Red} ↓&amp;quot;
-  GIT_PROMPT_SYMBOLS_AHEAD=&amp;quot;${Green} ↑&amp;quot;
-
-  # Add a few emojis to make it fun!
-  GIT_PROMPT_STAGED=&amp;quot;${Yellow}👍 &amp;quot;
-  GIT_PROMPT_CONFLICTS=&amp;quot;${Red}❌ &amp;quot;
-  GIT_PROMPT_CHANGED=&amp;quot;${Yellow}✏️ &amp;quot;
-  GIT_PROMPT_UNTRACKED=&amp;quot;❔ &amp;quot;
-  GIT_PROMPT_STASHED=&amp;quot;${Yellow}📦 &amp;quot; # A lot nicer than the default flag
-  GIT_PROMPT_CLEAN=&amp;quot;${ResetColor}✅ &amp;quot;  
-  GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING=&amp;quot; 🔒 &amp;quot; # Displayed for untracked brances
-
-  # Skip the default suffix
-  GIT_PROMPT_SUFFIX=&amp;quot; &amp;quot;
-
-  # Skip the default ending
-  GIT_PROMPT_END_USER=&amp;quot;${ResetColor}&amp;quot;
-  GIT_PROMPT_END_ROOT=&amp;quot;${ResetColor}&amp;quot;
-}
-
-reload_git_prompt_colors &amp;quot;Custom&amp;quot;
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ElMassimo/515d12ab6db95dbb233c.js&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;Emojis are a great way to make ye olde terminal a bit more fun! :tada:&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;It would be awesome if &lt;a href=&quot;https://github.com/magicmonty/bash-git-prompt&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash-git-prompt&lt;/code&gt;&lt;/a&gt; provided a way to customize the full prompt order and displayed elements, with a template string like:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;GIT_PROMPT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{PathShort}{Branch}{Remote}{Modified}{Staged}{Clean}&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;That would make it possible to create very different themes, as well as opting out of certain information—like git stashes.&lt;/p&gt;
-
-&lt;p&gt;For now, I’m pleased with the result; it’s practical, looks nice, and I don’t need to type &lt;code class=&quot;highlighter-rouge&quot;&gt;git branch&lt;/code&gt; to check the current branch :sunglasses:&lt;/p&gt;
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/bash-git-prompt.jpg" />
     <author>
       <name>Máximo Mussini</name>
       <email>maximomussini@gmail.com</email>

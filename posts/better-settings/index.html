@@ -108,7 +108,7 @@ help you to learn about potentially harmful practic…" />
 
   <div class="post-info">
   <span class="date">March 02, 2019</span>
-  <span class="reading-time">7 min read</span>
+  <span class="reading-time">8 min read</span>
 </div>
 
 
@@ -204,6 +204,28 @@ problems in the environment are detected during deployment.</li>
 
 <p>The setup for the <em>.yml</em> file is very similar to <em>settingslogic</em>, you can find
 more information and examples in the <a href="https://github.com/ElMassimo/better_settings">README</a>.</p>
+
+<h3 id="how-does-it-work">How does it work?</h3>
+<p>Internally, settings are stored in a frozen <code class="highlighter-rouge">Hash</code>, which is an instance
+variable in the <code class="highlighter-rouge">BetterSettings</code> object. We delegate <code class="highlighter-rouge">to_h</code> to this internal
+hash for easy access, but other than that, we don’t expose any <code class="highlighter-rouge">Hash</code> methods.</p>
+
+<p>We go through every hash <em>entry</em>, processing any nested <code class="highlighter-rouge">Array</code> and <code class="highlighter-rouge">Hash</code> objects,
+freezing every wrapped <em>value</em>, setting it in an instance variable, and making it
+accessible by defining a getter for that <em>key</em>.</p>
+
+<p>It’s worth noting that we wrap nested <code class="highlighter-rouge">Hash</code> values in instances of your
+<code class="highlighter-rouge">BetterSettings</code> class, which will recursively repeat the process.</p>
+
+<p>As a result, the entire settings graph is readable but immutable, and each
+nested object exposes getters for the available keys.</p>
+
+<p>To make errors a bit friendlier, we implement <code class="highlighter-rouge">method_missing</code> to provide
+context on where a setting is missing, instead of an unhelpful <code class="highlighter-rouge">NoMethodError</code>.</p>
+
+<p>Finally, we sprinkle some syntax sugar by making every top-level key available
+as a method in the <code class="highlighter-rouge">Settings</code> class, by delegating it to a <code class="highlighter-rouge">root_settings</code>
+instance that is populated when calling <code class="highlighter-rouge">source</code> in the class.</p>
 
 <h3 id="reading-from-multiple-files-">Reading from multiple files ⚙</h3>
 <p>Not being limited to a single source file opens up the possiblities.</p>
@@ -306,6 +328,8 @@ collaboration and source-control, and prevents bugs.</p>
 </div>
 
 
+
+  <a id="next-post" href="/posts/trailing-commas/" class="hidden"></a>
 
 
 
