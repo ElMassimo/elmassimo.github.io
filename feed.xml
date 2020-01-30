@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.7.4">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2019-04-04T10:38:25-03:00</updated>
+  <updated>2020-01-31T17:04:59-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -12,6 +12,135 @@
     <name>Máximo Mussini</name>
     <email>maximomussini@gmail.com</email>
   </author>
+
+  <entry>
+    <title>Ruby Keywords and the Double Splat Operator</title>
+    <link href="http://maximomussini.com/posts/ruby-double-splat-keywords/" rel="alternate" type="text/html" title="Ruby Keywords and the Double Splat Operator" />
+    <published>2020-01-30T00:00:00-03:00</published>
+  
+    <updated>2020-01-30T00:00:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/ruby-double-splat-keywords</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/ruby-double-splat-keywords/">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-double-splat-keywords.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;One of the nicest bits of syntax sugar in Ruby are &lt;em&gt;keywords&lt;/em&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;**&lt;/code&gt; or &lt;em&gt;double-splat&lt;/em&gt;).&lt;/p&gt;
+
+&lt;h4 id=&quot;keywords-in-method-parameters&quot;&gt;Keywords in Method Parameters&lt;/h4&gt;
+
+&lt;p&gt;Just like the splat operator (&lt;code class=&quot;highlighter-rouge&quot;&gt;*args&lt;/code&gt;) captures any parameters as an &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; of
+arguments, the double-splat operator (&lt;code class=&quot;highlighter-rouge&quot;&gt;**attrs&lt;/code&gt;) captures any option parameters
+as a &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The nice thing is that it allows to destructure a &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; argument into any of
+its individual keys, and mark it as required, or make it optional and provide a
+default value for it.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;greet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;first_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;last_name: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;first_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:middle_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;last_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;compact&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;' '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;!&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;greet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;first_name: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Gale'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Hi Gale!&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;greet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;last_name: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'John'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ArgumentError (missing keyword: first_name)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;greet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;first_name: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Bruce'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;middle_name: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Wayne'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;last_name: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Keaton'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Hi Bruce Wayne Keaton!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There’s one &lt;strong&gt;&lt;em&gt;big gotcha&lt;/em&gt;&lt;/strong&gt; which comes up a lot when first learning Ruby:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;greet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;!&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;greet&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Hi !&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;greet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'name'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Jane'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ArgumentError (wrong number of arguments (given 1, expected 0))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Many developers have scratched their heads wondering what’s going on, until
+they learn the cause of this unintuitive message.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Only &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; keys are allowed in keyword arguments 😲&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Ruby handles keyword arguments differently in its internals, which unfortunately
+leaks into this error message.&lt;/p&gt;
+
+&lt;h4 id=&quot;merging-hashes-with-the-double-splat-operator&quot;&gt;Merging Hashes with the Double-Splat operator&lt;/h4&gt;
+
+&lt;p&gt;The double-splat operator can also be used to combine hashes. The order matters,
+when resolving duplicate keys, the rightmost ones will take priority.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;jane&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:first_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jane&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:last_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Doe&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jane&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:last_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Johnson&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# { :first_name =&amp;gt; &quot;Jane&quot;, :last_name =&amp;gt; &quot;Johnson&quot; }&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:last_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Johnson&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jane&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# { :last_name =&amp;gt; &quot;Doe, :first_name =&amp;gt; &quot;Jane&quot; }&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There are a few caveats when combining hashes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It does not combine keys of different types, such as &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;It can &lt;strong&gt;only&lt;/strong&gt; be used with Hashes where all keys are &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt;s.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;jane&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:first_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jane&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:last_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Doe&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jane&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;first_name&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;John&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# { :first_name =&amp;gt; &quot;Jane&quot;, :last_name=&amp;gt;&quot;Doe&quot;, &quot;first_name&quot;=&amp;gt;&quot;John&quot; }&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;jane&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;first_name&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jane&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;last_name&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Doe&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;doe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jane&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;first_name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;John&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# TypeError (hash key &quot;first_name&quot; is not a Symbol)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This message used to be very cryptic like the one for keyword arguments, but it
+has improved a lot since the feature was first added 🎉&lt;/p&gt;
+
+&lt;h4 id=&quot;a-quick-note-about-rails&quot;&gt;A quick note about Rails&lt;/h4&gt;
+
+&lt;p&gt;When using Rails a developer might think:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I can obtain values from &lt;code class=&quot;highlighter-rouge&quot;&gt;params&lt;/code&gt; using &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; keys, but I can’t pass them
+as keyword arguments! Thought they were all &lt;em&gt;Symbol&lt;/em&gt; keys?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The short answer is &lt;em&gt;no&lt;/em&gt;. In Rails controllers, &lt;code class=&quot;highlighter-rouge&quot;&gt;params&lt;/code&gt; is an instance of &lt;em&gt;HashWithIndiferentAccess&lt;/em&gt;.
+You may index it with &lt;em&gt;Symbol&lt;/em&gt; keys but internally it uses &lt;em&gt;String&lt;/em&gt; keys.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, &lt;code class=&quot;highlighter-rouge&quot;&gt;symbolize_keys&lt;/code&gt; is our friend here, allowing us to transform any
+Hash, such as HTTP parameters, to something we can pass as keyword arguments.&lt;/p&gt;
+
+&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+&lt;p&gt;So there you have it, &lt;code class=&quot;highlighter-rouge&quot;&gt;**&lt;/code&gt; is to &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; what &lt;code class=&quot;highlighter-rouge&quot;&gt;*&lt;/code&gt; is to &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt;, and is a very
+convenient tool to write shorter, expressive code.&lt;/p&gt;
+
+&lt;p&gt;Just watch out for errors when using non-&lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; keys in keyword arguments,
+at least until Ruby improves that error message 😉&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/ruby-double-splat-keywords.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+    <summary>One of the nicest bits of syntax sugar in Ruby are _keywords_.
+
+In this short post we will explore the keyword operator in Ruby, and a few things you should have in mind when first getting started with it.</summary>
+  
+  </entry>
 
   <entry>
     <title>Automatic Trailing Commas for Version Control</title>
@@ -1091,77 +1220,6 @@ requests, while still setting the &lt;code class=&quot;highlighter-rouge&quot;&g
 &lt;p&gt;The idea behind the &lt;em&gt;Anko DSL&lt;/em&gt; is a very interesting one, but it seems like the &lt;em&gt;Android SDK&lt;/em&gt; is not polished enough for &lt;em&gt;Anko&lt;/em&gt; to reach its full potential.&lt;/p&gt;
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/anko-vs-android-xml.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
-  
-  </entry>
-
-  <entry>
-    <title>CoffeeScript and JS Libraries</title>
-    <link href="http://maximomussini.com/posts/coffeescript-js-libraries/" rel="alternate" type="text/html" title="CoffeeScript and JS Libraries" />
-    <published>2015-12-31T18:58:00-03:00</published>
-  
-    <updated>2015-12-31T18:58:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/coffeescript-js-libraries</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/coffeescript-js-libraries/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/coffeescript-js-libraries.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.&lt;/p&gt;
-
-&lt;p&gt;In the frontend this has become increasingly more common because of all the available languages that compile to JavaScript. &lt;a href=&quot;http://coffeescript.org/&quot;&gt;&lt;em&gt;CoffeeScript&lt;/em&gt;&lt;/a&gt; was one of the first ones to gain adoption, but nowadays we have a myriad of available languages like &lt;a href=&quot;http://elm-lang.org/&quot;&gt;&lt;em&gt;Elm&lt;/em&gt;&lt;/a&gt;, &lt;a href=&quot;https://github.com/clojure/clojurescript&quot;&gt;&lt;em&gt;ClojureScript&lt;/em&gt;&lt;/a&gt;, &lt;a href=&quot;http://opalrb.org/&quot;&gt;&lt;em&gt;Opal&lt;/em&gt;&lt;/a&gt;, and &lt;a href=&quot;https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS&quot;&gt;many more&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Recently, we were trying to debug a strange issue with &lt;a href=&quot;http://www.nick-cherry.com&quot;&gt;one of my coworkers&lt;/a&gt;, where we had a list of selectable items with a checkbox to select/unselect all the items. Selecting all the items was working properly, but only the first item got unselected.&lt;/p&gt;
-
-&lt;figure class=&quot;example-wrapper&quot;&gt;
-  &lt;iframe src=&quot;/examples/posts/coffeescript-js-libraries/select_all_broken.html&quot; frameborder=&quot;0&quot; class=&quot;example&quot; width=&quot;&quot; height=&quot;254&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;
-&lt;/figure&gt;
-
-&lt;p&gt;After debugging it for a while we reached the conclusion that the iteration was being interrupted. Could &lt;a href=&quot;http://lodash.com&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;lodash&lt;/code&gt;&lt;/a&gt; have such a serious bug?&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot; data-lang=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;selectAll&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tasks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selected&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Fortunately, we decided to skip that theory, and instead reached for the &lt;a href=&quot;https://lodash.com/docs#forEach&quot;&gt;documentation&lt;/a&gt;, which stated:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Iteratee functions may exit iteration early by explicitly returning false.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Which sounds like a reasonable feature that can help to create more efficient algorithms—though we weren’t returning &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;!&lt;/p&gt;
-
-&lt;p&gt;But CoffeeScript was. The language draws inspiration from Ruby, and it borrows features like expressions and implicit returns. For functions, this means that the last executed expression becomes the return value of the function. This allows us to write very concise functions:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot; data-lang=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;isEven&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;If we reinterpret our snippet above taking implicit returns into account, it is equivalent to:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selectAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;each&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tasks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;selected&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;When we unselect all the items and &lt;code class=&quot;highlighter-rouge&quot;&gt;selectAll(false)&lt;/code&gt; is called, the first iteration returns the value of &lt;code class=&quot;highlighter-rouge&quot;&gt;task.selected&lt;/code&gt; which is &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;, causing &lt;em&gt;lodash&lt;/em&gt; to exit the iteration. Mistery solved :mag:&lt;/p&gt;
-
-&lt;figure class=&quot;example-wrapper&quot;&gt;
-  &lt;iframe src=&quot;/examples/posts/coffeescript-js-libraries/select_all.html&quot; frameborder=&quot;0&quot; class=&quot;example&quot; width=&quot;&quot; height=&quot;254&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;
-&lt;/figure&gt;
-
-&lt;p&gt;We can fix the bug by explicitly returning &lt;code class=&quot;highlighter-rouge&quot;&gt;null&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt; on each loop, which will avoid stopping the iteration, and all the items will be unselected correctly.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot; data-lang=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;selectAll&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tasks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selected&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isSelected&lt;/span&gt;
-    &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;These are two useful features on their own, yet extremely inconvenient when combined. The reason is that the library was written for a language with a different mindset. The design of the language and the design of the library are not fully compatible.&lt;/p&gt;
-
-&lt;h2 id=&quot;tldr&quot;&gt;TL;DR&lt;/h2&gt;
-&lt;p&gt;Watch out for language differences when using libraries written for another language, they will bite sooner or later.&lt;/p&gt;
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/coffeescript-js-libraries.jpg" />
     <author>
       <name>Máximo Mussini</name>
       <email>maximomussini@gmail.com</email>

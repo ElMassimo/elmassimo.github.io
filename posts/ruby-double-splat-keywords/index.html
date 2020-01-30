@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Ruby Keywords and the Double Splat Operator · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="One of the nicest bits of syntax sugar in Ruby are _keywords_.
+
+In this short post we will explore the keyword operator in Ruby, and a few things you should have in mind when first getting started with it.">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+<meta name="theme-color" content="#5C7E8F" />
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:300,300italic,400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="icon" sizes="192x192" href="/icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/ruby-double-splat-keywords/">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Ruby Keywords and the Double Splat Operator">
+<meta property="og:image" content="http://maximomussini.com/images/posts/ruby-double-splat-keywords.jpg">
+<meta property="og:description" content="One of the nicest bits of syntax sugar in Ruby are keywords.
+
+In this short post we will explore the keyword operator in Ruby, and a few things you should have in mind when first getting started with it.
+">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Ruby Keywords and the Double Splat Operator" />
+<meta name="twitter:description" value="One of the nicest bits of syntax sugar in Ruby are keywords.
+
+In this short post we will explore the keyword operator in Ruby, and a few things you should have in mind when first getting started with it.
+" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/ruby-double-splat-keywords.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/ruby-double-splat-keywords/" />
+
+  </head>
+  <body>
+    <header>
+  
+    <div class="hero" style="background-image: url(/images/posts/ruby-double-splat-keywords.jpg)">
+      <h1>Ruby Keywords and the Double Splat Operator</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr />
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">January 30, 2020</span>
+  <span class="reading-time">3 min read</span>
+</div>
+
+
+  <div class="post">
+    <p>One of the nicest bits of syntax sugar in Ruby are <em>keywords</em> (<code class="highlighter-rouge">**</code> or <em>double-splat</em>).</p>
+
+<h4 id="keywords-in-method-parameters">Keywords in Method Parameters</h4>
+
+<p>Just like the splat operator (<code class="highlighter-rouge">*args</code>) captures any parameters as an <code class="highlighter-rouge">Array</code> of
+arguments, the double-splat operator (<code class="highlighter-rouge">**attrs</code>) captures any option parameters
+as a <code class="highlighter-rouge">Hash</code>.</p>
+
+<p>The nice thing is that it allows to destructure a <code class="highlighter-rouge">Hash</code> argument into any of
+its individual keys, and mark it as required, or make it optional and provide a
+default value for it.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">first_name</span><span class="p">:,</span> <span class="ss">last_name: </span><span class="kp">nil</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+  <span class="nb">name</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">[</span><span class="ss">:middle_name</span><span class="p">],</span> <span class="n">last_name</span><span class="p">].</span><span class="nf">compact</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">' '</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"Hi </span><span class="si">#{</span> <span class="nb">name</span> <span class="si">}</span><span class="s2">!"</span>
+<span class="k">end</span>
+
+<span class="n">greet</span><span class="p">(</span><span class="ss">first_name: </span><span class="s1">'Gale'</span><span class="p">)</span>
+<span class="c1"># Hi Gale!</span>
+
+<span class="n">greet</span><span class="p">(</span><span class="ss">last_name: </span><span class="s1">'John'</span><span class="p">)</span>
+<span class="c1"># ArgumentError (missing keyword: first_name)</span>
+
+<span class="n">greet</span><span class="p">(</span><span class="ss">first_name: </span><span class="s1">'Bruce'</span><span class="p">,</span> <span class="ss">middle_name: </span><span class="s1">'Wayne'</span><span class="p">,</span> <span class="ss">last_name: </span><span class="s1">'Keaton'</span><span class="p">)</span>
+<span class="c1"># Hi Bruce Wayne Keaton!</span>
+</code></pre></div></div>
+
+<p>There’s one <strong><em>big gotcha</em></strong> which comes up a lot when first learning Ruby:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="o">**</span><span class="n">attrs</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"Hi </span><span class="si">#{</span> <span class="n">attrs</span><span class="p">[</span><span class="ss">:name</span><span class="p">]</span> <span class="si">}</span><span class="s2">!"</span>
+<span class="k">end</span>
+
+<span class="n">greet</span>
+<span class="c1"># Hi !</span>
+
+<span class="n">greet</span><span class="p">(</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Jane'</span><span class="p">)</span>
+<span class="c1"># ArgumentError (wrong number of arguments (given 1, expected 0))</span>
+</code></pre></div></div>
+
+<p>Many developers have scratched their heads wondering what’s going on, until
+they learn the cause of this unintuitive message.</p>
+
+<blockquote>
+  <p>Only <code class="highlighter-rouge">Symbol</code> keys are allowed in keyword arguments 😲</p>
+</blockquote>
+
+<p>Ruby handles keyword arguments differently in its internals, which unfortunately
+leaks into this error message.</p>
+
+<h4 id="merging-hashes-with-the-double-splat-operator">Merging Hashes with the Double-Splat operator</h4>
+
+<p>The double-splat operator can also be used to combine hashes. The order matters,
+when resolving duplicate keys, the rightmost ones will take priority.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">jane</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="s2">"Jane"</span><span class="p">,</span> <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="s2">"Doe"</span> <span class="p">}</span>
+
+<span class="p">{</span> <span class="o">**</span><span class="n">jane</span><span class="p">,</span> <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="s2">"Johnson"</span> <span class="p">}</span>
+<span class="c1"># { :first_name =&gt; "Jane", :last_name =&gt; "Johnson" }</span>
+
+<span class="p">{</span> <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="s2">"Johnson"</span><span class="p">,</span> <span class="o">**</span><span class="n">jane</span> <span class="p">}</span>
+<span class="c1"># { :last_name =&gt; "Doe, :first_name =&gt; "Jane" }</span>
+</code></pre></div></div>
+
+<p>There are a few caveats when combining hashes:</p>
+
+<ul>
+  <li>It does not combine keys of different types, such as <code class="highlighter-rouge">String</code> and <code class="highlighter-rouge">Symbol</code>.</li>
+  <li>It can <strong>only</strong> be used with Hashes where all keys are <code class="highlighter-rouge">Symbol</code>s.</li>
+</ul>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">jane</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="s2">"Jane"</span><span class="p">,</span> <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="s2">"Doe"</span> <span class="p">}</span>
+<span class="p">{</span> <span class="o">**</span><span class="n">jane</span><span class="p">,</span> <span class="s2">"first_name"</span> <span class="o">=&gt;</span> <span class="s2">"John"</span> <span class="p">}</span>
+<span class="c1"># { :first_name =&gt; "Jane", :last_name=&gt;"Doe", "first_name"=&gt;"John" }</span>
+
+<span class="n">jane</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"first_name"</span> <span class="o">=&gt;</span> <span class="s2">"Jane"</span><span class="p">,</span> <span class="s2">"last_name"</span> <span class="o">=&gt;</span> <span class="s2">"Doe"</span> <span class="p">}</span>
+<span class="n">doe</span> <span class="o">=</span> <span class="p">{</span> <span class="o">**</span><span class="n">jane</span><span class="p">,</span> <span class="ss">first_name: </span><span class="s2">"John"</span> <span class="p">}</span>
+<span class="c1"># TypeError (hash key "first_name" is not a Symbol)</span>
+</code></pre></div></div>
+
+<p>This message used to be very cryptic like the one for keyword arguments, but it
+has improved a lot since the feature was first added 🎉</p>
+
+<h4 id="a-quick-note-about-rails">A quick note about Rails</h4>
+
+<p>When using Rails a developer might think:</p>
+
+<blockquote>
+  <p>I can obtain values from <code class="highlighter-rouge">params</code> using <code class="highlighter-rouge">Symbol</code> keys, but I can’t pass them
+as keyword arguments! Thought they were all <em>Symbol</em> keys?</p>
+</blockquote>
+
+<p>The short answer is <em>no</em>. In Rails controllers, <code class="highlighter-rouge">params</code> is an instance of <em>HashWithIndiferentAccess</em>.
+You may index it with <em>Symbol</em> keys but internally it uses <em>String</em> keys.</p>
+
+<p>Fortunately, <code class="highlighter-rouge">symbolize_keys</code> is our friend here, allowing us to transform any
+Hash, such as HTTP parameters, to something we can pass as keyword arguments.</p>
+
+<h3 id="summary">Summary</h3>
+<p>So there you have it, <code class="highlighter-rouge">**</code> is to <code class="highlighter-rouge">Hash</code> what <code class="highlighter-rouge">*</code> is to <code class="highlighter-rouge">Array</code>, and is a very
+convenient tool to write shorter, expressive code.</p>
+
+<p>Just watch out for errors when using non-<code class="highlighter-rouge">Symbol</code> keys in keyword arguments,
+at least until Ruby improves that error message 😉</p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/trailing-commas/" class="overlay">
+        <h1>Automatic Trailing Commas for Version Control</h1>
+        <div class="post-info">
+  <span class="date">April 03, 2019</span>
+  <span class="reading-time">2 min read</span>
+</div>
+
+        <div class="post">
+          <p>Today I’d like to share a simple but very useful practice for managing Ruby and
+JS code under version control.</p>
+
+<p>In our team, we always use trailing commas when defining multi-line literals for
+arrays and hash (object in JS) literals.</p>
+
+<p>It’s great that both Ruby and JS allow this in their syntax, because as a result
+we are able to get cleaner diffs:</p>
+
+<p><img src="/images/posts/trailing-commas/standard-vs-trailing.png" alt="Standard vs Trailing" class=""></p>
+
+<p>Notice how the same code c…</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>
