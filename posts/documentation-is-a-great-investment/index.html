@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Documentation is a Great Investment · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="Would you like to prevent problems and regressions? Refactor with confidence? Save development time? Make any area of the app accessible to other developers?
+
+Read on to find out how a team that _documents their work_ is on a better path to achieve all the above.">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+<meta name="theme-color" content="#5C7E8F" />
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="icon" sizes="192x192" href="/icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/documentation-is-a-great-investment/">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Documentation is a Great Investment">
+<meta property="og:image" content="http://maximomussini.com/images/posts/documentation-is-a-great-investment.jpg">
+<meta property="og:description" content="Would you like to prevent problems and regressions? Refactor with confidence? Save development time? Make any area of the app accessible to other developers?
+
+Read on to find out how a team that documents their work is on a better path to achieve all the above.
+">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Documentation is a Great Investment" />
+<meta name="twitter:description" value="Would you like to prevent problems and regressions? Refactor with confidence? Save development time? Make any area of the app accessible to other developers?
+
+Read on to find out how a team that documents their work is on a better path to achieve all the above.
+" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/documentation-is-a-great-investment.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/documentation-is-a-great-investment/" />
+
+  </head>
+  <body>
+    <header>
+  
+    <div class="hero" style="background-image: url(/images/posts/documentation-is-a-great-investment.jpg)">
+      <h1>Documentation is a Great Investment</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr>
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">February 17, 2020</span>
+  <span class="reading-time">6 min read</span>
+</div>
+
+
+  <div class="post">
+    <p>In this post I’d like to share a practice that has completely changed the way we
+work: documentation as a first-class citizen in our software development process.</p>
+
+<p>Documentation facilitates understanding, which is <em>vital</em> to enable
+change and continuous improvement.</p>
+
+<h3 id="how-is-it-helpful-thinking">How is it helpful? <img class="emoji" title=":thinking:" alt=":thinking:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f914.png" height="20" width="20">
+</h3>
+
+<p>Traditionally, we aim to produce clean and maintainable code to make it more
+reliable, and write tests to protect it. We use good variable names, split
+functions that perform too much into simpler ones, and design them so that
+parameter names convey enough information.</p>
+
+<p>However, seeing <em>what</em> the code does is not the same as figuring out <em>why</em> it does it.</p>
+
+<p>Most of the design process happens informally in chat rooms, conversations, and
+online documents. As a result, understanding a decision that was made a long time
+ago can be very time consuming, as it requires scanning through chat messages,
+and reaching out to the people that were involved.</p>
+
+<p>When we are not able to obtain enough information about these decisions, it
+becomes harder to effectively reason about the software, slowing down fixes and
+improvements.</p>
+
+<p>This is why learning about past decisions should be as efficient and
+straightforward as possible: it will save us a lot of time and frustration down
+the line. Knowing the context will allow us to make informed decisions,
+which are <em>better</em> decisions.</p>
+
+<h3 id="best-time-to-start-was-years-ago-second-best-time-is-now-hourglass">Best time to start was years ago, second best time is now <img class="emoji" title=":hourglass:" alt=":hourglass:" src="https://github.githubassets.com/images/icons/emoji/unicode/231b.png" height="20" width="20">
+</h3>
+
+<p>If we are to make our software easier to understand, and thus easier to change,
+we should <strong><em>document our intent</em></strong> in every possible way. Think about it as a
+byproduct of the thought process we carry out as developers when designing a
+solution and writing code.</p>
+
+<p>Capture any breadcrumbs that might be useful in the future to find out how
+things are supposed to work, helping other developers unravel the conditions
+and mindset that influenced the code, even when we no longer remember why.</p>
+
+<p><strong><em>Document as you go</em></strong>. No other time will be better to document than when the
+ideas are fresh in our mind. Memories fade over time, and what we fail to
+record then might be hopeless or painfully time-consuming to remember later.</p>
+
+<p>The overhead of documenting on the spot is negligible, but the overall benefits
+are certainly not!</p>
+
+<h3 id="documenting-is-intrinsically-a-valuable-activity-moneybag">Documenting is intrinsically a valuable activity <img class="emoji" title=":moneybag:" alt=":moneybag:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4b0.png" height="20" width="20">
+</h3>
+
+<p>To get the best out of it, we should imagine we are someone else trying to
+understand our work. Which things will not be so obvious a few months from now?
+Thinking about it can help to reveal our underlying assumptions and knowledge.</p>
+
+<blockquote>
+  <p>Is it clear how this component interacts with other parts of the system?</p>
+</blockquote>
+
+<p>By doing this mental exercise, we will be able to find simpler and more readable
+ways to solve a problem, allowing us to refine our designs and solutions.
+It has a direct positive impact in maintainability, regardless of whether
+someone actually reads the resulting documentation.</p>
+
+<p>Our focus should be on recording intent, <em>why</em> and <em>how</em> things <em>should</em> happen.
+It’s also useful to cross-reference classes and objects that interact with each
+other. Aim for the bigger picture, and work your way down as needed.</p>
+
+<h3 id="a-lightweight-approach-is-good-enough-zap">A lightweight approach is good enough <img class="emoji" title=":zap:" alt=":zap:" src="https://github.githubassets.com/images/icons/emoji/unicode/26a1.png" height="20" width="20">
+</h3>
+
+<p>In practice, we’ve found that using a conventional but minimal
+<a href="https://gist.github.com/ElMassimo/a118d08482d9db8e71d622e136f10155#which-format-to-use">syntax</a> for comments works well, and that it’s better to
+<a href="https://gist.github.com/ElMassimo/a118d08482d9db8e71d622e136f10155"><em><strong>inline documentation</strong></em></a> in the code itself.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Public: Abbreviation of a few words that sums up what the question is about.</span>
+<span class="c1"># Example: 'Side Effects'</span>
+<span class="n">field</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">type: </span><span class="no">String</span>
+</code></pre></div></div>
+
+<p>Inline docs are always at hand, require very low effort to add and update, and
+are very helpful for developers to gain insight (both during reviews and in the long run).</p>
+
+<p>They should be clear and concise. Don’t overstate the obvious and remove any
+words that feel unnecessary. <em><strong>Creating good documentation takes practice</strong></em>,
+it’s more about writing skills and less about programming.</p>
+
+<p>While it’s possible to generate documentation pages from a <a href="https://gist.github.com/ElMassimo/a118d08482d9db8e71d622e136f10155#which-format-to-use">minimal syntax</a>,
+usually navigating through the source code and reading the inline docs is more
+convenient. Using <em>Goto Symbol</em> or <em>Goto Definition</em> on any <a href="https://www.sublimetext.com/">editor</a> does the trick.</p>
+
+<blockquote>
+  <p>Won’t the comments become outdated really quickly? <img class="emoji" title=":scream_cat:" alt=":scream_cat:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f640.png" height="20" width="20"></p>
+</blockquote>
+
+<h3 id="version-control-to-the-rescue-">Version control to the rescue! 🦸</h3>
+
+<p>More often than not, the core concepts in the software we write rarely change,
+so the documentation tends to be useful even when not entirely accurate.</p>
+
+<p>Combined with <a href="https://git-scm.com/">source control</a>, even when the comments are
+outdated, the original intention is never lost. We can navigate back through
+history and get the full context in which the documentation was written.</p>
+
+<p>In the same way we should document our intent in methods, properties, and classes,
+it’s also important to capture the broader purpose of changes in commits. This
+will enable us to <a href="https://git-scm.com/docs/git-blame">look back to learn more</a>, saving us an
+invaluable amount of time when trying to understand past decisions.</p>
+
+<p>As a result, we can move forward with deeper undestanding and confidence,
+refactoring or removing code without fear of accidentally breaking the app, or
+going against an otherwise long-forgotten decision.</p>
+
+<h3 id="pull-requests-as-the-unit-of-change-">Pull Requests as the unit of change 🧩</h3>
+
+<p>Usually in a team environment, the <em>pull request</em> replaces the <em>commit</em> as the <em>unit
+of change</em>. Besides providing a platform for code review, pull requests are
+great for adding rich non-text information, such as images and video, and
+hyperlinks to external resources.</p>
+
+<p>As a result, they also have an immense potential for communication and
+documentation. We should leverage the description to explain substantial changes
+(<em>why</em> and <em>what for</em>), provide screenshots, and any content that makes it
+easier to follow the work.</p>
+
+<p>Doing so will leave a solid trail that can help anyone grasp the full picture
+later on, in addition to improving the communication and quality of the reviews.
+Two for one!</p>
+
+<h3 id="tldr-document-all-the-things-pencil2-book">TL’DR: Document all the things! <img class="emoji" title=":pencil2:" alt=":pencil2:" src="https://github.githubassets.com/images/icons/emoji/unicode/270f.png" height="20" width="20"> <img class="emoji" title=":book:" alt=":book:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f4d6.png" height="20" width="20">
+</h3>
+
+<p>Code is read a lot more often than it’s written, which is why inline docs
+provide a great return for their tiny cost. Same can be said about writing
+a nice pull request description, describing specific decisions in comments,
+and providing screenshots.</p>
+
+<p>We’ve saved a lot of time when figuring out how things work, enabled our team to
+refactor with confidence, prevented problems and regressions, and made entire
+areas of the app more approachable for other developers.</p>
+
+<p>The simple practice of documenting helps junior and senior developers alike, and
+after you start using it, you’ll be wondering why you didn’t start sooner <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20"></p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/ruby-double-splat-keywords/" class="overlay">
+        <h1>Ruby Keywords and the Double Splat Operator</h1>
+        <div class="post-info">
+  <span class="date">January 30, 2020</span>
+  <span class="reading-time">3 min read</span>
+</div>
+
+        <div class="post">
+          <p>One of the nicest bits of syntax sugar in Ruby are <em>keywords</em> (<code class="highlighter-rouge">**</code> or <em>double-splat</em>).</p>
+
+<h4 id="keywords-in-method-parameters">Keywords in Method Parameters</h4>
+
+<p>Just like the splat operator (<code class="highlighter-rouge">*args</code>) captures any parameters as an <code class="highlighter-rouge">Array</code> of
+arguments, the double-splat operator (<code class="highlighter-rouge">**attrs</code>) captures any option parameters
+as a <code class="highlighter-rouge">Hash</code>.</p>
+
+<p>The nice thing is that it allows to destructure a <code class="highlighter-rouge">Hash</code> argument into any of
+its individual keys, and mark it as r…</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>
