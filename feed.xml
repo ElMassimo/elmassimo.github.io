@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.7.4">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2020-04-29T11:43:42-03:00</updated>
+  <updated>2020-05-12T00:19:20-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -12,6 +12,151 @@
     <name>Máximo Mussini</name>
     <email>maximomussini@gmail.com</email>
   </author>
+
+  <entry>
+    <title>Store Objects for Vuex</title>
+    <link href="http://maximomussini.com/posts/vuex-stores/" rel="alternate" type="text/html" title="Store Objects for Vuex" />
+    <published>2020-05-12T00:20:00-03:00</published>
+  
+    <updated>2020-05-12T00:20:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/vuex-stores</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/vuex-stores/">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/vuex-stores.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;&lt;a href=&quot;https://vuex.vuejs.org/&quot;&gt;Vuex&lt;/a&gt; is a state-management solution that integrates nicely with
+&lt;a href=&quot;https://vuejs.org/&quot;&gt;Vue&lt;/a&gt; components.&lt;/p&gt;
+
+&lt;p&gt;When starting to use Vuex, one quickly realizes that it’s easier to manage and
+understand the state of a large application when the state is split between
+different &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html&quot;&gt;modules in the Vuex store&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, working with modules involves using a &lt;em&gt;namespace string&lt;/em&gt; to
+access state and getters, which makes typos hard to detect, and can
+quickly become cumbersome if using &lt;a href=&quot;https://vuex.vuejs.org/guide/mutations.html#using-constants-for-mutation-types&quot;&gt;constants&lt;/a&gt; or a similar
+approach to avoid duplication.&lt;/p&gt;
+
+&lt;p&gt;Another weak spot is that dispatching actions feels very unnatural, and also
+requires specifying the &lt;em&gt;namespace string&lt;/em&gt; as a prefix for the action name.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-smoother-experience-&quot;&gt;A smoother experience 🥃&lt;/h3&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; library helps you avoid these shortcomings
+by providing light wrappers around individual &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html&quot;&gt;Vuex store modules&lt;/a&gt;,
+which I’ve dubbed &lt;em&gt;“store-objects”&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Store objects&lt;/em&gt; address these issues by allowing access to state and getters as
+properties, and dispatching actions easily by using plain method calls.&lt;/p&gt;
+
+&lt;p&gt;As a result, it’s possible to leverage all the goodness in Vuex, using an
+&lt;a href=&quot;https://github.com/ElMassimo/vuex-stores#api-%EF%B8%8F&quot;&gt;elegant and convenient API&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;conventions-&quot;&gt;Conventions 🔤&lt;/h3&gt;
+
+&lt;p&gt;In order to organize these store objects, an approach that works nicely is to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create one file per store module under a &lt;code class=&quot;highlighter-rouge&quot;&gt;stores&lt;/code&gt; directory.&lt;/li&gt;
+  &lt;li&gt;Always use &lt;code class=&quot;highlighter-rouge&quot;&gt;Store&lt;/code&gt; as a suffix for the file name (&lt;code class=&quot;highlighter-rouge&quot;&gt;ModalsStore&lt;/code&gt;).&lt;/li&gt;
+  &lt;li&gt;Add a &lt;code class=&quot;highlighter-rouge&quot;&gt;@stores&lt;/code&gt; webpack alias to make them convenient to import.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s take a look at an example usage:&lt;/p&gt;
+
+&lt;div class=&quot;language-vue highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ModalsStore&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'@stores/ModalsStore'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ModalManager'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;computed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// `mapState` and friends are available to inject state or getters into the&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// template, without the need to specify the namespace string.&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ModalsStore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mapState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'modals'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;beforeMount&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// closeAllModals is an action, and it will be dispatched every time the&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// route changes, to hide any open modals.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$router&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;afterEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ModalsStore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;closeAllModals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;methods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Actions are available as methods, notice the lack of boilerplate to&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// inject it in the component using `mapActions`.&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;onModalClose&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;modal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;ModalsStore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeModal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;modal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// NOTE: A shorter version would be: `onModalClose: ModalsStore.removeModal,`&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;modal-manager&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;component&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;:is=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;modal.component&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;v-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;modal in modals&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;:key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;modal.id&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;v-bind=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;modal.attrs&quot;&lt;/span&gt;
+      &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;modal:close=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;onModalClose(modal)&quot;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;As seen in this short example, state, getters, and actions can be easily injected
+in a component using &lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt; helpers to make them available in the template.&lt;/p&gt;
+
+&lt;p&gt;Actions can be dispatched by simply calling a method, which is closer to how
+they are defined, and feels very natural. Typos in action names are prevented,
+since a method call would fail if the name is not correct (instead of being ignored)&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;namespace string&lt;/em&gt; becomes an implementation detail which is transparent to
+the user, without having to use cumbersome manual techniques (such as &lt;a href=&quot;https://vuex.vuejs.org/guide/mutations.html#using-constants-for-mutation-types&quot;&gt;constants&lt;/a&gt;)
+to avoid duplicating the module name all over the codebase.&lt;/p&gt;
+
+&lt;p&gt;Because incorrect ES6 imports provide clear errors, typos in the store name can
+be detected at compile time, and refactoring becomes a lot easier (usually as
+simple as &lt;em&gt;search and replace&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;There are more code samples available in the &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores#api-%EF%B8%8F&quot;&gt;documentation&lt;/a&gt; 📖&lt;/p&gt;
+
+&lt;h3 id=&quot;code-splitting-️&quot;&gt;Code Splitting ✂️&lt;/h3&gt;
+
+&lt;p&gt;Store modules in Vuex can be &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html#dynamic-module-registration&quot;&gt;registered dynamically&lt;/a&gt;,
+so internally &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; leverages &lt;code class=&quot;highlighter-rouge&quot;&gt;registerModule&lt;/code&gt; to
+add a new module when the store object is imported.&lt;/p&gt;
+
+&lt;p&gt;This means that store objects don’t need to be imported up-front when initially
+defining the Vuex store, playing nicely with apps that do code splitting, since
+the code associated to a store object will only be loaded if needed.&lt;/p&gt;
+
+&lt;p&gt;As a result, the initial setup of the Vuex store will be lighter, and by
+using the conventions described above, code loading and execution will be
+optimized.&lt;/p&gt;
+
+&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; provides a simple way to work with &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html&quot;&gt;Vuex modules&lt;/a&gt;
+by allowing you to define &lt;em&gt;store objects&lt;/em&gt; to focus on one module at a time,
+making it more enjoyable to leverage Vuex.&lt;/p&gt;
+
+&lt;p&gt;The API is convenient and easy to learn, prevents mistakes such as typos, and
+works nicely when used in conjunction with ES6 modules, making the code easier
+to reason about and refactor.&lt;/p&gt;
+
+&lt;p&gt;Also, it’s a lot of fun, give it a try! 😃&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/vuex-stores.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+    <summary>It's easier to manage and understand state in Vuex when it is split between different modules. However, the default approach has some shortcomings that make modules cumbersome to use.
+
+Read on to find out how to leverage all the goodness in Vuex using a more natural and convenient API, making your app easier to reason about and refactor.</summary>
+  
+  </entry>
 
   <entry>
     <title>Documentation is a Great Investment</title>
@@ -1119,58 +1264,6 @@ collaboration and source-control, and prevents bugs.&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;to_or&lt;/code&gt; has been a very helpful addition to our projects, allowing us to write simple steps that read like English. You can just copy the &lt;code class=&quot;highlighter-rouge&quot;&gt;PositiveNegativeExpectationHandler&lt;/code&gt; to a support file in your project (like &lt;code class=&quot;highlighter-rouge&quot;&gt;features/support/to_or.rb&lt;/code&gt;) and start using it right away :smiley:&lt;/p&gt;
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
-  
-  </entry>
-
-  <entry>
-    <title>Redirecting AJAX requests in Rails</title>
-    <link href="http://maximomussini.com/posts/rails-ajax_redirect/" rel="alternate" type="text/html" title="Redirecting AJAX requests in Rails" />
-    <published>2016-01-11T17:00:00-03:00</published>
-  
-    <updated>2016-01-11T17:00:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/rails-ajax_redirect</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/rails-ajax_redirect/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/rails-ajax_redirect.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;&lt;a href=&quot;https://github.com/rails/jquery-rails&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;jquery-rails&lt;/code&gt;&lt;/a&gt; powers links and forms in Rails: it’s what makes &lt;code class=&quot;highlighter-rouge&quot;&gt;remote: true&lt;/code&gt; work, allowing any link to make an AJAX request unobtrusively.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/rails-ajax_redirect&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rails-ajax_redirect&lt;/code&gt;&lt;/a&gt; is an extension to this unobtrusive behaviour that adds AJAX support to &lt;code class=&quot;highlighter-rouge&quot;&gt;redirect_to&lt;/code&gt;. It allows us to redirect an AJAX request as usual, instead of having to perform the redirect by handling the response manually in JS every time.&lt;/p&gt;
-
-&lt;p&gt;This is helpful in many different scenarios, and just like &lt;code class=&quot;highlighter-rouge&quot;&gt;remote: true&lt;/code&gt;, it allows us to skip some of the boilerplate in cases where we need to redirect the user to a different page.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/rails-ajax_redirect&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Rails::AjaxRedirect&lt;/code&gt;&lt;/a&gt; extends &lt;code class=&quot;highlighter-rouge&quot;&gt;redirect_to&lt;/code&gt; to use a custom status code for ajax
-requests, while still setting the &lt;code class=&quot;highlighter-rouge&quot;&gt;Location&lt;/code&gt; header. On the front-end, it adds a handler for the &lt;code class=&quot;highlighter-rouge&quot;&gt;ajax:success&lt;/code&gt; event, that navigates to the location in the header for responses that have the custom status code.&lt;/p&gt;
-
-&lt;p&gt;This makes it possible to write a simple redirect as usual, but without having to handle it manually every time :smiley:&lt;/p&gt;
-
-&lt;h2 id=&quot;turbolinks&quot;&gt;Turbolinks&lt;/h2&gt;
-&lt;p&gt;If your application uses &lt;a href=&quot;https://github.com/rails/turbolinks&quot;&gt;&lt;em&gt;Turbolinks&lt;/em&gt;&lt;/a&gt; check out &lt;a href=&quot;https://github.com/remind101/turbolinks-redirect&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;turbolinks-redirect&lt;/code&gt;&lt;/a&gt;, on which &lt;a href=&quot;https://github.com/ElMassimo/rails-ajax_redirect&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rails-ajax_redirect&lt;/code&gt;&lt;/a&gt; is based on. The advantage is that it will perform faster navigation by leveraging &lt;em&gt;Turbolinks&lt;/em&gt; to visit the new location.&lt;/p&gt;
-
-&lt;h2 id=&quot;angularjs&quot;&gt;AngularJS&lt;/h2&gt;
-&lt;p&gt;If your application makes the AJAX request using &lt;code class=&quot;highlighter-rouge&quot;&gt;$http&lt;/code&gt; instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;jQuery&lt;/code&gt;, it will be necessary to add an interceptor similar to this:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot; data-lang=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;config&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$httpProvider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;$httpProvider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;interceptors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'AjaxRedirectInterceptor'&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;# Add a header to let Rails know that it's an Ajax request.&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;$httpProvider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;common&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'X-REQUESTED-WITH'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'XMLHttpRequest'&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;service&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'AjaxRedirectInterceptor'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;interceptor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AJAX_REDIRECT_STATUS_CODE&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;$window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;location&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;$q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/rails-ajax_redirect.jpg" />
     <author>
       <name>Máximo Mussini</name>
       <email>maximomussini@gmail.com</email>

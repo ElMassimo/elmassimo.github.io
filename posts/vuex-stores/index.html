@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Store Objects for Vuex · Máximo Mussini
+
+</title>
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="It's easier to manage and understand state in Vuex when it is split between different modules. However, the default approach has some shortcomings that make modules cumbersome to use.
+
+Read on to find out how to leverage all the goodness in Vuex using a more natural and convenient API, making your app easier to reason about and refactor.">
+<meta name="keywords" content="">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+<meta name="theme-color" content="#5C7E8F" />
+
+<!-- Styles -->
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="icon" sizes="192x192" href="/icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/vuex-stores/">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Store Objects for Vuex">
+<meta property="og:image" content="http://maximomussini.com/images/posts/vuex-stores.jpg">
+<meta property="og:description" content="It’s easier to manage and understand state in Vuex when it is split between different modules. However, the default approach has some shortcomings that make modules cumbersome to use.
+
+Read on to find out how to leverage all the goodness in Vuex using a more natural and convenient API, making your app easier to reason about and refactor.
+">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Store Objects for Vuex" />
+<meta name="twitter:description" value="It’s easier to manage and understand state in Vuex when it is split between different modules. However, the default approach has some shortcomings that make modules cumbersome to use.
+
+Read on to find out how to leverage all the goodness in Vuex using a more natural and convenient API, making your app easier to reason about and refactor.
+" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/vuex-stores.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/vuex-stores/" />
+
+  </head>
+  <body>
+    <header>
+  
+    <div class="hero" style="background-image: url(/images/posts/vuex-stores.jpg)">
+      <h1>Store Objects for Vuex</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr>
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">May 12, 2020</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+
+  <div class="post">
+    <p><a href="https://vuex.vuejs.org/">Vuex</a> is a state-management solution that integrates nicely with
+<a href="https://vuejs.org/">Vue</a> components.</p>
+
+<p>When starting to use Vuex, one quickly realizes that it’s easier to manage and
+understand the state of a large application when the state is split between
+different <a href="https://vuex.vuejs.org/guide/modules.html">modules in the Vuex store</a>.</p>
+
+<p>Unfortunately, working with modules involves using a <em>namespace string</em> to
+access state and getters, which makes typos hard to detect, and can
+quickly become cumbersome if using <a href="https://vuex.vuejs.org/guide/mutations.html#using-constants-for-mutation-types">constants</a> or a similar
+approach to avoid duplication.</p>
+
+<p>Another weak spot is that dispatching actions feels very unnatural, and also
+requires specifying the <em>namespace string</em> as a prefix for the action name.</p>
+
+<h3 id="a-smoother-experience-">A smoother experience 🥃</h3>
+
+<p>The <a href="https://github.com/ElMassimo/vuex-stores"><code class="highlighter-rouge">vuex-stores</code></a> library helps you avoid these shortcomings
+by providing light wrappers around individual <a href="https://vuex.vuejs.org/guide/modules.html">Vuex store modules</a>,
+which I’ve dubbed <em>“store-objects”</em>.</p>
+
+<p><em>Store objects</em> address these issues by allowing access to state and getters as
+properties, and dispatching actions easily by using plain method calls.</p>
+
+<p>As a result, it’s possible to leverage all the goodness in Vuex, using an
+<a href="https://github.com/ElMassimo/vuex-stores#api-%EF%B8%8F">elegant and convenient API</a>.</p>
+
+<h3 id="conventions-">Conventions 🔤</h3>
+
+<p>In order to organize these store objects, an approach that works nicely is to:</p>
+
+<ul>
+  <li>Create one file per store module under a <code class="highlighter-rouge">stores</code> directory.</li>
+  <li>Always use <code class="highlighter-rouge">Store</code> as a suffix for the file name (<code class="highlighter-rouge">ModalsStore</code>).</li>
+  <li>Add a <code class="highlighter-rouge">@stores</code> webpack alias to make them convenient to import.</li>
+</ul>
+
+<p>Let’s take a look at an example usage:</p>
+
+<div class="language-vue highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;</span><span class="k">script</span><span class="nt">&gt;</span>
+<span class="k">import</span> <span class="nx">ModalsStore</span> <span class="k">from</span> <span class="s1">'@stores/ModalsStore'</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'ModalManager'</span><span class="p">,</span>
+  <span class="na">computed</span><span class="p">:</span> <span class="p">{</span>
+    <span class="c1">// `mapState` and friends are available to inject state or getters into the</span>
+    <span class="c1">// template, without the need to specify the namespace string.</span>
+    <span class="p">...</span><span class="nx">ModalsStore</span><span class="p">.</span><span class="nx">mapState</span><span class="p">(</span><span class="s1">'modals'</span><span class="p">),</span>
+  <span class="p">},</span>
+  <span class="nx">beforeMount</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// closeAllModals is an action, and it will be dispatched every time the</span>
+    <span class="c1">// route changes, to hide any open modals.</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">afterEach</span><span class="p">(</span><span class="nx">ModalsStore</span><span class="p">.</span><span class="nx">closeAllModals</span><span class="p">)</span>
+  <span class="p">},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="c1">// Actions are available as methods, notice the lack of boilerplate to</span>
+    <span class="c1">// inject it in the component using `mapActions`.</span>
+    <span class="nx">onModalClose</span> <span class="p">(</span><span class="nx">modal</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ModalsStore</span><span class="p">.</span><span class="nx">removeModal</span><span class="p">(</span><span class="nx">modal</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="c1">// NOTE: A shorter version would be: `onModalClose: ModalsStore.removeModal,`</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+<span class="nt">&lt;/</span><span class="k">script</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;</span><span class="k">template</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-manager"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;component</span>
+      <span class="na">:is=</span><span class="s">"modal.component"</span>
+      <span class="na">v-for=</span><span class="s">"modal in modals"</span>
+      <span class="na">:key=</span><span class="s">"modal.id"</span>
+      <span class="na">v-bind=</span><span class="s">"modal.attrs"</span>
+      <span class="err">@</span><span class="na">modal:close=</span><span class="s">"onModalClose(modal)"</span>
+    <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/</span><span class="k">template</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>As seen in this short example, state, getters, and actions can be easily injected
+in a component using <code class="highlighter-rouge">map</code> helpers to make them available in the template.</p>
+
+<p>Actions can be dispatched by simply calling a method, which is closer to how
+they are defined, and feels very natural. Typos in action names are prevented,
+since a method call would fail if the name is not correct (instead of being ignored)</p>
+
+<p>The <em>namespace string</em> becomes an implementation detail which is transparent to
+the user, without having to use cumbersome manual techniques (such as <a href="https://vuex.vuejs.org/guide/mutations.html#using-constants-for-mutation-types">constants</a>)
+to avoid duplicating the module name all over the codebase.</p>
+
+<p>Because incorrect ES6 imports provide clear errors, typos in the store name can
+be detected at compile time, and refactoring becomes a lot easier (usually as
+simple as <em>search and replace</em>).</p>
+
+<p>There are more code samples available in the <a href="https://github.com/ElMassimo/vuex-stores#api-%EF%B8%8F">documentation</a> 📖</p>
+
+<h3 id="code-splitting-️">Code Splitting ✂️</h3>
+
+<p>Store modules in Vuex can be <a href="https://vuex.vuejs.org/guide/modules.html#dynamic-module-registration">registered dynamically</a>,
+so internally <a href="https://github.com/ElMassimo/vuex-stores"><code class="highlighter-rouge">vuex-stores</code></a> leverages <code class="highlighter-rouge">registerModule</code> to
+add a new module when the store object is imported.</p>
+
+<p>This means that store objects don’t need to be imported up-front when initially
+defining the Vuex store, playing nicely with apps that do code splitting, since
+the code associated to a store object will only be loaded if needed.</p>
+
+<p>As a result, the initial setup of the Vuex store will be lighter, and by
+using the conventions described above, code loading and execution will be
+optimized.</p>
+
+<h3 id="summary">Summary</h3>
+
+<p><a href="https://github.com/ElMassimo/vuex-stores"><code class="highlighter-rouge">vuex-stores</code></a> provides a simple way to work with <a href="https://vuex.vuejs.org/guide/modules.html">Vuex modules</a>
+by allowing you to define <em>store objects</em> to focus on one module at a time,
+making it more enjoyable to leverage Vuex.</p>
+
+<p>The API is convenient and easy to learn, prevents mistakes such as typos, and
+works nicely when used in conjunction with ES6 modules, making the code easier
+to reason about and refactor.</p>
+
+<p>Also, it’s a lot of fun, give it a try! 😃</p>
+
+  </div>
+
+  <div class="ending">
+  <div class="author">
+    <a href="/" class="logo">
+  <span class="text">M</span>
+</a>
+
+    By
+    <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
+    <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+  <div class="previous-post">
+    <div class="content container">
+      <a id="previous-post" href="/posts/documentation-is-a-great-investment/" class="overlay">
+        <h1>Documentation is a Great Investment</h1>
+        <div class="post-info">
+  <span class="date">February 17, 2020</span>
+  <span class="reading-time">6 min read</span>
+</div>
+
+        <div class="post">
+          <p>In this post I’d like to share a practice that has completely changed the way we
+work: documentation as a first-class citizen in our software development process.</p>
+
+<p>Documentation facilitates understanding, which is <em>vital</em> to enable
+change and continuous improvement.</p>
+
+<h3 id="how-is-it-helpful-thinking">How is it helpful? <img class="emoji" title=":thinking:" alt=":thinking:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f914.png" height="20" width="20">
+</h3>
+
+<p>Traditionally, we aim to produce clean and maintainable code to make it more
+reliable, and write tests to protect it. We use good variable names, split
+functions that p…</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js"></script>
+<script src="/assets/js/shortcuts.js"></script>
+
+  </body>
+</html>
