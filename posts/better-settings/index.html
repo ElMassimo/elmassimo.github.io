@@ -336,26 +336,19 @@ collaboration and source-control, and prevents bugs.</p>
 
   <div class="previous-post">
     <div class="content container">
-      <a id="previous-post" href="/posts/mongoid-aggregation-dsl/" class="overlay">
-        <h1>Aggregation DSL in Mongoid</h1>
+      <a id="previous-post" href="/posts/i18n-multitenant/" class="overlay">
+        <h1>i18n Multitenancy: Customer-Specific Translations</h1>
         <div class="post-info">
-  <span class="date">June 30, 2016</span>
-  <span class="reading-time">2 min read</span>
+  <span class="date">January 26, 2017</span>
+  <span class="reading-time">3 min read</span>
 </div>
 
         <div class="post">
-          <p><em>Mongoid</em> provides support for <span href="https://docs.mongodb.com/manual/core/aggregation-pipeline/"><em>MongoDB’s Aggregation Framework</em></span>, but writing raw queries can be confusing and is extremely verbose:</p>
+          <p>When providing services to different companies or customers with the same
+software, such as enterprise or white-label applications, it’s not unusual that
+each customer uses different terminology for certain concepts within the application.</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Product</span><span class="p">.</span><span class="nf">collection</span><span class="p">.</span><span class="nf">aggregate</span> <span class="p">[</span>
-  <span class="p">{</span> <span class="s1">'$match'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'country'</span> <span class="o">=&gt;</span> <span class="s1">'US'</span> <span class="p">}</span> <span class="p">},</span>
-  <span class="p">{</span> <span class="s1">'$project'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'categories'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
-  <span class="p">{</span> <span class="s1">'$unwind'</span> <span class="o">=&gt;</span> <span class="s1">'$category_ids'</span> <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="s1">'$group'</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="s1">'_id'</span> <span class="o">=&gt;</span> <span class="s1">'$category_ids'</span><span class="p">,</span>
-      <span class="s1">'avg_price'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'$avg'</span> <span class="o">=&gt;</span> <span class="s1">'$price'</span> <span class="p">}</span>
-    <span class="p">}</span>
-  …</code></pre></div></div>
+<p>While they might be similar in terms of operations …</p>
         </div>
       </a>
     </div>

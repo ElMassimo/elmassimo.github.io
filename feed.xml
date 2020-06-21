@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.7.4">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2020-05-27T18:39:54-03:00</updated>
+  <updated>2020-06-21T12:26:57-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -752,6 +752,94 @@ collaboration and source-control, and prevents bugs.&lt;/p&gt;
   </entry>
 
   <entry>
+    <title>i18n Multitenancy: Customer-Specific Translations</title>
+    <link href="http://maximomussini.com/posts/i18n-multitenant/" rel="alternate" type="text/html" title="i18n Multitenancy: Customer-Specific Translations" />
+    <published>2017-01-26T00:00:00-03:00</published>
+  
+    <updated>2017-01-26T00:00:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/i18n-multitenant</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/i18n-multitenant/">
+      &lt;img src=&quot;http://maximomussini.com/images/posts/i18n-multitenant.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;p&gt;When providing services to different companies or customers with the same
+software, such as enterprise or white-label applications, it’s not unusual that
+each customer uses different terminology for certain concepts within the application.&lt;/p&gt;
+
+&lt;p&gt;While they might be similar in terms of operations and transactions, different
+domains will often use different jargon, and as a result, prefer different names
+for a given feature or aspect of an application.&lt;/p&gt;
+
+&lt;p&gt;For example, a concept that in our application is &lt;em&gt;“person”&lt;/em&gt;, might be referred to
+as &lt;em&gt;“user”&lt;/em&gt;, &lt;em&gt;“customer”&lt;/em&gt;, or &lt;em&gt;“employee”&lt;/em&gt;, based on the language of their specific
+domain, or when using their &lt;em&gt;in-house&lt;/em&gt; terminology.&lt;/p&gt;
+
+&lt;p&gt;Using the same terms than our users in their every day routine can help to make
+the software feel more natural and easier to grasp, lowering the adoption
+barrier and reducing the resistance to change in large organizations.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;…fits right in with our usual flow.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;using-i18n-fallbacks-&quot;&gt;Using i18n fallbacks 🌎&lt;/h3&gt;
+
+&lt;p&gt;Fortunately, we can easily accomplish this by leveraging the existing i18n tools
+that are available in most platforms.&lt;/p&gt;
+
+&lt;p&gt;Just like we might allow a customer to switch between American or British
+variants of the English language (&lt;code class=&quot;highlighter-rouge&quot;&gt;en-US&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;en-UK&lt;/code&gt;), we can create additional
+language-variants or locales for each customer or domain (&lt;code class=&quot;highlighter-rouge&quot;&gt;en-LAW&lt;/code&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;en-LAW&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;customer&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;client&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We can then use i18n fallbacks, so that any keys that are not defined in our
+domain-specific locale &lt;em&gt;fall back&lt;/em&gt; to the usual definition in the language.&lt;/p&gt;
+
+&lt;p&gt;In the example above, any users that have the &lt;code class=&quot;highlighter-rouge&quot;&gt;LAW&lt;/code&gt; translation preset assigned
+would see &lt;em&gt;“client”&lt;/em&gt;, but other users might see &lt;em&gt;“customer”&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;This allows us to achieve a nice balance between configurability and productivity.&lt;/p&gt;
+
+&lt;p&gt;By managing these text overrides within the translation engine, it becomes
+almost effortless to dynamically customize the language used in the app.&lt;/p&gt;
+
+&lt;p&gt;Dictionaries for different domains or specific customers can be added with ease,
+and it becomes easier to test all the different combinations in the application.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-solution-for-ruby-apps-&quot;&gt;A solution for Ruby apps 💎&lt;/h3&gt;
+
+&lt;p&gt;I have wrapped a Ruby solution as the &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;i18n_multitenant&lt;/code&gt;&lt;/a&gt; gem.
+Please &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant&quot;&gt;check the readme&lt;/a&gt; for a more thorough explanation of
+how language variants are used, and a few examples on how to organize
+translations in order to effectively implement the approach.&lt;/p&gt;
+
+&lt;h4 id=&quot;what-about-translations-in-the-browser&quot;&gt;What about translations in the browser?&lt;/h4&gt;
+
+&lt;p&gt;For single-page applications or other apps where it’s desirable to perform the
+translations in the browser, we can use a library such as &lt;a href=&quot;https://github.com/fnando/i18n-js&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;i18n-js&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It’s possible to &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant#front-end_translations&quot;&gt;configure it to use fallbacks&lt;/a&gt;,
+allowing us to reuse the same translation files in the JS world.&lt;/p&gt;
+
+&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;i18n&lt;/code&gt; fallbacks provide a simple way to adapt the terminology used in our
+software based on different domains and users needs, making it &lt;em&gt;feel more familiar&lt;/em&gt;
+and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;/em&gt;.&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/i18n-multitenant.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
+
+  <entry>
     <title>Aggregation DSL in Mongoid</title>
     <link href="http://maximomussini.com/posts/mongoid-aggregation-dsl/" rel="alternate" type="text/html" title="Aggregation DSL in Mongoid" />
     <published>2016-06-30T16:19:00-03:00</published>
@@ -1177,99 +1265,6 @@ collaboration and source-control, and prevents bugs.&lt;/p&gt;
   
   
     <summary>_AngularJS_ might not be hip anymore, but it's still a useful framework to create interactive web apps. In this post we will take a brief tour through _Angular_'s internals: watchers and the digest cycle.</summary>
-  
-  </entry>
-
-  <entry>
-    <title>Positive-Negative Assertions in Cucumber</title>
-    <link href="http://maximomussini.com/posts/cucumber-to_or_not_to/" rel="alternate" type="text/html" title="Positive-Negative Assertions in Cucumber" />
-    <published>2016-02-03T15:34:00-03:00</published>
-  
-    <updated>2016-02-03T15:34:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/cucumber-to_or_not_to</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/cucumber-to_or_not_to/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;&lt;a href=&quot;https://github.com/cucumber/cucumber-ruby&quot;&gt;&lt;em&gt;Cucumber&lt;/em&gt;&lt;/a&gt; steps often involve asserting a condition or the opposite of it. For example:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'li.comment'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;text: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should not see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'li.comment'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;text: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Not only is it boring to write steps like this: it also has the downside of introducing duplication into our test steps. If the DOM changes, we are forced to update both steps.&lt;/p&gt;
-
-&lt;p&gt;Even worse, if the DOM changes and we forget to update the negative assertion, it will always pass since the element doesn’t even exist!&lt;/p&gt;
-
-&lt;p&gt;Let’s give it another shot, but this time we will encapsulate the DOM references:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;have_css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'li.comment'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;text: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should not see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;The code is easier to read, and we solved a potential maintainability issue, nice! It’s possible to add a little touch of regular expressions to combine both steps into one:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should( not)? see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;If we write &lt;em&gt;“should not see”&lt;/em&gt; then the group will match and the &lt;code class=&quot;highlighter-rouge&quot;&gt;should_not&lt;/code&gt; variable will contain &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot; not&quot;&lt;/code&gt;. If we write &lt;em&gt;“should see”&lt;/em&gt; then the group won’t capture anything and &lt;code class=&quot;highlighter-rouge&quot;&gt;should_not&lt;/code&gt; will be &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;. This allows us to make a simple conditional check.&lt;/p&gt;
-
-&lt;p&gt;We can leverage Ruby’s expressiveness and take it a bit further:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should( not)? see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;send&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Shorter, but not necessarily easier to understand. Fortunately, we can create our own custom RSpec matcher to encapsulate this pattern and make it easier to reuse and understand:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# features/support/to_or.rb&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;PositiveNegativeExpectationHandler&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_or&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Expectations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ExpectationTarget&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;PositiveNegativeExpectationHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Finally, we are able to express the step in a very concise and readable way:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should( not)? see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;No magic here :tophat:, just clever naming :rabbit:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;to_or&lt;/code&gt; has been a very helpful addition to our projects, allowing us to write simple steps that read like English. You can just copy the &lt;code class=&quot;highlighter-rouge&quot;&gt;PositiveNegativeExpectationHandler&lt;/code&gt; to a support file in your project (like &lt;code class=&quot;highlighter-rouge&quot;&gt;features/support/to_or.rb&lt;/code&gt;) and start using it right away :smiley:&lt;/p&gt;
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
   
   </entry>
 
