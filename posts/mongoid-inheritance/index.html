@@ -7,8 +7,11 @@
   Breaking Mongoid Inheritance · Máximo Mussini
 
 </title>
+
 <meta name="author" content="Máximo Mussini">
-<meta name="description" content="">
+<meta name="description" content="By default, Mongoid will use single-collection inheritance when extending a Ruby class, by storing a _type attribute in every document in the collection that contains the concrete class name, and using it to instantiate the object properly when fetching a document from the database.
+
+In addition, it will handle the hierarchy in queries, by allowing to query the parent class to return documents from any subcla…">
 <meta name="keywords" content="">
 
 <!-- http://t.co/dKP3o1e -->
@@ -19,7 +22,7 @@
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -244,11 +247,11 @@ end</pre></noscript>
   <span class="text">M</span>
 </a>
 
-    By
+    <span>By</span>
     <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
     <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="MaximoMussini" data-related="" data-show-count="false">Tweet</a>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
   </div>
 </div>

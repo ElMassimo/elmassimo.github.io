@@ -7,8 +7,11 @@
   Avoiding the N+1 problem in Mongoid · Máximo Mussini
 
 </title>
+
 <meta name="author" content="Máximo Mussini">
-<meta name="description" content="">
+<meta name="description" content="One of the downsides of using an ORM is that it abstracts the queries in a way that it’s difficult to understand which queries are being performed; it’s harder to notice inefficient queries, since we didn’t actually write them!
+
+A performance issue that is very common when using ORMs is the N+1 query problem. This anti-p…">
 <meta name="keywords" content="">
 
 <!-- http://t.co/dKP3o1e -->
@@ -19,7 +22,7 @@
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -222,11 +225,11 @@ A performance issue that is very common when using ORMs is the N+1 query problem
   <span class="text">M</span>
 </a>
 
-    By
+    <span>By</span>
     <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
     <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="MaximoMussini" data-related="" data-show-count="false">Tweet</a>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
   </div>
 </div>

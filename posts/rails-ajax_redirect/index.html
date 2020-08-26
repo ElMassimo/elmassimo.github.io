@@ -7,8 +7,13 @@
   Redirecting AJAX requests in Rails · Máximo Mussini
 
 </title>
+
 <meta name="author" content="Máximo Mussini">
-<meta name="description" content="">
+<meta name="description" content="jquery-rails powers links and forms in Rails: it’s what makes remote: true work, allowing any link to make an AJAX request unobtrusively.
+
+rails-ajax_redirect is an extension to this unobtrusive behaviour that adds AJAX support to redirect_to. It allows us to redirect an AJAX request as usual, instead of having to perform the redirect by handling the response manually in JS every time.
+
+This is helpful in many different scenarios, and ju…">
 <meta name="keywords" content="">
 
 <!-- http://t.co/dKP3o1e -->
@@ -19,7 +24,7 @@
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -119,24 +124,20 @@ requests, while still setting the <code class="highlighter-rouge">Location</code
 <h2 id="turbolinks">Turbolinks</h2>
 <p>If your application uses <a href="https://github.com/rails/turbolinks"><em>Turbolinks</em></a> check out <a href="https://github.com/remind101/turbolinks-redirect"><code class="highlighter-rouge">turbolinks-redirect</code></a>, on which <a href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="highlighter-rouge">rails-ajax_redirect</code></a> is based on. The advantage is that it will perform faster navigation by leveraging <em>Turbolinks</em> to visit the new location.</p>
 
-<h2 id="angularjs">AngularJS</h2>
-<p>If your application makes the AJAX request using <code class="highlighter-rouge">$http</code> instead of <code class="highlighter-rouge">jQuery</code>, it will be necessary to add an interceptor similar to this:</p>
+<h2 id="axios">Axios</h2>
 
-<figure class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">app</span><span class="p">.</span><span class="na">config</span> <span class="p">(</span><span class="nx">$httpProvider</span><span class="p">)</span> <span class="o">-&gt;</span>
-  <span class="nx">$httpProvider</span><span class="p">.</span><span class="na">interceptors</span><span class="p">.</span><span class="na">push</span> <span class="s">'AjaxRedirectInterceptor'</span>
+<p>If your application makes the AJAX request using <code class="highlighter-rouge">axios</code> instead of <code class="highlighter-rouge">jQuery</code>, it will be necessary to add an interceptor similar to this:</p>
 
-  <span class="c1"># Add a header to let Rails know that it's an Ajax request.</span>
-  <span class="nx">$httpProvider</span><span class="p">.</span><span class="na">defaults</span><span class="p">.</span><span class="na">headers</span><span class="p">.</span><span class="na">common</span><span class="p">[</span><span class="s">'X-REQUESTED-WITH'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'XMLHttpRequest'</span>
-
-<span class="nx">app</span><span class="p">.</span><span class="na">service</span> <span class="s">'AjaxRedirectInterceptor'</span><span class="p">,</span> <span class="p">(</span><span class="nx">$window</span><span class="p">,</span> <span class="nx">$location</span><span class="p">,</span> <span class="nx">$q</span><span class="p">)</span> <span class="o">-&gt;</span>
-  <span class="nx">interceptor</span> <span class="o">=</span>
-    <span class="na">response</span><span class="o">:</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="o">-&gt;</span>
-      <span class="k">if</span> <span class="nx">response</span><span class="p">.</span><span class="na">status</span> <span class="o">is</span> <span class="nx">AJAX_REDIRECT_STATUS_CODE</span>
-        <span class="nx">$window</span><span class="p">.</span><span class="na">location</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="na">headers</span><span class="p">().</span><span class="na">location</span>
-        <span class="nx">$q</span><span class="p">.</span><span class="na">reject</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
-      <span class="k">else</span>
-        <span class="nx">response</span></code></pre></figure>
-
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">axios</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
+  <span class="nx">response</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="nx">AJAX_REDIRECT_STATUS_CODE</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nb">window</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">location</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">response</span>
+  <span class="p">},</span>
+  <span class="nx">error</span> <span class="o">=&gt;</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">error</span><span class="p">),</span>
+<span class="p">)</span>
+</code></pre></div></div>
 
   </div>
 
@@ -146,11 +147,11 @@ requests, while still setting the <code class="highlighter-rouge">Location</code
   <span class="text">M</span>
 </a>
 
-    By
+    <span>By</span>
     <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
     <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="MaximoMussini" data-related="" data-show-count="false">Tweet</a>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
   </div>
 </div>

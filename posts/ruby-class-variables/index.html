@@ -7,8 +7,26 @@
   Class Instance Variables in Ruby · Máximo Mussini
 
 </title>
+
 <meta name="author" content="Máximo Mussini">
-<meta name="description" content="">
+<meta name="description" content="Like most object-oriented languages, Ruby has both instance and class variables. The syntax is @name for instance variables, and @@name for class variables.
+
+Let’s look at a simple example to understand how we might use class variables:
+
+class Animal
+  @@animals = []
+
+  def self.all
+    @@animals
+  end
+
+  def other_species
+    @@animals - [self.class]
+  end
+end
+
+class Dog &lt; Animal
+  @@animals &lt;&lt; self…">
 <meta name="keywords" content="">
 
 <!-- http://t.co/dKP3o1e -->
@@ -19,7 +37,7 @@
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900" type="text/css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -264,11 +282,11 @@ class Dog &lt; Animal
   <span class="text">M</span>
 </a>
 
-    By
+    <span>By</span>
     <a href="https://twitter.com/MaximoMussini" class="author-name short">@Maximo</a>
     <a href="https://twitter.com/MaximoMussini" class="author-name full">@MaximoMussini</a>
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="MaximoMussini" data-dnt="true">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="MaximoMussini" data-related="" data-show-count="false">Tweet</a>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
   </div>
 </div>
