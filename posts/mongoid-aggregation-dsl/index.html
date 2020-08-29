@@ -31,7 +31,8 @@ Product.collection.aggregate [
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -81,7 +82,7 @@ Product.collection.aggregate [
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAZABkAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkAIQDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAgMABAEFBv/EACEQAAMAAgMAAwEBAQAAAAAAAAABAgMREiETQQQxYVEU/8QAGQEAAwEBAQAAAAAAAAAAAAAAAgEDAAQF/8QAGxEBAAMBAQEBAAAAAAAAAAAAAAECERIDMRP/2gAMAwEAAhEDEQA/APuUwlRnVhKyk1Rix+y2J5nHkSFyLs/Zx0Z6zpfIuvsr/RxSQz6Q0u0A7RkrPv5BWYpHmnPo1OhdWIrKZ8n2dfIdaSna7TViLoR77BrKWikpzYd0Z7ZysoqrLVqnMhtiLYWSzNdl6wCZE2QnmRTAvq19j+hrP/Ty5yf0J5uv08+fJ0fo9P8A6F/orL9nrpnne7/048uzR4lPq0V9lt/oPs38mfZ3mkU4hPqWqcjC9NGP2SBef+i4PptrL0ZMtbYHrv5F1YdaYU20ya0E62jM7OrJ0HyHR1WhVZAclmerDipTI8mToyXk7LJkM90H8Y3mRn5kbTx9B6HVezK7Cm+ifIdOq9FNCXfYU2tGwtNeTQqswrJkE+hohtaHlYDyvYp2hbsLCalmJ5DJzO+hmafQvQyehx5Bs01kEXkAeToRdimRRGiuxFWVVsU2BNla1FyIXsgOh8va5hTkRjdg+pbXPjbWQ4spkWTZ10LSw+8mxDvsFtsB9AzIog7mwHTBVo5VG08E7B9BToHkD0KKtCyA1kFcgWzTY4qa8gurAdAOgJuOKjdAOgXQDoCbDio+RC9kDo8eg7AdieRcivaPDRNneZnVlzN2XDUsi0DeRGV2y57Bm5/mdzOOxXI46F0fI3RKgCQujwxM78AI7vo2lgaYtsK2KbAmykQ62cXZb2FK7FE6L4lJDkuiDwHQTjOsFs2tDh3YPIuQGix06kcljpnZoKZwpkkx3mWkh4HoCktaDSBt6MW6m9ITWTTO1XRmp9gWurWunO9loVLGc+gOtFMYFvQU5UJyUJdPYPeDimw9FZlojzvRkP8AYvxelQuiItKUFt9nUyInKg4/TTjIilUbip9CqbIgpBUzH+C8xEK3w4+stMWRHNLphHZIgTDkXQh/pEDYdfiIiBG//9k=')">
   
     <div class="hero" style="background-image: url(/images/posts/mongoid-aggregation-dsl.jpg)">
       <h1>Aggregation DSL in Mongoid</h1>
@@ -103,7 +104,7 @@ Product.collection.aggregate [
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     </li>
@@ -206,7 +207,7 @@ Product.collection.aggregate [
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     <span>By</span>

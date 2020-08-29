@@ -24,7 +24,8 @@ This is helpful in many different scenarios, and ju…">
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -60,7 +61,7 @@ This is helpful in many different scenarios, and ju…" />
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkAQsDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAwIAAQQFBgf/xAAhEAADAAICAgMBAQAAAAAAAAAAAQIDERIEYVFBIRMUMf/EABoBAAMBAQEBAAAAAAAAAAAAAAIDAQAEBQb/xAAbEQEBAQEBAQEBAAAAAAAAAAAAAQIREgMTMf/aAAwDAQACEQMRAD8A98QsoUqimhiheoobRWhytCrBdUkWQhGUQmytk6yEJsrZOqshWybN1lisvYrN1iUCoLQKidahUCoNSB0hmaVoFi6CNCjZSLFJFUvocWidbjJmMOU6GVGLLIzNK2wZEZ6RtySZ7kfmubTLSBUjTUg3AyULLSBuTVUAqkKUcrO0LoM0LoIXX2HZCtk2ed6eohCtlNga0yFNlNitiroUhti7FdC8hd0Lh9k2JyK5A+l4fZNiciuRvS8E2TYPZey9bh9lNi7Js3U4piUM2DpllSkpg2NTBVQyUqxTFbKdA6sOUuw7sSrA1YG8ocKt4LktGXJaFyZTLkyjcwrVXkpGe6FvIAqx2Y56I6FbQF2K8gaSCU0AuiqyAbsKDmV1QvIE7F5hDmX2XZNguROR4X6PV4Jsp0JyFdA36LMndCOhXQjoXdjmTOheQrZWwPQ5DcichNlbN6Xh+ROQmybL6bgiovkC2TkF6TgvInIFyK5l6HgroHTFdg6yBShsS2BqiVkQOqGSgsVVAqoumCoZKVqEugN0PQGhuaRqBWzPbD2BpDpSblnoFRoqQVSNmi7lnoG2HqAVQHKnAKYKmHqWCqGXo4C2LsI4YvBhdMj67yJyBcicj5563BORXITkVsnF4bZTZCE4qtlbL0UyeVVsVsjYOqLMqbkTmAdlcw5hGh2I8gF5AN5Qp80tanlFebyYaza+QV9jXyNnyLum++xr5M99nyc/J2fJlydnyOz8StbdV9nyRZ9/Jxv6Hv8A0JHY8h/iD266ybI3swxn8hpzJk8cbvRKQKpH5pk/0KQNjO42L+WzUpQ8wgi7hgeB+hX136OosaLWFMvoP5uM+s/QOuq/R3/50/gp9Vei+0/N519V+gddV+j0b6q9A66q9Bfov5vOPqv0L/K/R366y9CfzL0F7bw9NyK5gnYlWePx6w/MtWZP0HnIXyzZLG2ZpyDfoTyCjNiOgVZQVZSzDdFqwN2CrKBvN5G5+aXYtWDeUzXm8gaz+R0+Zd+jXWbyAyZvJlvseTNk7Pkdn5FX6NWTseTLk7PkyZOx5M9ZWx2fmXdtV59/ILm2A5bHljPILoVMZXoREZrE6PObXyHjP5Oe3oiyaF3Jkrrxn8h4ypnGnNr5D4+x5AuRuvNDc9GLFmT+TQntAtwb9tDTnRlpMG20Xz0LpznXsdZ59nGeZor+pr5J4brtPNIOsqOR/W/ZT7fk3hPTpVkQP9Ec99nyL/R5C8B9PQ/qJWQyrIXyOOfN3+hv0GnIZtk5aC8JdtqzeS3n8mB5dCvN5CnzBdt1ZvIGs3kx1n8ifrsOfMF21Xm8gLzA3WwOStDc4KujZM3kzXn18gs2XRiy5vI6YD1pydnyZrz7+TLeVv5B89hyI0vI2XIGA0lBToeWC2RMyNU0W2AmhuZGXQjZboG2DRw3IucjTB7IDYZG7D2NfJ0MGfZwpppmrBm18i9ZFK70NUi3jTMXXzbOhiraF94LnWXJgZlyYWjtLGqQl9ZNf4MzsFy8/c0gNW0dnP1P9+jmdjA52NnKCxleZoX937B5ZaA7YfAcevQyIQ4XYgtMhAoGg22BqmQgcBQnTGhshBkBRV/gDM/pkIFAuZ2Kf2YclPZCDIwLZckIVqNAZEIYFWUQhGWmXtkIRk2K2QhKKLkdf4QgFHCsbG3shCVY39an9HV67f0QgjZkdHCaVKaIQXP6Kg5onT+jj9yJ+/ohDqwVpxezKTZia+yEHQt//9k=')">
   
     <div class="hero" style="background-image: url(/images/posts/rails-ajax_redirect.jpg)">
       <h1>Redirecting AJAX requests in Rails</h1>
@@ -82,7 +83,7 @@ This is helpful in many different scenarios, and ju…" />
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     </li>
@@ -144,7 +145,7 @@ requests, while still setting the <code class="highlighter-rouge">Location</code
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     <span>By</span>

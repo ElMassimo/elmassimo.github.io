@@ -21,7 +21,8 @@
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -51,7 +52,7 @@
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkARoDAREAAhEBAxEB/8QAGgABAQEBAQEBAAAAAAAAAAAAAQADBAIFBv/EAB4QAQEBAQEBAQEAAwAAAAAAAAABAgMRITESBBNh/8QAGQEBAQEBAQEAAAAAAAAAAAAAAAECAwQG/8QAGBEBAQEBAQAAAAAAAAAAAAAAAAECERL/2gAMAwEAAhEDEQA/APzLwvqUCAilFQpFIIUopBSKza9TKsWvecLxzumuObXHO6b45q5Wt8Yac693HxWGW8CysNYZdJWOsM8dZp4uE46zTxcs8dJp5sR0lCNAAqIQAhAIBEoBECBAgIpRUBFIqFKKQUEr3mNRjVbYx61I4XTbPNXO1rnCstcZVONsYVix7uPiudYdM+BGGojUeLlGpXi4Tjc0z1hLHXOmOs+MV3zXixl1gFABUQgACIQKgEQIEBFSBFIpFQpRSKgMGa25xuOGq6ueWo4VrIqSPUGplpiehY6+WPWo4aa65/GnC1x9s+C5rj38ZdY8+jXDPojzrPxK1mufplivTisLGHoy8o2gAgVEIBAIASoBECAilFQpFIpRSCFKKYsYrflG48+3Xznxtxe0akUR043459rUc9Pocc/G48m611PjTz2uL/Iz+lazXz+s8rFejNYVHR6zRmm/gRh0Yr04c+mK9OXll0CiEAgVEIBAIBEoBCKgKKRSKhSikUopAxWa35Nx59uvH424PaN5OJ7Rrrs4Yajjuu7E8jceXQ3r4rjY5Ov0WOLrlmu2a5dT6y7RQDb8FjDpWK9GIwrm9WQjYECoBEqAQCAQCJQCEVAUUwUioUopFMRSKYrNa861HDcdfO/G3nrWfRY25Y9qlr6HDn8akebenTc+Rpwtc/RUYagy5uuUrea5N5+svRmvHiNDX4lay59sV6cMqw9MCNCiBUQgAKyBAIASoBCKgKKRSKhSikUopFUErXm3HDbq5Nx566cRWeuzhhYxqvo8c+RuPNqtN+eK5uXpYDDVis1j0nqLHJ0yzXfNZWI6dZ7/ABmt5c+2K9eGVYeiBGgIFRCAQKgEAgBKgEQEUopFQpFMRSKhSgYpWmGo46dnJuPLp18o0x13cJ4sc9OrO/I05WdZ9O//AFOrMOXp2Or4Zf7V653K/r2KzxltG4w1GXSMN1mu2HNuudevDOsu8CNJUAgECohAIBAIlAIgIqQIpgpFQpRSKhTBGmKsctOrjp0jzajt5aacq6+e/IrPHrXX4dWZc3Tqz10mXPrpTpcvE6K53LTO2nG5err0TjLaNxzdKzXow59Vzr1YZsu0SKFQCJUAgACIQKgEQIEBFKKhSBFQpRSKgepVjFb89+Nx59R18ujUcbHRnp8Vk3fqNRluo6RlQry05V7zVc69f0M8eN7RrMc3TTFenEYarFenLwjogAiVAIAAiECoBECBAgQEUoqFIEVClFQGVUr3nXixzsbY6NSuOsujHVpysazfoi/RrosEunmxWLXm3wR4vROtTLPXRLXXOWOtesWu2cvFqOsCNAAqIQCAEIFRABECBAgQICKUVARUKQQpBSiV6mlYsa421K5XLbHRY5WNs79aYr36rHXjWkIw3tOumYx1tnrtnLxdMusjz6jpIBUABCAQAhAqIAIgQIECBAgIqQIqFIIUghSCGa9SqxWmLWo5ajfFrUca0lviubxu1G4592su2YytZdoEbiGgCBCAAIhAIlAIgQIED//Z')">
   
     <div class="hero" style="background-image: url(/images/posts/angular-intro.jpg)">
       <h1>AngularJS: Watchers and the Digest Cycle</h1>
@@ -73,7 +74,7 @@
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     </li>
@@ -180,7 +181,7 @@
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     <span>By</span>

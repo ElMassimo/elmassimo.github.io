@@ -37,7 +37,8 @@ class Dog &lt; Animal
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -99,7 +100,7 @@ class Dog &lt; Animal
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkARsDAREAAhEBAxEB/8QAGQABAQEBAQEAAAAAAAAAAAAAAgEAAwYF/8QAGRABAQEBAQEAAAAAAAAAAAAAAAERAhID/8QAGgEBAQEBAQEBAAAAAAAAAAAAAAECAwQGBf/EABgRAQEBAQEAAAAAAAAAAAAAAAABERIC/9oADAMBAAIRAxEAPwDzuvA+s1tDU0XV0NbRdWVF0oilKNLoNoqyirKC6ImiNqoNqs0bVYoVpmorFaVpkpRD56B056GocqKco0sAoBRWa6ctM114qsWOkqs4QYyNQKjUCo1BRXwtcmtTRNbQ1tF1dF1ZUalOVGpVlGtXUVtFbQXRW0RtEbVQbVZo2qxRtaYo2qzW1WVlVClFdOajUdeehTlRopRSlVDlEx05rSY6c1WcdOaus4coYyLg1FwaNCivPa5sa2qamiaui6uosqyo1KUqNylo1K2o1Kui6qLraGpqmtojaIlqs0bVYo2qxR1WE1UaVUOUWOnNGo6c1Goco0cqKfNVTlEOVTHTmrqY6c1WcdJQxQxKi4NFwQx5vWXn1tDW0NXQ1tRrSlRqUpUdISNxYKsqKuitoIDCMolGaNVihVYoqxU1WdbRNKUalPmjUdOaNx05qNQ5Ro+aK6c0MOVQ5Qx05qpjpKJhapiahiC4gPMaPBraGroutKLKURuFEbhSo3KTLpFFYVdBtBgUEBKrI0Zo1WKNac6Iyyo0RY6cjcdOajpHXkajpyjRwUpRT5qqcojpzQw5VMKVUxdQQGDHltbfl6mhq6GrKjUpSo3KUqNylKjpKcrLpKo3qorAwMCgwIqJRmhVYo1XOorNRWWiNQ+UdI6co3HbgbjrBSGowpSopyqOnNA5VQpQXQXQTQeW11x+LqaYa2hpSo1KUo3KUrLpKUqOkpSo3KUqNyrqLraLraGrKGqKwrAlGRqs0bFc6isVBGg1CiOkPlG47cDcdYKQrairKKUoHz0DpKoUoFKC6o2g8nru/A1tE1dFlWVGpSlRuUpWXSUpUdJSlRqU5UblbRrV1GtXRdaUNKVFlUaYEERUo2KxUwYxFTGiNQpEbjpzEdI68jTpFFBNFXUVZQKdCnz0BygU6UX0DegeV16XzurA1kUpRZV1GpVlRuUpUblKVG5TlTG5V1GtbRqVZUalWClKjUpajUraLrAwiVWaNVlBGgsKI6R05RuOnI0coi6omgmoNOhVnSKfPSqc7EL2DegT0o829L5vWlF1dF1tDVlRqVZUalOVG5SlGpVlRuVdRuVZUalKVGpSlRuUpRrV1F1dF1tDW0NS1U0bRlNBYNQ4jcPlG4co0Uoi6oNoiWoD6DV9C6s7DSnYas+gavsNb2Gvga9b5xgUVUVRViLKUo1KsqNylKjUqxHSVUa0pRqUpUalXUa1dMXW9GHS+jDpPRh03oOk0TW0NaUalOVluU5UdJTlG9WUF0QbRBtVNHRNb0Gp6MZ6b2YdLOzF6WdmHS+zDp8d6nz6isKUFZFWAsGpVlRqUojcpSo3Kuo3Kui6sqLq6LraGtoa2mHSejE6b0YdN6MOllTGpVlGpT5rLpKcqOkpSo3KUoraA2qlG0YtG1WbRvS4xfSelxnpp0iyr6MOk9LjPTejDp896H47IqiqKorCrEVYLCiNwojcVluKNLBWBhGBhBoiaqasoSlEbhRHSHGXSFEdIURuEjTAlVmhVYo1XOudacrU1WdWVGpVFqKwqD//2Q==')">
   
     <div class="hero" style="background-image: url(/images/posts/ruby-class-variables.jpg)">
       <h1>Class Instance Variables in Ruby</h1>
@@ -121,7 +122,7 @@ class Dog &lt; Animal
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     </li>
@@ -279,7 +280,7 @@ class Dog &lt; Animal
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     <span>By</span>

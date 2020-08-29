@@ -22,7 +22,8 @@ A while ago I was working on a feature that required displaying information from
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -54,7 +55,7 @@ A while ago I was working on a feature that required displaying information from
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkARoDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAQACAwQFBv/EABwQAQEBAQEBAQEBAAAAAAAAAAABAhESAxMhYf/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/xAAYEQEBAQEBAAAAAAAAAAAAAAAAEQESAv/aAAwDAQACEQMRAD8A+AIkAI8PAAjw8ABHh4AFXDxFCCPB4AEeEUkkUgICEk8ApquBwEiPBmRcxJ408B4CM1SD5GZEg5i5k5y1zlGsxl5Dy3uU3IRnMtcQJlcgRpmr6y6fQrz+HiirmHDwRiAcHgyKkFiPI+VyHgsRw8WkIHCIAQJUIgKAcPBEE8Hg8GQWBwPLSQfKVYzmV4wuZbfPBWsxOfl034u35/OcXr5ziVqPLvy4Ew7d/Nl4KzvllnLTOVTKpCkRYixtYzoI4Tam1WR6eotDqowK/J8qwkYPkeIBBh4Mg0MIyDxFRUtLE8VEHiuHgieHi5lUwKz4PlrMKnzFjHyeNvBuEqxlIMi/IyCxMipFSDxGjI1+f8Zn3wLHbjcitfSccP68D9v9InTo1qVDKfTq81IubVcIwKKnVZ6q9M6rOotRaupsVnU0B4eKjT8z4dFym5KkYeQ8tvJ8hGPkfLaYHwlXMY+Txt4DyLGXlNy38h4KRj5My18GYKkRMtc4HOG+MJWsxnn5rnzb5wrwlajlvzRrDr1hlrIRy3J41uU8BPCKaqbqbUXQ1FazHPdC6PoAVmtM6a4054vNTcazXVnQ2sc6aS9Y3HTNNiLGvD5RWFyHlv4DwtSMPJ8t/B8KRrwPKzwZZ+RmGnBkKsZzCvDSQs1qMblPlrUgmZHwvK5CrmMfzH828kHkSrGEw1zlUkVCkHMVwJR6KFjHcbXTHelxnWOozq9Vna1mMbqairqa1GN1nYmxpU8VlHA404eAz4Mi+HgHLbDKRplNazW2VyMs1pNMbjrmjwOD6gXSKHDwLqB7VKPoZph6H01HOt5pU055ofaRa6PQXTH2Hsi9NbpPpldh6InTomlTbm9n2cr065sf0cn6H9E5Xt1/of0cf6H9Dk7dn6H9HH+g/ovKdum/Rlr6MbtN0uYzvppdJukdDrUZquh0Oh0Qeh0poK6MRFQRRMIpGVHT1FrWaH2x9JuiLW9+qb9XPdouyHTpv1D9XN6PoidOqUekqg9PSRT0OkgHQ6SIentJA9odpIHp6SB6PSQPSSISSoQJAhSQMVCQVAJAKklAKjVJFZ1JKoSSD//Z')">
   
     <div class="hero" style="background-image: url(/images/posts/mongoid_includes.jpg)">
       <h1>One Does Not Simply Extend Mongoid</h1>
@@ -76,7 +77,7 @@ A while ago I was working on a feature that required displaying information from
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     </li>
@@ -177,7 +178,7 @@ A while ago I was working on a feature that required displaying information from
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     <span>By</span>

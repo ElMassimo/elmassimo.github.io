@@ -23,7 +23,8 @@ Read on to find out how to leverage all the goodness in Vuex using a more natura
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -57,7 +58,7 @@ Read on to find out how to leverage all the goodness in Vuex using a more natura
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,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')">
   
     <div class="hero" style="background-image: url(/images/posts/vuex-stores.jpg)">
       <h1>Store Objects for Vuex</h1>
@@ -79,7 +80,7 @@ Read on to find out how to leverage all the goodness in Vuex using a more natura
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     </li>
@@ -233,7 +234,7 @@ to reason about and refactor.</p>
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     <span>By</span>

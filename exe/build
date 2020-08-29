@@ -16,4 +16,4 @@ fi
 
 # Rebuild site
 echo "=> Building Jekyll Site"
-bundle exec jekyll build --trace "$@"
+bin/jekyll build --trace "$@"

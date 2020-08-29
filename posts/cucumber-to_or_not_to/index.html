@@ -30,7 +30,8 @@ Not only is it boring to write steps like this: it also has the downside of intr
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -78,7 +79,7 @@ Not only is it boring to write steps like this: it also has the downside of intr
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkARoDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAgEAAwQFBv/EAB0QAQEBAQEBAQEBAQAAAAAAAAABAhEDEiExE2H/xAAYAQEBAQEBAAAAAAAAAAAAAAABAAIDBP/EABoRAQEBAQEBAQAAAAAAAAAAAAABEQIhEjH/2gAMAwEAAhEDEQA/APcy2zWcg5+PHHBp0rQ/Qbo6RdOVn05paGlrO1XQLVahdMEp9CLbGj1Wff1mg5D4eYKxi8pZbYrCfjTFa5MdEPgcNJHWTSH5DctuFYflMfkvltwPGbysZ8XR2AsGI+kRxANz0Fw24uLExmGkgvk+LCXQ2isDwJHMqRpmGRAmT+Wkh8a+Sw+SsGVasDKg6PUZudgOCkLI4sQeLg1xYmfCrTgblYmGqGf1prIZGcA8D4HA2sQKeCosf0SJv5toyw0ldo0MrQ9XSTIkEqGwR8GJlYTWwFjNgKUwnEhGE+lLhfIofFiBIPJWKD8TSGHNE3C5uroUAWmVaarK39ZoHmjjLNHEhdXSJEfSD1dSVgLGgarAUPoeldMo7Twyuh41+iVOvA2fnWsdoQoXC4SkaSKQUXDiS4DUaA0qmfDkVXWQqE6QqFmigIOJFQ9OgoqaZo+ss0XTKWfCorWW9IB3WNv6e9gn6A0y0jPMHChlS6rUitKVWqMoUpWqKrUC1nrQtRlpi0FdNPPX6x4PDEvqd/lp0Zri8tOnGnfmtRqilToUkSQoKAlP6SFWeqd0y1oWpWqUHTjOgZyKCiSkPiTWENgLGhWCwAXTsLjOJhr0c/p6sN+//XPv16zaHRfTta+d64cb7XZ41Sh15n4fCx/B8dCAqOwPBUEWYcy0zkYgzKuWsyuHC57gF83V8l8i8jHHfMpjjruAXDHwsZ4vG+NMbOKa4Z4nZnQuuXO2k26TotuhtB9huzpaXXAX04z1thv0ZvQ10X1D/p1xa9Tx6jRrul6PLn899dGf4SOC6Dq6kPq6GHGoRHxQUKDwvloXFifK61aC9rp/yX+TzWMMfOfrs8aynnxricU8Ds87+No5fOujNdpWhLhdOKoWY0kDkRhMi6ZRJIJFYZlMNZY6/HVqMNxjqBl9cFPRnoHXC9YHR/ovthKPJnVI7estytpOq4/G56nBuWAzqyur183Nc8pDr8NO7H8ef4PQ8v43y1B8KQfFw2IpByFBQwnDhHCjRIp40zF8xJxYKyB4kxQ0w2zUm+TBjyk2WkVSRIUSCSSaShxIoqx9EmelXNtmk8vTIo0ykeS1zB8/EnbksPWRy7k6kqK08f67/H+JNcqOiFUm2iOJBChxIxGkiX//2Q==')">
   
     <div class="hero" style="background-image: url(/images/posts/cucumber-to_or_not_to.jpg)">
       <h1>Positive-Negative Assertions in Cucumber</h1>
@@ -100,7 +101,7 @@ Not only is it boring to write steps like this: it also has the downside of intr
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     </li>
@@ -208,7 +209,7 @@ Not only is it boring to write steps like this: it also has the downside of intr
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     <span>By</span>

@@ -23,7 +23,8 @@ In this short post we will explore the keyword operator in Ruby, and a few thing
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -57,7 +58,7 @@ In this short post we will explore the keyword operator in Ruby, and a few thing
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkAOsDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAwIBAAQFBv/EABwQAQEBAAMBAQEAAAAAAAAAAAABAgMRIRIxQf/EABkBAAMBAQEAAAAAAAAAAAAAAAIDAQAEBf/EAB0RAQEBAQADAQEBAAAAAAAAAAABAhEhAxIxE0H/2gAMAwEAAhEDEQA/APkOy2sWgMha0jVYnTZFzBuOEzBsQNrfLox+JyfjY/G3+Fd8j45dfonDfQ9/q8d6psBa9Pg346s78ebxbdONg1Gz+uua7PKBx3safjl1fLrz+Jqg6F0FR5oK0i9LmGv4K1YBoLQvJQLUOgeoSwWksFKGwnSzKrDM0n2Qtz4DuOm/gG4Poc5ArRbCp02QTJuw5Tdgp8oVJT0lOeVziGzEkEzlKZlcwTKTKwu00bNbd8JKmqHg+eAt/pc31dlz+nZI3HVx11cdcXHXXxUO/wAbEdvFB/4BxXwTW+o4Nea6Z4iapZOw9b9Px67NzPBOtCyF35Dy+A8uhcXOnPy6AujcunPdC46ZfA30loU0v03E6trSltaUUTUF/geoeVK3Qfjn1A6PsDdHA/Sdt9EtTsXF/oLYToa5L8tK5dlzBsZJnI+Mpqtmt8p0L8lsL6dKTomhbA9RYPoNaQ1iyH5I3TYdPFQMwfjL9gsOvGuo2+TwKXxNOXnk+/jXfovFpz9ei48GT89dX345+ba3fjn5NdiyszwHk13Qz2d1ZgVOlDTsS5C1Omnlur9NNBWrKLiWjzS3QUa1OA02tAbp9ULVHIVSqijZ6GsBXLs3gDWSM0O4TGR8ZJnLoxG1UxE+Say6PnwPWS5TuOewlg2oHYOCCsSHsKfgjZsujjgGI6uKB9gvXTyeNci5z41y47XR0GZNIJMG+PG+klA0DqduneQbPTM1qXODzjNkSJasjn1jxz8mHfcgcmGzpuOC5NnIusemxk3qcJ8+B78dVz45+SNKHTm0SiahOjYHiKyssj3N5c+s+uvcCuSMlaBzkbGWzkXMbS4TrwmoP0TUDDK5dQlg+oFqDaUDUJ0LohuaXudNiOvijlw6uIHs0L14dOZ4tLL4l04/9PuTRewvpe14Diclc9/RthWGQci5p5Q4eJTZDk3DSl3Ui2AaiRt0P6OgOC2+AcjXkD1sUhWiagdh7opgYnS9LIbpOmTL29B0SkpUctSHzSGiUWRJU00atBUHQOh9g6EkA0Q+iClFw+HRx1z4HyDZ+IPNeFuidkuipkeqLKJlz50PhbOFzytgdyPYHYGUXA+m7NYHVGv0TektC1oecg1rib0DrS6oWqbID6bWw7ptUlMkK1TfSyhny1TNFyJ0TAkLroy9elrMW5KhsszVYeNWZhULYGmZUgOiMywyCYFyzB0dltBWsyRNri+urjZm0DIpazFHQtB2zCggtBbZj8ufYOgqzGFwlLWYUStD5ZkrZFwJGYuunL//2Q==')">
   
     <div class="hero" style="background-image: url(/images/posts/ruby-double-splat-keywords.jpg)">
       <h1>Ruby Keywords and the Double Splat Operator</h1>
@@ -79,7 +80,7 @@ In this short post we will explore the keyword operator in Ruby, and a few thing
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo"/>
 </a>
 
     </li>
@@ -217,7 +218,7 @@ at least until Ruby improves that error message 😉</p>
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo"/>
 </a>
 
     <span>By</span>

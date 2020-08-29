@@ -22,7 +22,8 @@ In the frontend this has become increasingly more common because of all the avai
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -54,7 +55,7 @@ In the frontend this has become increasingly more common because of all the avai
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,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')">
   
     <div class="hero" style="background-image: url(/images/posts/coffeescript-js-libraries.jpg)">
       <h1>CoffeeScript and JS Libraries</h1>
@@ -76,7 +77,7 @@ In the frontend this has become increasingly more common because of all the avai
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     </li>
@@ -160,7 +161,7 @@ In the frontend this has become increasingly more common because of all the avai
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     <span>By</span>

@@ -21,7 +21,8 @@
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -51,7 +52,7 @@
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,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')">
   
     <div class="hero" style="background-image: url(/images/posts.jpg)">
       <h1>Máximo Mussini</h1>
@@ -73,7 +74,7 @@
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo"/>
 </a>
 
     </li>

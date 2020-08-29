@@ -3,5 +3,8 @@
 # Remove compiled site.
 rm -R -f _site
 
+# Remove images.
+rm -R -f tmp
+
 # Remove sass cache.
 rm -R -f .sass-cache

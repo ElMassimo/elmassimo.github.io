@@ -21,7 +21,8 @@
 <meta name="theme-color" content="#5C7E8F" />
 
 <!-- Styles -->
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" type="text/css">
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
 
 <!-- Icons -->
@@ -51,7 +52,7 @@
 
   </head>
   <body>
-    <header>
+    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkARoDAREAAhEBAxEB/8QAGgABAQEBAQEBAAAAAAAAAAAAAQADAgQFBv/EABwQAQEBAQEBAQEBAAAAAAAAAAACAQMRIRIEE//EABkBAQEBAQEBAAAAAAAAAAAAAAABAgMEBf/EABgRAQEBAQEAAAAAAAAAAAAAAAABEQIS/9oADAMBAAIRAxEAPwD8++6+UgSoQKiEKhwQqICBA5jNrUjrJYtakaTDFrUjWebFrUazDFadfllXFSsGNQ1KzYz2HSVixxstys2OdxuVnB42yFEgACCFCAFCCAIqBAgQFUIJUKhwQqICocQdTjNrUaxHrla3I2jk53pqRtPJnWsdZHgjrww0biYuuNRXG56K52FlTHG82p0zYzqHSdMWMtl1lYsctxkKiFCAQAoQQoQAJFQICqICqHFDghUOAlQgcSrGsY5dVuPVyj1xtdY9fPk52tNf8vhBxUeNxmj8KjmoYtakY1PiK5zEV3kpqudklMZXLpKxYwuXfmuVjHcdo50KgBChAIAUIJFAAVIJUIFQ4IVCqLAKoVCBxmrG3LHHp0j3cccK6R7+MsVuN/8AP4kpjG+bcrNgnmWkhrl8cr06SPJ1jxZUxlk/S0kaZPxnWsc1ixKxt05YrzdHfly6Y69Ecq5aQAEEKEAgEUChBABSIgKocUOCFQqEQ4ohHWJVjbk49OvL28dcK6R9DhrnW49k57jDTioalTFMM2rIrn4563jx9p+rKljD8/V1MO58RWV63Ga89668sV57135cumWu8cqGmQAFCARQgBQgkUAAILAKocUOCFQqhxQ4IVDjNWNeeuXTpHs464WOke7hTFjcfQ5fccq3Gn49Z1cX58S1Yy6ay08nTPQZbK6jivixK8966RivPbryxWFvRy5dM3aOVDSBAChAIoAIoQSKAAEEBVDihwQqFUKhwCqLEqtIcum49fFwrpHu46xW4+j/AD65dNx7Jn45OkcdPmEHj60uJrDd9ZrUc7iKw6NxivPbrGKwt05YrC3o5cemeu0c6GkCAFCARQARQgkUAAIICocEOKhUOKIQ4oRCK7hy6bj18nDp0j2cdYafR/npz6dOXvivjjY6Rj3r4siWvn9b+t4zrjKYsblO78Yaebrrpy515611jDG9dOWK89a9HLlXDrHMKiFCAFCAQAoQCKgAIUiEEqFQ4qECqECogdzrn01Hp5a4dOsezlTDT28L8Ysaleye3xz8t6x7dfjU5S14el/W8Z1zNuXUbldbfxjGtY9NbkZrz1rpGKxvXXlisa135cq4dIwlAAQCKgCKEAKEACRUCVCBUIiUOKhAqhBA6nWa1G/OnHqOkernbnW3o59PGVb52+Jhrjp09akS15rpcRzlOdjcrr9sY1rmqWQY3TcjFYXTtzGLWW67RyrltlAACKgCKEAKEEARUCBAVRAVCIlCIVEBVDmpVdzXjnY3K2jo52Nyto6sYraeiK62vTUxxppjhmtRfpMaZ1ayJayu3WcsWsqp1kc7XHrpGAqIUIAEihAAEVAEVAgQIEBVEBUQhUIhUQEFmpVdZTFiytJtixuVtHRixqNpphp1uouM6oGVW1IlrKrdJGLWe06SMWufW5GUqAEAQAqQABFQBFQIECBAgQFUQFUIJQiFRAgKKc1itRpG651uN43XKtxp7vjKsr3WolY1uukYrPddYxQ1GQ0iBAEEARQCRQABIqBAgf/Z')">
   
     <div class="hero" style="background-image: url(/images/posts/angular-less-watchers.jpg)">
       <h1>Optimizing AngularJS performance with events</h1>
@@ -73,7 +74,7 @@
 
     <li>
       <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     </li>
@@ -185,7 +186,7 @@
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <span class="text">M</span>
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
 </a>
 
     <span>By</span>

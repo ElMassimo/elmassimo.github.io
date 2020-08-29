@@ -1,1 +1,17 @@
-pry
+#!/bin/sh
+
+# exe/console: Launches a console for the app.
+set -e
+cd "$(dirname "$0")/.."
+exe/rename_window "console"
+
+# Ensure the application is up to date.
+exe/update
+
+# Ensure the environment is set as development
+test -z "$RACK_ENV" && RACK_ENV='development'
+export RACK_ENV
+
+# Start the console.
+echo "=> Starting console…"
+bin/pry -r ./boot.rb
