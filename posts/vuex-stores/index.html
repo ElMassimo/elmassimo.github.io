@@ -13,7 +13,7 @@
 
 Read on to find out how to leverage all the goodness in Vuex using a more natural and convenient API, making your app easier to reason about and refactor.
 ">
-<meta name="keywords" content="">
+<meta name="keywords" content="js, vue, vuex, state">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -24,8 +24,9 @@ Read on to find out how to leverage all the goodness in Vuex using a more natura
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -58,10 +59,15 @@ Read on to find out how to leverage all the goodness in Vuex using a more natura
 
   </head>
   <body>
-    <header style="background-image: url('data:image/jpeg;base64,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')">
+    <header style="background-image: url('data:image/webp;base64,UklGRj4DAABXRUJQVlA4IDIDAACwGQCdASoaAWQAPtFcpE0/v7Miq3YMc/AaCWNu4DBoG/FFF21Biu4FnWhow+c6CEq2dD4BWjHxp7o/MIAFg+uqTz1aFH5r9C5TCoTuzOS4/9yBXQ9PxwPeOH2B5C8urz4c1bm6TRlUXhdncMB1eoupxyrKyMa+0pIDXDu+YBVtQAz2p4vY1cz8IMHaVQ36x/8tR4mH67dvmLnIKlnNTE7UTx2H3Is38cza0iudFslADezHyp2+f0E84cotYTLG1L91wU15Cjg345BEj/psIqmO9EgcnOlIAPxu/r3YF9IYA3rnL7PhRuWIIGr/3tRF1tRk8aFkdS+CPmoug8KnRv5mcV1igFLNJejtD5+cEOEHAL/9T7Whd1YmYh/uInLv2Zd8M0AKiQLD8B2Xl2fNpiJjR28+934Cam9/hUEURIjk4IMF+BiO0XzyBZLGGM3ZsisrzP5wuTDEKEZIeO2cedv6TsOAFckirYipNHAczeOsSfK6HrdFRNV99iSZonQIv7RmRvl34HLzXkBDtECY1i9I4Jr1GX54aCA4SNsBhehjnnvGNuN8Gv7EQMU2hDvSDgt/8Gw3YyC4FMcCL2hgqR+pNykqLGJRmd1WN/4KMdPd3yNzIsP+I7aKFBLvJekRwyd5vpXQdK65kfrWafDO3pA3gJAOLXiy6PKwHb7GhlCCmtYTBA7d3NNw1plb5ro4BBHyz6gEYQUGcMHQb6qnluGqv4Zpx0VFiHr3vBIy4gVUJL6ZeblYYqXC/zVNi7LT3uc2UwSmU4n4zNxMrNIG38bkOHuXuhidVNsGSQE4/ZE+w7stIM5zHQ2RbPpafYVhXWBJqlPTZ3BjLPKq7E1iC1WeKKQSFECt4WKc+ZBoo3XS95dvDujUi+qTzp3AkYDNLi12bPmTEiImmaotBcs1KU27pfJjIaGkkhnyI/FKri2OjyzTGWzxcwcn2u3ymwZNqaKsIrAzmotCWhk9ClrWMu4JcMKatKX2HocEZzNKFuikbCs5Ef5pFApvvmw5vgsoirx/m0rspYggAtbE2l4yiJDVlQkxSITr1booLrfD7kAkgbcHGm5UNyFvDNqOAYIJ5QAAAA==')">
   
-    <div class="hero" style="background-image: url(/images/posts/vuex-stores.jpg)">
-      <h1>Store Objects for Vuex</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/vuex-stores.webp" type="image/webp">
+  <img src="/images/posts/vuex-stores.jpg" alt="vuex-stores.jpg" class="hero-bg">
+</picture>
+
+      <h1 class="hero-title">Store Objects for Vuex</h1>
     </div>
   
 </header>
@@ -80,7 +86,7 @@ Read on to find out how to leverage all the goodness in Vuex using a more natura
 
     <li>
       <a href="/" class="logo">
-  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo"/>
 </a>
 
     </li>
@@ -95,7 +101,7 @@ Read on to find out how to leverage all the goodness in Vuex using a more natura
 </li>
 
   </ul>
-  <hr>
+  <hr />
 </div>
 
     <div class="content container">
@@ -125,7 +131,7 @@ requires specifying the <em>namespace string</em> as a prefix for the action nam
 
 <h3 id="a-smoother-experience-">A smoother experience 🥃</h3>
 
-<p>The <a href="https://github.com/ElMassimo/vuex-stores"><code class="highlighter-rouge">vuex-stores</code></a> library helps you avoid these shortcomings
+<p>The <a href="https://github.com/ElMassimo/vuex-stores"><code class="language-plaintext highlighter-rouge">vuex-stores</code></a> library helps you avoid these shortcomings
 by providing light wrappers around individual <a href="https://vuex.vuejs.org/guide/modules.html">Vuex store modules</a>,
 which I’ve dubbed <em>“store-objects”</em>.</p>
 
@@ -140,22 +146,22 @@ properties, and dispatching actions easily by using plain method calls.</p>
 <p>In order to organize these store objects, an approach that works nicely is to:</p>
 
 <ul>
-  <li>Create one file per store module under a <code class="highlighter-rouge">stores</code> directory.</li>
-  <li>Always use <code class="highlighter-rouge">Store</code> as a suffix for the file name (<code class="highlighter-rouge">ModalsStore</code>).</li>
-  <li>Add a <code class="highlighter-rouge">@stores</code> webpack alias to make them convenient to import.</li>
+  <li>Create one file per store module under a <code class="language-plaintext highlighter-rouge">stores</code> directory.</li>
+  <li>Always use <code class="language-plaintext highlighter-rouge">Store</code> as a suffix for the file name (<code class="language-plaintext highlighter-rouge">ModalsStore</code>).</li>
+  <li>Add a <code class="language-plaintext highlighter-rouge">@stores</code> webpack alias to make them convenient to import.</li>
 </ul>
 
 <p>Let’s take a look at an example usage:</p>
 
 <div class="language-vue highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;</span><span class="k">script</span><span class="nt">&gt;</span>
-<span class="k">import</span> <span class="nx">ModalsStore</span> <span class="k">from</span> <span class="s1">'@stores/ModalsStore'</span>
+<span class="k">import</span> <span class="nx">ModalsStore</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@stores/ModalsStore</span><span class="dl">'</span>
 
 <span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
-  <span class="na">name</span><span class="p">:</span> <span class="s1">'ModalManager'</span><span class="p">,</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">ModalManager</span><span class="dl">'</span><span class="p">,</span>
   <span class="na">computed</span><span class="p">:</span> <span class="p">{</span>
     <span class="c1">// `mapState` and friends are available to inject state or getters into the</span>
     <span class="c1">// template, without the need to specify the namespace string.</span>
-    <span class="p">...</span><span class="nx">ModalsStore</span><span class="p">.</span><span class="nx">mapState</span><span class="p">(</span><span class="s1">'modals'</span><span class="p">),</span>
+    <span class="p">...</span><span class="nx">ModalsStore</span><span class="p">.</span><span class="nx">mapState</span><span class="p">(</span><span class="dl">'</span><span class="s1">modals</span><span class="dl">'</span><span class="p">),</span>
   <span class="p">},</span>
   <span class="nx">beforeMount</span> <span class="p">()</span> <span class="p">{</span>
     <span class="c1">// closeAllModals is an action, and it will be dispatched every time the</span>
@@ -187,7 +193,7 @@ properties, and dispatching actions easily by using plain method calls.</p>
 </code></pre></div></div>
 
 <p>As seen in this short example, state, getters, and actions can be easily injected
-in a component using <code class="highlighter-rouge">map</code> helpers to make them available in the template.</p>
+in a component using <code class="language-plaintext highlighter-rouge">map</code> helpers to make them available in the template.</p>
 
 <p>Actions can be dispatched by simply calling a method, which is closer to how
 they are defined, and feels very natural. Typos in action names are prevented,
@@ -206,7 +212,7 @@ simple as <em>search and replace</em>).</p>
 <h3 id="code-splitting-️">Code Splitting ✂️</h3>
 
 <p>Store modules in Vuex can be <a href="https://vuex.vuejs.org/guide/modules.html#dynamic-module-registration">registered dynamically</a>,
-so internally <a href="https://github.com/ElMassimo/vuex-stores"><code class="highlighter-rouge">vuex-stores</code></a> leverages <code class="highlighter-rouge">registerModule</code> to
+so internally <a href="https://github.com/ElMassimo/vuex-stores"><code class="language-plaintext highlighter-rouge">vuex-stores</code></a> leverages <code class="language-plaintext highlighter-rouge">registerModule</code> to
 add a new module when the store object is imported.</p>
 
 <p>This means that store objects don’t need to be imported up-front when initially
@@ -219,7 +225,7 @@ optimized.</p>
 
 <h3 id="summary">Summary</h3>
 
-<p><a href="https://github.com/ElMassimo/vuex-stores"><code class="highlighter-rouge">vuex-stores</code></a> provides a simple way to work with <a href="https://vuex.vuejs.org/guide/modules.html">Vuex modules</a>
+<p><a href="https://github.com/ElMassimo/vuex-stores"><code class="language-plaintext highlighter-rouge">vuex-stores</code></a> provides a simple way to work with <a href="https://vuex.vuejs.org/guide/modules.html">Vuex modules</a>
 by allowing you to define <em>store objects</em> to focus on one module at a time,
 making it more enjoyable to leverage Vuex.</p>
 
@@ -234,7 +240,7 @@ to reason about and refactor.</p>
   <div class="ending">
   <div class="author">
     <a href="/" class="logo">
-  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo"/>
 </a>
 
     <span>By</span>
@@ -253,28 +259,24 @@ to reason about and refactor.</p>
 
 
 
-  <div class="previous-post">
+  <a id="previous-post" href="/posts/documentation-is-a-great-investment/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
     <div class="content container">
-      <a id="previous-post" href="/posts/documentation-is-a-great-investment/" class="overlay">
-        <h1>Documentation is a Great Investment</h1>
+      <a id="related-post" href="/posts/coffeescript-js-libraries/" class="overlay">
+        <h1>CoffeeScript and JS Libraries</h1>
         <div class="post-info">
-  <span class="date">February 17, 2020</span>
-  <span class="reading-time">6 min read</span>
+  <span class="date">December 31, 2015</span>
+  <span class="reading-time">3 min read</span>
 </div>
 
         <div class="post">
-          <p>In this post I’d like to share a practice that has completely changed the way we
-work: documentation as a first-class citizen in our software development process.</p>
+          <p>A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.</p>
 
-<p>Documentation facilitates understanding, which is <em>vital</em> to enable
-change and continuous improvement.</p>
-
-<h3 id="how-is-it-helpful-thinking">How is it helpful? <img class="emoji" title=":thinking:" alt=":thinking:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f914.png" height="20" width="20">
-</h3>
-
-<p>Traditionally, we aim to produce clean and maintainable code to make it more
-reliable, and write tests to protect it. We use good variable names, split
-functions that p…</p>
+<p>In the frontend this has become increasingly more common because of all the available languages that compile to JavaScript. <span href="http://coffeescript.org/"><em>CoffeeScript</em></span> was one of the first ones to gain adoption, but nowadays we have a myriad of available languages like <span href="http://elm-lang.org/"><em>Elm</em></span>, …</p>
         </div>
       </a>
     </div>

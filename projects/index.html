@@ -22,8 +22,9 @@
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -52,10 +53,15 @@
 
   </head>
   <body class="projects">
-    <header style="background-image: url('data:image/jpeg;base64,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')">
+    <header style="background-image: url('data:image/webp;base64,UklGRhYEAABXRUJQVlA4IAoEAABwJgCdASrKAWQAPtFYpE0/tzMoq5jMO/AaCWdu4Db4L3D9C9zFS5Tu8+8A3HQ0v9vGJ2idk5P5/u6476xdE/GiU9AJFiuHQtOzjKpmE/dogzaEApj0m6kf3dr76/Wsq+/LjGeksO7HHSA5VqdFX3YVZeLO+sKp0u1xCIjqsrFTtvt3Opjes74SOEYX+h4Jmz8SBTXbze7lyEuF3waf4SApJBE+EwhMVLi8DgjbXVeW2cCB3s/SgUpLdxRBJV/iEjqr1QubQ6h8vQkhb+EMkn7blTQ4452Wxk1EvNOJQwdt9eQIHJxjNlqp58xSRcZZsHEIh6tLZ1L/Z5diA2TP6hLSd0L2gHQWrxZZRvwv+cMGp5UyFsImWFlNfgZrkSNcHl0ckrWZrdbF4KLAcaU1lX8WB1FiFYrJZvCgKjS8AP7g+u+J8EnCZ9gyVFtHUP9M0i5bbyLvsDNDZsAP1Wac6NkWeEd7FhiHT/fkW7vE6N2/Q8sysOhgwgOdvaGq80Q/bdkDawYy9FkA0y/whk+ueQYVobwU5b1t0NTbOFqb8lYp0510QcFkZsFCfgjEAnsRCNUVHx7OOF6oaoqDNnzUQTKhax8pvxs7eI8AAD5e1+n2QVkJcPw0U4dp48Y5V+cwO3PSrBdN06rsM878vTMgxUaT8qtJ8cRpH4Z+1Co/kJDR5Inssd5LZxxECwsD8xlGBvdfWGhmembQxJT2xjn/Z0QyaDeCgXfqtDwX58wzmAQNeWgi6OJr/rEA7pm5y2YaQwdNF+pSkfKnWSDB26YtJTUwROPfwCbhHaEhXjiZ0M874OS3yRfMguW/Oyu7YlzrdxNC2OwPvyjkljFoDvVy3KoJLvD9zkdnx/y3gX3yYHzCrtTLJuNDf7Hp1/RJhqNojqJeofGUDGXkp1Xseff8IipOqL0IPI0Vlx2aRJKLf+B7+7vLxE4+hIT4dac8PEr5u2kzBNL95V00xmyDAL1WAxrLto6cs23m+apH3BnTgxr2+y+y0pAcZvv6ihM1nnzJJ27Do+nTTLnxPbcBIVgbX3TKAENpbk1AhD26xtrz9LmeIY1YhxPaTNP3zI6TFAwIjvz0eVd4V6y+dpYuqG63w7b7t3AdH2HygxpoyJsGPFPNkhbwXOQrcHAzk9V+AkvxE8eDtqbRqk+gkvG/YyQ9OrruSYkA8V8cwQ9eBJOmDuo5LcuWZCtRUEk4lvSbuZumP2uk1CeHxBPCbk1UStfhaxfaaPO+g8EKjhF6201nrAXWetq0O4zkwFV68PWyNZj13LaLbEJFgr8xcXLoM+rl0t/F0eDB0BVMNK3hl2FB2eiB3BNWwRMCBS/1g5iXX0qOlzroT5BYW18G+Dnb5c8aihBq9h+wq8jnSMAAAA==')">
   
-    <div class="hero" style="background-image: url(/images/projects.jpg)">
-      <h1>Projects</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/projects.webp" type="image/webp">
+  <img src="/images/projects.jpg" alt="projects.jpg" class="hero-bg">
+</picture>
+
+      <h1 class="hero-title">Projects</h1>
     </div>
   
 </header>

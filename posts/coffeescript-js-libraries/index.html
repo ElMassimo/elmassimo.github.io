@@ -12,7 +12,7 @@
 <meta name="description" content="A language helps to shape the libraries that are written on it. This can have unexpected side-effects when using these libraries from a different language.
 
 In the frontend this has become increasingly more common because of all the available languages that compile to JavaScript. CoffeeScript was one of the first ones to gain adoption, but nowadays we have a myriad of available languages like Elm, …">
-<meta name="keywords" content="">
+<meta name="keywords" content="rails, coffeescript, js">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -23,8 +23,9 @@ In the frontend this has become increasingly more common because of all the avai
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -55,10 +56,15 @@ In the frontend this has become increasingly more common because of all the avai
 
   </head>
   <body>
-    <header style="background-image: url('data:image/jpeg;base64,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')">
+    <header style="background-image: url('data:image/webp;base64,UklGRsADAABXRUJQVlA4ILQDAACwJACdASoaAWQAPslYoku/u7WlLrjda/AZCWctgYnq+OaTENccT7JNmCVIyikgt/5fo17mETV75BOLLNb0iATBzX5h8gJrlVs6Ef9is2bpa/ojAcamtKz/N6bxijjKXqU43+7LfevUQxih2C/ToFgpIGmlvA13KVAknP/Uc8FKK7721gzo2ebhJVIhCR+PJSpbqwqQxczXrdA5tZ+FfLadfpm4nkzZPa7QwMmzFqrxhKypmjaE1D5PNvCvTOsZX3TTPEr39H9zB+OFN0TsYTRzPxGuNTCKJwf+e5O0ylS2qtuqAg46Xqg9+MLQ7GvhwfecUuxWrCCBakK+M57nepWt1i4Zxkhkx83027ovy4o+/WZhpaxp7KF+zuEBa6E4wJseWOWduXfsBrFGZyCjAADJn9GzTLcqe0rl0z9rt4kyH176mu3mSvXUP+ES8SqgnAKAyCu2Qw1mmex6DiQyym+fU+JrEDS1Rytih/f/bfPtsVR62Fz1E2PcLWuGbAz1xCRXmbKBQp0OaDz6IBK1OehAN7mp9LLoQsyfTi/KACC1YPk3reBlWq69ffmKGKnVODQfY+7TxCXqjcl/023k/6FdfNkJouS6UHhJsiM1kqTBPBaBhCIT0PJ8ObE0QOr3Gsns+PlmEVi5VVIiQatOYldmjL5urg9kc1erET8ijvn27ikG8nkOZetiXwhPBKhJ2eKhNeu2Lo9RSVc9QparwHhgh+Ie2eg+PMy3F0Z2ODNQtOmqkyC9y+fxoivyo86YX/fp2PfOFrEZ9KfOIlrB0jUrrPA5/XMMPDE/HP4kpyj62BMmd67v6VuTDPAO1meS9Gbmth7sY6wKnI40OHbWd6IIxEgcl8moVmG3WOkNQ+z/jTghr1VPsRzfUJhd/k7MDmrcYHij1mHHZIyQnYkUFpF+GSCEBhl3u38o//hx+z26inCzdD1y/BWaekyNkxdSCExNvfyyOjXWAjYTRSKIipWyUkBCMqSORrORISkxQ9PnTM3uoyhZVyyy29la2aU06DeWubLpm+8gXtz6Ca1P8jqQ/Xl19tC3jTGu530RVGy4FVs7loN24LgrtQ2a/Xoobj1zoq9RXaZE1FWxfRVy5maAjM5uirk1Az9cxXTzqMfRusRaWKCbJu//u7itaw2+MvP3r4w6zCfW6t1qoLL8AVPZcko8sHa1NliGPI3bsSQ8zywZ/DkT67nqdYlq5nJjmD0AEW1h5n38gQTg/7f5ipyQaNBoIPCNASUeTtv78iPptSf8AAA=')">
   
-    <div class="hero" style="background-image: url(/images/posts/coffeescript-js-libraries.jpg)">
-      <h1>CoffeeScript and JS Libraries</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/coffeescript-js-libraries.webp" type="image/webp">
+  <img src="/images/posts/coffeescript-js-libraries.jpg" alt="coffeescript-js-libraries.jpg" class="hero-bg">
+</source></picture>
+
+      <h1 class="hero-title">CoffeeScript and JS Libraries</h1>
     </div>
   
 </header>
@@ -115,7 +121,7 @@ In the frontend this has become increasingly more common because of all the avai
   <iframe src="/examples/posts/coffeescript-js-libraries/select_all_broken.html" frameborder="0" class="example" width="" height="254" scrolling="no"></iframe>
 </figure>
 
-<p>After debugging it for a while we reached the conclusion that the iteration was being interrupted. Could <a href="http://lodash.com"><code class="highlighter-rouge">lodash</code></a> have such a serious bug?</p>
+<p>After debugging it for a while we reached the conclusion that the iteration was being interrupted. Could <a href="http://lodash.com"><code class="language-plaintext highlighter-rouge">lodash</code></a> have such a serious bug?</p>
 
 <figure class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">selectAll</span> <span class="o">=</span> <span class="p">(</span><span class="nx">isSelected</span><span class="p">)</span> <span class="o">-&gt;</span>
   <span class="nx">_</span><span class="p">.</span><span class="na">each</span> <span class="nx">tasks</span><span class="p">,</span> <span class="p">(</span><span class="nx">task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="na">selected</span> <span class="o">=</span> <span class="nx">isSelected</span></code></pre></figure>
@@ -126,7 +132,7 @@ In the frontend this has become increasingly more common because of all the avai
   <p>Iteratee functions may exit iteration early by explicitly returning false.</p>
 </blockquote>
 
-<p>Which sounds like a reasonable feature that can help to create more efficient algorithms—though we weren’t returning <code class="highlighter-rouge">false</code>!</p>
+<p>Which sounds like a reasonable feature that can help to create more efficient algorithms—though we weren’t returning <code class="language-plaintext highlighter-rouge">false</code>!</p>
 
 <p>But CoffeeScript was. The language draws inspiration from Ruby, and it borrows features like expressions and implicit returns. For functions, this means that the last executed expression becomes the return value of the function. This allows us to write very concise functions:</p>
 
@@ -138,13 +144,13 @@ In the frontend this has become increasingly more common because of all the avai
   <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">tasks</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">task</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">task</span><span class="p">.</span><span class="nx">selected</span> <span class="o">=</span> <span class="nx">isSelected</span> <span class="p">})</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>When we unselect all the items and <code class="highlighter-rouge">selectAll(false)</code> is called, the first iteration returns the value of <code class="highlighter-rouge">task.selected</code> which is <code class="highlighter-rouge">false</code>, causing <em>lodash</em> to exit the iteration. Mistery solved <img class="emoji" title=":mag:" alt=":mag:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f50d.png" height="20" width="20"></p>
+<p>When we unselect all the items and <code class="language-plaintext highlighter-rouge">selectAll(false)</code> is called, the first iteration returns the value of <code class="language-plaintext highlighter-rouge">task.selected</code> which is <code class="language-plaintext highlighter-rouge">false</code>, causing <em>lodash</em> to exit the iteration. Mistery solved <img class="emoji" title=":mag:" alt=":mag:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f50d.png" height="20" width="20"></p>
 
 <figure class="example-wrapper">
   <iframe src="/examples/posts/coffeescript-js-libraries/select_all.html" frameborder="0" class="example" width="" height="254" scrolling="no"></iframe>
 </figure>
 
-<p>We can fix the bug by explicitly returning <code class="highlighter-rouge">null</code> or <code class="highlighter-rouge">true</code> on each loop, which will avoid stopping the iteration, and all the items will be unselected correctly.</p>
+<p>We can fix the bug by explicitly returning <code class="language-plaintext highlighter-rouge">null</code> or <code class="language-plaintext highlighter-rouge">true</code> on each loop, which will avoid stopping the iteration, and all the items will be unselected correctly.</p>
 
 <figure class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">selectAll</span> <span class="o">=</span> <span class="p">(</span><span class="nx">isSelected</span><span class="p">)</span> <span class="o">-&gt;</span>
   <span class="nx">_</span><span class="p">.</span><span class="na">each</span> <span class="nx">tasks</span><span class="p">,</span> <span class="p">(</span><span class="nx">task</span><span class="p">)</span> <span class="o">-&gt;</span>
@@ -182,22 +188,30 @@ In the frontend this has become increasingly more common because of all the avai
 
 
 
-  <div class="previous-post">
+  <a id="previous-post" href="/posts/bash-git-prompt/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
     <div class="content container">
-      <a id="previous-post" href="/posts/bash-git-prompt/" class="overlay">
-        <h1>Improving your Git Experience in Bash</h1>
+      <a id="related-post" href="/posts/vuex-stores/" class="overlay">
+        <h1>Store Objects for Vuex</h1>
         <div class="post-info">
-  <span class="date">December 14, 2015</span>
+  <span class="date">May 12, 2020</span>
   <span class="reading-time">4 min read</span>
 </div>
 
         <div class="post">
-          <p><em>Bash</em> is the default terminal for most Unix distributions, so it’s very appealing to get the best out of it. If you enjoy customizing your setup, you might want to try something like <span href="http://ohmyz.sh/">zsh</span> instead, which comes with similar functionality out of the box.</p>
+          <p><span href="%7B%7Bpage.vuex%7D%7D">Vuex</span> is a state-management solution that integrates nicely with
+<span href="%7B%7Bpage.vue%7D%7D">Vue</span> components.</p>
 
-<p>Let’s take a look at how we can improve our <em>Git</em> usage in <em>bash</em> by adding a few plugins <img class="emoji" title=":neckbeard:" alt=":neckbeard:" src="https://github.githubassets.com/images/icons/emoji/neckbeard.png" height="20" width="20"></p>
+<p>When starting to use Vuex, one quickly realizes that it’s easier to manage and
+understand the state of a large application when the state is split between
+different <span href="%7B%7Bpage.modules%7D%7D">modules in the Vuex store</span>.</p>
 
-<h2 id="bash-git-autocompletion">Bash Git Autocompletion</h2>
-<p>A great way to get <em>Git</em> autocompletion is to install th…</p>
+<p>Unfortunately, working with modules involves using a <em>namespace string</em> to
+access state and getters, which makes typos hard…</p>
         </div>
       </a>
     </div>

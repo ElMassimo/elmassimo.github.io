@@ -15,7 +15,7 @@ Let’s take a look at how we can improve our Git usage in bash by adding a few 
 
 Bash Git Autocompletion
 A great way to get Git autocompletion is to install th…">
-<meta name="keywords" content="">
+<meta name="keywords" content="bash, git, autocompletion, devx">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -26,8 +26,9 @@ A great way to get Git autocompletion is to install th…">
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -64,10 +65,15 @@ A great way to get Git autocompletion is to install th…" />
 
   </head>
   <body>
-    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkARoDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAgMBAAQFBv/EAB0QAQEBAAMBAQEBAAAAAAAAAAABAhEhEgMxQRP/xAAYAQEBAQEBAAAAAAAAAAAAAAABAAIDBP/EABgRAQEBAQEAAAAAAAAAAAAAAAABEQIS/9oADAMBAAIRAxEAPwD5dcrw0ji8huDclYNgrNW1JWoVFDOUqSski5vaVp+pOn50dvRXzMv4yxQ2tlKLBI0Fx0GhlkVOCYgNUdK0Wk1SrexUH9LRvzdfzrk+boxWa59OqXoG70GaTV6Zc8c32cuv11fQiztqO3KYPxSswzKVFq9Ea/TdfhV/TFFyZkGYZkVUzK8NlQw86xIZYDhp1gsmSlxZUqaCtynKEFFByvKIgz9blJe0HR86Zb0Vgxliho8AosUo7+Bqy9JQy0jcNF5JgNQnZ+iNluFUP9FQlo3B2aRgzkVmmzTXRXLcss426ULVL5LUHBQuUWahRX8LplLqMFBZpcFKlTpV9Fct6WDC7A8DtCWo3AbDICkozJaivIbprS9UnB+hZvZHI8XsKx2/M3hz/LTol6ZcbA2Nlq2UTJ+MsYMpyG6XX4TrXbUakM5BpJpLU1gbAWdmWl39Rg8jLyNCszLAAaLp1hdiUDDMg4FlEzjouw3+AsIAvLBtRFynoFqco4K1JQXTSpYdL0HVaXoG6VG5DdBugXRbkM5DaD0svKKrloyB/wA9OnOnFiunFZrn1DrUlDy0oZPzVLzV5Qxt3pz6vZu9EW9mNwUqWtPwOqSt0DkN0kqOHZGXimfwCtyspdqTQZNtBaG6D6Jwa5oOU9cI46Jeg2lf6J7OLDLS9VvXRetIyLynIPTek1iXS50RdLnRw465rovegTfQN7WCRboF0C7DdNY3IZNDzSJTM0VWHytaCa6DdjGMPxXRiuLGnTjXQsHUPtSaLugexjMjqztbtyz6L/ocXk3Wi+ew3QZo41IfL0DdSa6L3pLEumlKumzpHHXimc9EfPRnroM2Jqh5DrQPSxYZdBmitbB7ONTl0++g3ZP+gLtYZyd/o025/SzRw465roGtFzfQdaWDB+m9Fem9LDgLppon0s01jpjo99A1oHoFqwYK6TkPLSlrDJRTRfLegMO9huyvSelix0/PTpxrpxfOn510zYx1D7su7Luw3SwSGzY87c3oWdHDjo9J6K9NNLFh810DegzRe9LFiXS50RddrnSw47caM99OXGh+xjN5HrQLoGtAulhkFrRfpLoHLWNSGeg3QOU5WHDPTTRfK8pYdNJdFytysWD9N6L5XlYsK5FGYtCDWZBFjMiqVmSC0ZijcHSszNYqWozBIsrMUvKysyQuS91mSJv6LLMWjc0XLMGQWh5ZkQ0DMSiMyKrGZIUZmSCzMk//2Q==')">
+    <header style="background-image: url('data:image/webp;base64,UklGRlQCAABXRUJQVlA4IEgCAAAwFACdASoaAWQAPtFeqVC/s7EnJNKLS/AaCWdu4DBo5XDlB2nhZ0M6KWNddfz/ZT6AixUtooVTiP/v+WPhB8UGY9OloVgAkbnbC1NN6D4C1iGXM4/SATLd/RXvGfg9Tg9mRjm789RIA6VOrOmqKJkitqH45lx1bvGtupYtW6GMLbplc3m3uE0AFHQHNG16snxS0jM2L9z0knLYdmGKoT2LesB1IDlQ2LmCAAD+7wIb2tTcB4ZKtlO5Oc81HPM3Z9/b2iQCurU8gMhznqh5sup0g2/ElPlctBF428dWBYn2EjBL1XQAelNvb0Hk6FsqEY9ttjju/J/ZUebh3VsHWjwO13IeTfJ/QEvPkB2cFpSIrzsNEJazC7m8ChaHmofWVtefxsGAat5PZjPp/ZSOjzm1ay7YOy0LVA99EDH/2gWjzLJDSvC2+Q5RNU1VHbk6EXi8o1/JA0CY2gmMdU1o1NWKYS9rHiBWEE/ZNNlh+GTuVmMCPoY/o5qFRo0yZPmMECDOdGWrV9CIvusv5yILH8GsZ3Pnssr4yVFENgFQuBFTuXti8aJIqOSgRbknU2v1I97KVfjZLocJt6I1j/IFvcuaxIVTUHqrY7MaHqDvvaecEp2qOiXpA56BltocXei7ElrD2XiHYJ3ZS0DzJffAoXth0Wn7+9Pq3kRzUr4Q5ZGT09FuY5eFPdd3ZMGBDGqKwxxB5w6OTz9R3q0w41kPjOMRVookH+YTvRSXzAT7HdpWVNFf9JEOvTsYAVcs5hIZH8vmrH5Nox9wAA==')">
   
-    <div class="hero" style="background-image: url(/images/posts/bash-git-prompt.jpg)">
-      <h1>Improving your Git Experience in Bash</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/bash-git-prompt.webp" type="image/webp">
+  <img src="/images/posts/bash-git-prompt.jpg" alt="bash-git-prompt.jpg" class="hero-bg">
+</source></picture>
+
+      <h1 class="hero-title">Improving your Git Experience in Bash</h1>
     </div>
   
 </header>
@@ -119,68 +125,77 @@ A great way to get Git autocompletion is to install th…" />
 <p>Let’s take a look at how we can improve our <em>Git</em> usage in <em>bash</em> by adding a few plugins <img class="emoji" title=":neckbeard:" alt=":neckbeard:" src="https://github.githubassets.com/images/icons/emoji/neckbeard.png" height="20" width="20"></p>
 
 <h2 id="bash-git-autocompletion">Bash Git Autocompletion</h2>
-<p>A great way to get <em>Git</em> autocompletion is to install the <code class="highlighter-rouge">bash-completion</code> package. This plugin will improve our experience when switching or pulling different branches, and is a real time-saver when using <a href="https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches">topic branches</a>.</p>
+<p>A great way to get <em>Git</em> autocompletion is to install the <code class="language-plaintext highlighter-rouge">bash-completion</code> package. This plugin will improve our experience when switching or pulling different branches, and is a real time-saver when using <a href="https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches">topic branches</a>.</p>
 
-<p><img src="/images/posts/bash-git-prompt/git-autocompletion.png" alt="Checking out Branches" class=""></p>
+<picture>
+  <source srcset="/images/posts/bash-git-prompt/git-autocompletion.webp" type="image/webp"></source>
+  <img src="/images/posts/bash-git-prompt/git-autocompletion.png" alt="Checking out Branches" class="">
+</picture>
 
 <h3 id="installation-on-os-x">Installation on OS X</h3>
-<p>First, install <code class="highlighter-rouge">bash-completion</code> using <a href="http://brew.sh/">Homebrew</a>:</p>
+<p>First, install <code class="language-plaintext highlighter-rouge">bash-completion</code> using <a href="http://brew.sh/">Homebrew</a>:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew install bash-completion</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew <span class="nb">install </span>bash-completion</code></pre></figure>
 
-<p>and then add this line to <code class="highlighter-rouge">~/.bash_profile</code> to load the plugin:</p>
+<p>and then add this line to <code class="language-plaintext highlighter-rouge">~/.bash_profile</code> to load the plugin:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">[[</span> <span class="nt">-f</span> <span class="s2">"</span><span class="k">$(</span>brew <span class="nt">--prefix</span><span class="k">)</span><span class="s2">/etc/bash_completion"</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">source</span> <span class="s2">"</span><span class="k">$(</span>brew <span class="nt">--prefix</span><span class="k">)</span><span class="s2">/etc/bash_completion"</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">[[</span> <span class="nt">-f</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--prefix</span><span class="si">)</span><span class="s2">/etc/bash_completion"</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">source</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--prefix</span><span class="si">)</span><span class="s2">/etc/bash_completion"</span></code></pre></figure>
 
 <h3 id="installation-on-ubuntu">Installation on Ubuntu</h3>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>apt-get install bash-completion</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>apt-get <span class="nb">install </span>bash-completion</code></pre></figure>
 
 <h2 id="bash-git-prompt">Bash Git Prompt</h2>
-<p>Running a <em>Git</em> command without knowing the current branch is like running <code class="highlighter-rouge">rm</code> or <code class="highlighter-rouge">mkdir</code> in the terminal without knowning the current directory: it’s dangerous and error-prone.</p>
+<p>Running a <em>Git</em> command without knowing the current branch is like running <code class="language-plaintext highlighter-rouge">rm</code> or <code class="language-plaintext highlighter-rouge">mkdir</code> in the terminal without knowning the current directory: it’s dangerous and error-prone.</p>
 
-<p>Sure, we could type <code class="highlighter-rouge">pwd</code> every time before running those commands, but it wouldn’t be practical. Why not take the same approach for <em>Git</em>, and display the current branch in the terminal prompt?</p>
+<p>Sure, we could type <code class="language-plaintext highlighter-rouge">pwd</code> every time before running those commands, but it wouldn’t be practical. Why not take the same approach for <em>Git</em>, and display the current branch in the terminal prompt?</p>
 
-<p><a href="https://github.com/magicmonty/bash-git-prompt"><code class="highlighter-rouge">bash-git-prompt</code></a> is a project that takes care of that, displaying the current branch and other helpful stats. It has many different themes available, which can be customized by specifying a theme through the <code class="highlighter-rouge">GIT_PROMPT_THEME</code> environment variable.</p>
+<p><a href="https://github.com/magicmonty/bash-git-prompt"><code class="language-plaintext highlighter-rouge">bash-git-prompt</code></a> is a project that takes care of that, displaying the current branch and other helpful stats. It has many different themes available, which can be customized by specifying a theme through the <code class="language-plaintext highlighter-rouge">GIT_PROMPT_THEME</code> environment variable.</p>
 
-<p><img src="/images/posts/bash-git-prompt/git-prompt-default.png" alt="Default Theme" class=""></p>
+<picture>
+  <source srcset="/images/posts/bash-git-prompt/git-prompt-default.webp" type="image/webp"></source>
+  <img src="/images/posts/bash-git-prompt/git-prompt-default.png" alt="Default Theme" class="">
+</picture>
 
 <h3 id="installation-on-os-x-1">Installation on OS X</h3>
-<p>First, install <code class="highlighter-rouge">bash-git-prompt</code> using <a href="http://brew.sh/">Homebrew</a>:</p>
+<p>First, install <code class="language-plaintext highlighter-rouge">bash-git-prompt</code> using <a href="http://brew.sh/">Homebrew</a>:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install bash-git-prompt
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>bash-git-prompt
 </code></pre></div></div>
 
 <p>And then source the file in your ~/.bash_profile as follows:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[[</span> <span class="nt">-f</span> <span class="s2">"</span><span class="k">$(</span>brew <span class="nt">--prefix</span><span class="k">)</span><span class="s2">/opt/bash-git-prompt/share/gitprompt.sh"</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">source</span> <span class="s2">"</span><span class="k">$(</span>brew <span class="nt">--prefix</span><span class="k">)</span><span class="s2">/opt/bash-git-prompt/share/gitprompt.sh"</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[[</span> <span class="nt">-f</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--prefix</span><span class="si">)</span><span class="s2">/opt/bash-git-prompt/share/gitprompt.sh"</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">source</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--prefix</span><span class="si">)</span><span class="s2">/opt/bash-git-prompt/share/gitprompt.sh"</span>
 </code></pre></div></div>
 
 <h4 id="installation-on-ubuntu-1">Installation on Ubuntu</h4>
-<p>It might be necessary to <a href="https://github.com/magicmonty/bash-git-prompt#via-git-clone">clone the project’s git repo</a>, and source <code class="highlighter-rouge">gitprompt.sh</code> into the <code class="highlighter-rouge">~/.bashrc</code> file.</p>
+<p>It might be necessary to <a href="https://github.com/magicmonty/bash-git-prompt#via-git-clone">clone the project’s git repo</a>, and source <code class="language-plaintext highlighter-rouge">gitprompt.sh</code> into the <code class="language-plaintext highlighter-rouge">~/.bashrc</code> file.</p>
 
 <h4 id="basic-customization">Basic Customization</h4>
-<p>The following are some settings I modified in my <code class="highlighter-rouge">~/.bash_profile</code>:</p>
+<p>The following are some settings I modified in my <code class="language-plaintext highlighter-rouge">~/.bash_profile</code>:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">GIT_PROMPT_ONLY_IN_REPO</span><span class="o">=</span>1 <span class="c"># Use the default prompt when not in a git repo.</span>
 <span class="nv">GIT_PROMPT_FETCH_REMOTE_STATUS</span><span class="o">=</span>0 <span class="c"># Avoid fetching remote status</span>
 <span class="nv">GIT_PROMPT_SHOW_UPSTREAM</span><span class="o">=</span>0 <span class="c"># Don't display upstream tracking branch</span>
 <span class="nv">GIT_SHOW_UNTRACKED_FILES</span><span class="o">=</span>no <span class="c"># Don't count untracked files (no, normal, all)</span></code></pre></figure>
 
-<p>These constants must be defined before sourcing <code class="highlighter-rouge">bash-git-prompt</code> in the <code class="highlighter-rouge">~/.bash_profile</code> or <code class="highlighter-rouge">~/.bashrc</code> file.</p>
+<p>These constants must be defined before sourcing <code class="language-plaintext highlighter-rouge">bash-git-prompt</code> in the <code class="language-plaintext highlighter-rouge">~/.bash_profile</code> or <code class="language-plaintext highlighter-rouge">~/.bashrc</code> file.</p>
 
 <h2 id="customizing-the-git-prompt">Customizing the Git Prompt</h2>
-<p>The themes that come bundled with <a href="https://github.com/magicmonty/bash-git-prompt"><code class="highlighter-rouge">bash-git-prompt</code></a> displayed too much information for my taste, and the symbols in the default theme are not particularly meaningful.</p>
+<p>The themes that come bundled with <a href="https://github.com/magicmonty/bash-git-prompt"><code class="language-plaintext highlighter-rouge">bash-git-prompt</code></a> displayed too much information for my taste, and the symbols in the default theme are not particularly meaningful.</p>
 
 <p>After trying different themes, I decided to bake my own. I wanted something that emphasized the important bits and pieces, looked clean, and was easy to understand. Fortunately, the plugin provides a command to generate a custom theme file:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">git_prompt_make_custom_theme Default</code></pre></figure>
 
-<p>The command creates a <code class="highlighter-rouge">~/.git-prompt-colors.sh</code> based on the default theme and will get loaded by the plugin automatically, so you can start playing with the variables right away. However, you may need to dive into the source code to figure out how each variable is used, and find the ones you want to customize.</p>
+<p>The command creates a <code class="language-plaintext highlighter-rouge">~/.git-prompt-colors.sh</code> based on the default theme and will get loaded by the plugin automatically, so you can start playing with the variables right away. However, you may need to dive into the source code to figure out how each variable is used, and find the ones you want to customize.</p>
 
 <p>After tweaking the variables for a while, I was able to create a custom theme. The expresiveness of emojis made it a lot easier for me to understand the current git status <img class="emoji" title=":sweat_smile:" alt=":sweat_smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f605.png" height="20" width="20"></p>
 
-<p><img src="/images/posts/bash-git-prompt/git-prompt-emoji.png" alt="Emoji Theme" class=""></p>
+<picture>
+  <source srcset="/images/posts/bash-git-prompt/git-prompt-emoji.webp" type="image/webp"></source>
+  <img src="/images/posts/bash-git-prompt/git-prompt-emoji.png" alt="Emoji Theme" class="">
+</picture>
 
 <noscript><pre>override_git_prompt_colors() {
   GIT_PROMPT_THEME_NAME="Custom"
@@ -233,13 +248,13 @@ reload_git_prompt_colors "Custom"
 
 <hr>
 
-<p>It would be awesome if <a href="https://github.com/magicmonty/bash-git-prompt"><code class="highlighter-rouge">bash-git-prompt</code></a> provided a way to customize the full prompt order and displayed elements, with a template string like:</p>
+<p>It would be awesome if <a href="https://github.com/magicmonty/bash-git-prompt"><code class="language-plaintext highlighter-rouge">bash-git-prompt</code></a> provided a way to customize the full prompt order and displayed elements, with a template string like:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">GIT_PROMPT</span><span class="o">=</span><span class="s2">"{PathShort}{Branch}{Remote}{Modified}{Staged}{Clean}"</span></code></pre></figure>
 
 <p>That would make it possible to create very different themes, as well as opting out of certain information—like git stashes.</p>
 
-<p>For now, I’m pleased with the result; it’s practical, looks nice, and I don’t need to type <code class="highlighter-rouge">git branch</code> to check the current branch <img class="emoji" title=":sunglasses:" alt=":sunglasses:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f60e.png" height="20" width="20"></p>
+<p>For now, I’m pleased with the result; it’s practical, looks nice, and I don’t need to type <code class="language-plaintext highlighter-rouge">git branch</code> to check the current branch <img class="emoji" title=":sunglasses:" alt=":sunglasses:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f60e.png" height="20" width="20"></p>
 
   </div>
 
@@ -267,24 +282,31 @@ reload_git_prompt_colors "Custom"
 
 
 
-  <div class="previous-post">
+  <a id="previous-post" href="/posts/ruby-to_proc/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
     <div class="content container">
-      <a id="previous-post" href="/posts/ruby-to_proc/" class="overlay">
-        <h1>Ruby &amp; to_proc</h1>
+      <a id="related-post" href="/posts/trailing-commas/" class="overlay">
+        <h1>Automatic Trailing Commas for Version Control</h1>
         <div class="post-info">
-  <span class="date">December 07, 2015</span>
-  <span class="reading-time">4 min read</span>
+  <span class="date">April 03, 2019</span>
+  <span class="reading-time">3 min read</span>
 </div>
 
         <div class="post">
-          <p>Blocks are a very unique part of Ruby’s syntax. Let’s look at a simple example:</p>
+          <p>Today I’d like to share a simple but very useful practice for managing Ruby and
+JS code under version control.</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="s1">'Jane Jim Jenny'</span><span class="p">.</span><span class="nf">split</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="p">.</span><span class="nf">length</span> <span class="p">}.</span><span class="nf">reduce</span> <span class="p">{</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">n</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">n</span> <span class="p">}</span>
-<span class="c1"># =&gt; 12</span></code></pre></figure>
+<p>In our team, we always use trailing commas when defining multi-line literals for
+arrays and hash (object in JS) literals.</p>
 
-<p>When performing this kind of functional transformation, it’s tedious to write a block to perform a simple method call. An extremely common idiom in Ruby uses symbols to specify the method that should be called:</p>
+<p>It’s great that both Ruby and JS allow this in their syntax, because as a result
+we are able to get cleaner diffs:</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">names</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:length</span><span class="p">).</span><span class="nf">reduce</span><span class="p">(…</span></code></pre></figure>
+<p>{% img standar…</p>
         </div>
       </a>
     </div>

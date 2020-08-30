@@ -13,7 +13,7 @@
 
 In this short post we will explore the keyword operator in Ruby, and a few things you should have in mind when first getting started with it.
 ">
-<meta name="keywords" content="">
+<meta name="keywords" content="ruby, language, keywords">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -24,8 +24,9 @@ In this short post we will explore the keyword operator in Ruby, and a few thing
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -58,10 +59,15 @@ In this short post we will explore the keyword operator in Ruby, and a few thing
 
   </head>
   <body>
-    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkAOsDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAwIBAAQFBv/EABwQAQEBAAMBAQEAAAAAAAAAAAABAgMRIRIxQf/EABkBAAMBAQEAAAAAAAAAAAAAAAIDAQAEBf/EAB0RAQEBAQADAQEBAAAAAAAAAAABAhEhAxIxE0H/2gAMAwEAAhEDEQA/APkOy2sWgMha0jVYnTZFzBuOEzBsQNrfLox+JyfjY/G3+Fd8j45dfonDfQ9/q8d6psBa9Pg346s78ebxbdONg1Gz+uua7PKBx3safjl1fLrz+Jqg6F0FR5oK0i9LmGv4K1YBoLQvJQLUOgeoSwWksFKGwnSzKrDM0n2Qtz4DuOm/gG4Poc5ArRbCp02QTJuw5Tdgp8oVJT0lOeVziGzEkEzlKZlcwTKTKwu00bNbd8JKmqHg+eAt/pc31dlz+nZI3HVx11cdcXHXXxUO/wAbEdvFB/4BxXwTW+o4Nea6Z4iapZOw9b9Px67NzPBOtCyF35Dy+A8uhcXOnPy6AujcunPdC46ZfA30loU0v03E6trSltaUUTUF/geoeVK3Qfjn1A6PsDdHA/Sdt9EtTsXF/oLYToa5L8tK5dlzBsZJnI+Mpqtmt8p0L8lsL6dKTomhbA9RYPoNaQ1iyH5I3TYdPFQMwfjL9gsOvGuo2+TwKXxNOXnk+/jXfovFpz9ei48GT89dX345+ba3fjn5NdiyszwHk13Qz2d1ZgVOlDTsS5C1Omnlur9NNBWrKLiWjzS3QUa1OA02tAbp9ULVHIVSqijZ6GsBXLs3gDWSM0O4TGR8ZJnLoxG1UxE+Say6PnwPWS5TuOewlg2oHYOCCsSHsKfgjZsujjgGI6uKB9gvXTyeNci5z41y47XR0GZNIJMG+PG+klA0DqduneQbPTM1qXODzjNkSJasjn1jxz8mHfcgcmGzpuOC5NnIusemxk3qcJ8+B78dVz45+SNKHTm0SiahOjYHiKyssj3N5c+s+uvcCuSMlaBzkbGWzkXMbS4TrwmoP0TUDDK5dQlg+oFqDaUDUJ0LohuaXudNiOvijlw6uIHs0L14dOZ4tLL4l04/9PuTRewvpe14Diclc9/RthWGQci5p5Q4eJTZDk3DSl3Ui2AaiRt0P6OgOC2+AcjXkD1sUhWiagdh7opgYnS9LIbpOmTL29B0SkpUctSHzSGiUWRJU00atBUHQOh9g6EkA0Q+iClFw+HRx1z4HyDZ+IPNeFuidkuipkeqLKJlz50PhbOFzytgdyPYHYGUXA+m7NYHVGv0TektC1oecg1rib0DrS6oWqbID6bWw7ptUlMkK1TfSyhny1TNFyJ0TAkLroy9elrMW5KhsszVYeNWZhULYGmZUgOiMywyCYFyzB0dltBWsyRNri+urjZm0DIpazFHQtB2zCggtBbZj8ufYOgqzGFwlLWYUStD5ZkrZFwJGYuunL//2Q==')">
+    <header style="background-image: url('data:image/webp;base64,UklGRqYCAABXRUJQVlA4IJoCAABwFACdASrrAGQAPtFcpk61szQmKTXsQrAaCWVu4DYYkCKeLi7kDmnwz6FkDrsj/XsIkMo/qLyB6FAsTmzywVEIcYfkN3LJcuzt0j3him+Ulu+Dr8UNTsZnMZH4m+gEGZNEgBbkUke7t7w7j5JxVkBs6DIBb27/tbIUEWpCd/l5dbDz02nCkPkd41UtUiItXesEZnSIhCBV9Tgf2zof+64rw7mzVIPLQAEQWKwAAP7wiJCr1LCfzQG9yAM+9qJJ7WwHTS62BTLT2vMmIG7flm8IoXmMoQdoqNTjVm21orXheUPtux5V/xps45udPNtbyifp9Li8+Bg/4/sWETYGtXqD3CQfrP/NYmAcpMkdFBGBypvpuj/u4oGwqIGFhMU4QQUwNH3rew49EAAu+mOofmCnAv4mtpPvi8NA/xTe+v9CTsmOR4aQuoUIDGS7lquPjWkEn1XcySl3YMglyauRTTFwO0+e+CyAlk7xupcu90R/A15XY/9j2PfzmvWCzz3iEMXUA14wROYimzbWGKfVg8/9yzhueWzbkLwZQ7aQOiaax7ynnnBzfBUsAyrMvptFjoKulcxukoRoU7Q1bsPwdX9Gchp9OTsUmeQ6VrREG9mGEDgUj6VwOX/ivJWVSFu8UOl1vzmxAp1cggsMaGvVeFdFonH1uxX0SH38FCLv3zcHaniDT/hte2Bl1Ux813zIKOT7DL1ue5fGz9sausJ/6y2Gv8yF5ikz0LNgyaO+58NRK335f/zT3eUlQlx6efBtiu8ZuI6vqPnmD4jU0kj1iT6bINvQE+B2z2AQmhk9WtmLH5PkwwEpSP8nHt1wCoSGQDF4tBPHmuh6mrQ0B6U3RDJ2AGTO9STh1EDftneCAQ0b4o9300BdWAAAAAA=')">
   
-    <div class="hero" style="background-image: url(/images/posts/ruby-double-splat-keywords.jpg)">
-      <h1>Ruby Keywords and the Double Splat Operator</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/ruby-double-splat-keywords.webp" type="image/webp">
+  <img src="/images/posts/ruby-double-splat-keywords.jpg" alt="ruby-double-splat-keywords.jpg" class="hero-bg">
+</picture>
+
+      <h1 class="hero-title">Ruby Keywords and the Double Splat Operator</h1>
     </div>
   
 </header>
@@ -108,15 +114,15 @@ In this short post we will explore the keyword operator in Ruby, and a few thing
 
 
   <div class="post">
-    <p>One of the nicest bits of syntax sugar in Ruby are <em>keywords</em> (<code class="highlighter-rouge">**</code> or <em>double-splat</em>).</p>
+    <p>One of the nicest bits of syntax sugar in Ruby are <em>keywords</em> (<code class="language-plaintext highlighter-rouge">**</code> or <em>double-splat</em>).</p>
 
 <h4 id="keywords-in-method-parameters">Keywords in Method Parameters</h4>
 
-<p>Just like the splat operator (<code class="highlighter-rouge">*args</code>) captures any parameters as an <code class="highlighter-rouge">Array</code> of
-arguments, the double-splat operator (<code class="highlighter-rouge">**attrs</code>) captures any option parameters
-as a <code class="highlighter-rouge">Hash</code>.</p>
+<p>Just like the splat operator (<code class="language-plaintext highlighter-rouge">*args</code>) captures any parameters as an <code class="language-plaintext highlighter-rouge">Array</code> of
+arguments, the double-splat operator (<code class="language-plaintext highlighter-rouge">**attrs</code>) captures any option parameters
+as a <code class="language-plaintext highlighter-rouge">Hash</code>.</p>
 
-<p>The nice thing is that it allows to destructure a <code class="highlighter-rouge">Hash</code> argument into any of
+<p>The nice thing is that it allows to destructure a <code class="language-plaintext highlighter-rouge">Hash</code> argument into any of
 its individual keys, and mark it as required, or make it optional and provide a
 default value for it.</p>
 
@@ -152,7 +158,7 @@ default value for it.</p>
 they learn the cause of this unintuitive message.</p>
 
 <blockquote>
-  <p>Only <code class="highlighter-rouge">Symbol</code> keys are allowed in keyword arguments 😲</p>
+  <p>Only <code class="language-plaintext highlighter-rouge">Symbol</code> keys are allowed in keyword arguments 😲</p>
 </blockquote>
 
 <p>Ruby handles keyword arguments differently in its internals, which unfortunately
@@ -175,8 +181,8 @@ when resolving duplicate keys, the rightmost ones will take priority.</p>
 <p>There are a few caveats when combining hashes:</p>
 
 <ul>
-  <li>It does not combine keys of different types, such as <code class="highlighter-rouge">String</code> and <code class="highlighter-rouge">Symbol</code>.</li>
-  <li>It can <strong>only</strong> be used with Hashes where all keys are <code class="highlighter-rouge">Symbol</code>s.</li>
+  <li>It does not combine keys of different types, such as <code class="language-plaintext highlighter-rouge">String</code> and <code class="language-plaintext highlighter-rouge">Symbol</code>.</li>
+  <li>It can <strong>only</strong> be used with Hashes where all keys are <code class="language-plaintext highlighter-rouge">Symbol</code>s.</li>
 </ul>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">jane</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="s2">"Jane"</span><span class="p">,</span> <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="s2">"Doe"</span> <span class="p">}</span>
@@ -196,22 +202,24 @@ has improved a lot since the feature was first added 🎉</p>
 <p>When using Rails a developer might think:</p>
 
 <blockquote>
-  <p>I can obtain values from <code class="highlighter-rouge">params</code> using <code class="highlighter-rouge">Symbol</code> keys, but I can’t pass them
+  <p>I can obtain values from <code class="language-plaintext highlighter-rouge">params</code> using <code class="language-plaintext highlighter-rouge">Symbol</code> keys, but I can’t pass them
 as keyword arguments! Thought they were all <em>Symbol</em> keys?</p>
 </blockquote>
 
-<p>The short answer is <em>no</em>. In Rails controllers, <code class="highlighter-rouge">params</code> is an instance of <em>HashWithIndiferentAccess</em>.
+<p>The short answer is <em>no</em>. In Rails controllers, <code class="language-plaintext highlighter-rouge">params</code> is an instance of <em>HashWithIndiferentAccess</em>.
 You may index it with <em>Symbol</em> keys but internally it uses <em>String</em> keys.</p>
 
-<p>Fortunately, <code class="highlighter-rouge">symbolize_keys</code> is our friend here, allowing us to transform any
+<p>Fortunately, <code class="language-plaintext highlighter-rouge">symbolize_keys</code> is our friend here, allowing us to transform any
 Hash, such as HTTP parameters, to something we can pass as keyword arguments.</p>
 
 <h3 id="summary">Summary</h3>
-<p>So there you have it, <code class="highlighter-rouge">**</code> is to <code class="highlighter-rouge">Hash</code> what <code class="highlighter-rouge">*</code> is to <code class="highlighter-rouge">Array</code>, and is a very
+<p>So there you have it, <code class="language-plaintext highlighter-rouge">**</code> is to <code class="language-plaintext highlighter-rouge">Hash</code> what <code class="language-plaintext highlighter-rouge">*</code> is to <code class="language-plaintext highlighter-rouge">Array</code>, and is a very
 convenient tool to write shorter, expressive code.</p>
 
-<p>Just watch out for errors when using non-<code class="highlighter-rouge">Symbol</code> keys in keyword arguments,
+<p>Just watch out for errors when using non-<code class="language-plaintext highlighter-rouge">Symbol</code> keys in keyword arguments,
 at least until Ruby improves that error message 😉</p>
+
+<p><em>Would you like to <a href="/posts/ruby-to_proc/">learn about Ruby’s <code class="language-plaintext highlighter-rouge">Symbol</code> shortcuts</a>?</em></p>
 
   </div>
 
@@ -239,28 +247,39 @@ at least until Ruby improves that error message 😉</p>
 
 
 
-  <div class="previous-post">
+  <a id="previous-post" href="/posts/trailing-commas/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
     <div class="content container">
-      <a id="previous-post" href="/posts/trailing-commas/" class="overlay">
-        <h1>Automatic Trailing Commas for Version Control</h1>
+      <a id="related-post" href="/posts/ruby-class-variables/" class="overlay">
+        <h1>Class Instance Variables in Ruby</h1>
         <div class="post-info">
-  <span class="date">April 03, 2019</span>
-  <span class="reading-time">2 min read</span>
+  <span class="date">May 30, 2016</span>
+  <span class="reading-time">4 min read</span>
 </div>
 
         <div class="post">
-          <p>Today I’d like to share a simple but very useful practice for managing Ruby and
-JS code under version control.</p>
+          <p>Like most object-oriented languages, Ruby has both instance and class variables. The syntax is <code class="language-plaintext highlighter-rouge">@name</code> for <em>instance variables</em>, and <code class="language-plaintext highlighter-rouge">@@name</code> for <em>class variables</em>.</p>
 
-<p>In our team, we always use trailing commas when defining multi-line literals for
-arrays and hash (object in JS) literals.</p>
+<p>Let’s look at a simple example to understand how we might use <em>class variables</em>:</p>
 
-<p>It’s great that both Ruby and JS allow this in their syntax, because as a result
-we are able to get cleaner diffs:</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
+  <span class="vc">@@animals</span> <span class="o">=</span> <span class="p">[]</span>
 
-<p><img src="/images/posts/trailing-commas/standard-vs-trailing.png" alt="Standard vs Trailing" class=""></p>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
+    <span class="vc">@@animals</span>
+  <span class="k">end</span>
 
-<p>Notice how the same code c…</p>
+  <span class="k">def</span> <span class="nf">other_species</span>
+    <span class="vc">@@animals</span> <span class="o">-</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+  <span class="vc">@@animals</span> <span class="o">&lt;&lt;</span> <span class="nb">self…</span></code></pre></div></div>
         </div>
       </a>
     </div>

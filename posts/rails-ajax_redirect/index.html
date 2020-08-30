@@ -14,7 +14,7 @@
 rails-ajax_redirect is an extension to this unobtrusive behaviour that adds AJAX support to redirect_to. It allows us to redirect an AJAX request as usual, instead of having to perform the redirect by handling the response manually in JS every time.
 
 This is helpful in many different scenarios, and ju…">
-<meta name="keywords" content="">
+<meta name="keywords" content="rails, http, ajax">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -25,8 +25,9 @@ This is helpful in many different scenarios, and ju…">
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -61,10 +62,15 @@ This is helpful in many different scenarios, and ju…" />
 
   </head>
   <body>
-    <header style="background-image: url('data:image/jpeg;base64,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')">
+    <header style="background-image: url('data:image/webp;base64,UklGRnIDAABXRUJQVlA4IGYDAACQIQCdASoLAWQAPtFcpEy/vK+oLbWri/AaCWVulv+9+4CV+IRxTO+tAWbtaS5z0t+YFPRqHGjB/5v/qyf/qCMf/3f6eIyO09dNPb/vphieFLgTQuBwB7qxU0rQ+U0zf/86GtouaCcj35PTt3DOx/8yVe7Ezv+Y0xQpDQDP+zFRojGfr4OztTHhARb6wet3FjayR3vBONQWwueMCPFDJQQCCbqjfvHz0utrDlhWa0dJULgHLHmz3sJ7cutTYPuYBHdgJolEz1x6EWLcH82bYayet1s3TvFuWbtaihPZcwTxrQFJK87aU21xu8ECvcqcyWCyyf/bl4gl5sanFeiCBu1JUlIz9C//CB6mLPF42cWbcEwaTdlAAP70ZtVS43luxqiso0VInSIcnvyrzIjjCJf+doHPPuDFV2VxVq8tXiirLV41W/3qW0LH3CBofxmdJ5I/QA4LdHBZ4IhArPtzKCjdGLmrtBuFJJguGrxqA/2oxxm65FqfrRCaJtuXC05TXWXFZBMBfJWAO68Pr9to9vaRqm6FA6m50hzgrnigsvgATEsewLwF++OiH0bG6XyiZcXzwve/gy6MxRMtUkj11pWJOWn9bImg3C+1xJzh0JmxTdpY2/O0Pab4sXQWGYstpzsUW8CQxrznGSBzLUCMZGwbSey1ZfCIIvpIDaRNhNEK9njGy8uTaq0C4R+xwRvXgGcpAkA6sne8H9jcfC+I1NTyuBHUOdmsfWJ9n93A6n88/uNvDuGasMbgftDhZzoNhoc600fvP9TRQz2hdWLfogmI+L8U14RICUy2GKMGH12ChCCdKQ1l5CGsRb1q5C8duNiRgjccjcoN2Xavmrfm1tWXMsTdRTt/4FmvAqyMvuenyA2if8mEUm643PWB3P3x/n+5BpFH53T+6ee6wyM7XwCLZKkfiilK+dDONnjN1nzeC2LT5StESzp3y+GU2frgnqLr1HtS+hAt6nJ6UZv2YWII7yVzRf5EUCj7VF2v5TcPo95J6iJY0vjis5KE6OkINS29Src7ojqS4IM8WG6mJXRHfa0RCNLz+msPSU50rFxX300pc4QbJ0H4BTNuTXBWPkL846DXGdR88/u4tzyVD86UZeEc/VAlNFCVGlu+HynY/8o/nHn15yQvyjhfAsQrUV1ysFCAAAA=')">
   
-    <div class="hero" style="background-image: url(/images/posts/rails-ajax_redirect.jpg)">
-      <h1>Redirecting AJAX requests in Rails</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/rails-ajax_redirect.webp" type="image/webp">
+  <img src="/images/posts/rails-ajax_redirect.jpg" alt="rails-ajax_redirect.jpg" class="hero-bg">
+</source></picture>
+
+      <h1 class="hero-title">Redirecting AJAX requests in Rails</h1>
     </div>
   
 </header>
@@ -111,23 +117,23 @@ This is helpful in many different scenarios, and ju…" />
 
 
   <div class="post">
-    <p><a href="https://github.com/rails/jquery-rails"><code class="highlighter-rouge">jquery-rails</code></a> powers links and forms in Rails: it’s what makes <code class="highlighter-rouge">remote: true</code> work, allowing any link to make an AJAX request unobtrusively.</p>
+    <p><a href="https://github.com/rails/jquery-rails"><code class="language-plaintext highlighter-rouge">jquery-rails</code></a> powers links and forms in Rails: it’s what makes <code class="language-plaintext highlighter-rouge">remote: true</code> work, allowing any link to make an AJAX request unobtrusively.</p>
 
-<p><a href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="highlighter-rouge">rails-ajax_redirect</code></a> is an extension to this unobtrusive behaviour that adds AJAX support to <code class="highlighter-rouge">redirect_to</code>. It allows us to redirect an AJAX request as usual, instead of having to perform the redirect by handling the response manually in JS every time.</p>
+<p><a href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="language-plaintext highlighter-rouge">rails-ajax_redirect</code></a> is an extension to this unobtrusive behaviour that adds AJAX support to <code class="language-plaintext highlighter-rouge">redirect_to</code>. It allows us to redirect an AJAX request as usual, instead of having to perform the redirect by handling the response manually in JS every time.</p>
 
-<p>This is helpful in many different scenarios, and just like <code class="highlighter-rouge">remote: true</code>, it allows us to skip some of the boilerplate in cases where we need to redirect the user to a different page.</p>
+<p>This is helpful in many different scenarios, and just like <code class="language-plaintext highlighter-rouge">remote: true</code>, it allows us to skip some of the boilerplate in cases where we need to redirect the user to a different page.</p>
 
-<p><a href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="highlighter-rouge">Rails::AjaxRedirect</code></a> extends <code class="highlighter-rouge">redirect_to</code> to use a custom status code for ajax
-requests, while still setting the <code class="highlighter-rouge">Location</code> header. On the front-end, it adds a handler for the <code class="highlighter-rouge">ajax:success</code> event, that navigates to the location in the header for responses that have the custom status code.</p>
+<p><a href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="language-plaintext highlighter-rouge">Rails::AjaxRedirect</code></a> extends <code class="language-plaintext highlighter-rouge">redirect_to</code> to use a custom status code for ajax
+requests, while still setting the <code class="language-plaintext highlighter-rouge">Location</code> header. On the front-end, it adds a handler for the <code class="language-plaintext highlighter-rouge">ajax:success</code> event, that navigates to the location in the header for responses that have the custom status code.</p>
 
 <p>This makes it possible to write a simple redirect as usual, but without having to handle it manually every time <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20"></p>
 
 <h2 id="turbolinks">Turbolinks</h2>
-<p>If your application uses <a href="https://github.com/rails/turbolinks"><em>Turbolinks</em></a> check out <a href="https://github.com/remind101/turbolinks-redirect"><code class="highlighter-rouge">turbolinks-redirect</code></a>, on which <a href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="highlighter-rouge">rails-ajax_redirect</code></a> is based on. The advantage is that it will perform faster navigation by leveraging <em>Turbolinks</em> to visit the new location.</p>
+<p>If your application uses <a href="https://github.com/rails/turbolinks"><em>Turbolinks</em></a> check out <a href="https://github.com/remind101/turbolinks-redirect"><code class="language-plaintext highlighter-rouge">turbolinks-redirect</code></a>, on which <a href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="language-plaintext highlighter-rouge">rails-ajax_redirect</code></a> is based on. The advantage is that it will perform faster navigation by leveraging <em>Turbolinks</em> to visit the new location.</p>
 
 <h2 id="axios">Axios</h2>
 
-<p>If your application makes the AJAX request using <code class="highlighter-rouge">axios</code> instead of <code class="highlighter-rouge">jQuery</code>, it will be necessary to add an interceptor similar to this:</p>
+<p>If your application makes the AJAX request using <code class="language-plaintext highlighter-rouge">axios</code> instead of <code class="language-plaintext highlighter-rouge">jQuery</code>, it will be necessary to add an interceptor similar to this:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">axios</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
   <span class="nx">response</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -166,19 +172,30 @@ requests, while still setting the <code class="highlighter-rouge">Location</code
 
 
 
-  <div class="previous-post">
+  <a id="previous-post" href="/posts/anko-vs-android-xml/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
     <div class="content container">
-      <a id="previous-post" href="/posts/anko-vs-android-xml/" class="overlay">
-        <h1>Anko DSL vs Android XML-First</h1>
+      <a id="related-post" href="/posts/better-settings/" class="overlay">
+        <h1>Better Settings in Ruby apps</h1>
         <div class="post-info">
-  <span class="date">January 04, 2016</span>
-  <span class="reading-time">5 min read</span>
+  <span class="date">March 02, 2019</span>
+  <span class="reading-time">6 min read</span>
 </div>
 
         <div class="post">
-          <p><span href="https://github.com/kotlin/anko"><em>Anko</em></span> is a library for <em>Android</em> development in <span href="https://kotlinlang.org"><em>Kotlin</em></span>. The library provides helper methods that take advantage of <em>Kotlin</em>’s extension functions as a way to reduce the amount of boilerplate the <em>Android SDK</em> requires. Those extension functions make it possible to accomplish common tasks like starting an activity or displaying a toast in a very succinct way.</p>
+          <p><span href="%7B%7Bpage.github%7D%7D"><em>BetterSettings</em></span> is a settings-management library for Ruby apps, which was
+designed in response to certain issues we faced when using <span href="%7B%7Bpage.settingslogic%7D%7D"><em>settingslogic</em></span>
+(one of the most popular libraries to manage settings in Rails applications).</p>
 
-<p>A big part of…</p>
+<p>In this post we’ll talk about <em>settingslogic</em> and its design decisions, how they
+affect reliability, and how we can overcome them.</p>
+
+<p>Even if you are not familiar with these libraries, reading this article might
+help you to learn about potentially harmful practic…</p>
         </div>
       </a>
     </div>

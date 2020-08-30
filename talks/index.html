@@ -22,8 +22,9 @@
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -52,10 +53,15 @@
 
   </head>
   <body class="talks">
-    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkAJYDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAwIABAEFBgf/xAAnEAADAAIBAwMEAwEAAAAAAAAAAQIDEQQhEjFRBRQTIkFxYYEjQv/EABgBAQEBAQEAAAAAAAAAAAAAAAIBAwAE/8QAGxEBAQEBAQEBAQAAAAAAAAAAAAEREgIhMRP/2gAMAwEAAhEDEQA/APNYPJc/5AY40yxr7TC1vIC11N8Da6kqdI7XYHa2iu50w/UWkKUbCyzX4MUsbsZLVivk8mTYWsTYKsTRdTEdArGaYrllcBYIPcgddRxnWChpjaEqdFQhpCHOYQ0hznenIg82mjlq2gk52jC+W89OktbNaTRRnk/yFnkL1BfNLYsLEtA7xIz5C15ErkIk1fh5hIIlJUfI/kX5H8ly1Ni92yDvHLK88jf5H+o2i5XaW8SBVjQ9U2NEuiopZo0VGtM6fIx9CjWN7NfN+MvX6RVpCN7YRw9CxH3DBuPDV+EEri1K3o7XtXCWXW0XudwJx4m0iauPH1OmQscmO3I0QqLX01oFa0Ys4tXszw9K6aNnIxX1JJcTRe+id1MaFtDdqCYX3MilhkkEiE2drsDxQy5jx7Gx4OngMp7AeqciRxkwywTKEnNol5/tBNtLJFbkytleMKpj5sjbBrL2nokxh6ZnxTKKa0rC58zoBO3Qheq9iaejq+5Y94H+jjew1qkej5squN/QSj5/zo1lf7IWfcY/2f7IIVNcavQZcWvQ9B8NehPiL0Mu2vDz/wAWvQaeLXod/wCIvQ1cVL8E/ovDj4+K/QJ8V+h1voJLwR40vwG+ynhyFxGFx8ZpnQ7F6E7SdlwXHCiepV5GVJ6QfM2pejl5e52T9q5g8fcF+n0AYNotz4LuV2aq1h2weTB0LlC+R9hfDm1xmZPH0zouQTXUvQ8Rf9nlzaPR53vj/wBHC9s0qR2c+RLD/RdTl5f3DFvK/wBkH5lp5CHavLspImkYkxlJ561iJIVoftEt6IpWhGiOxHaJSkRoXoR2DdE0sbklNFPJiWy076FfIxSu5JMpBFrQHuJ3lHBKYqYOrFV9RRKsNbQC1qh1k6AbvqWC6PBvtaL3Iz/5+Tj8fLoNlzbnyIbFPk3uyAstbogkeuWIb6eh5Y+tmVUBx0K2WWdDtA5cYcKVzKlg2mXbxgKjRKcV9MxhK6CMJhsFSDtCUjlV3JmgrQlC1AmhNBGKODUS6A7Cp9AWRlg1kXoesm0A2Y2MUqupBGyFF7mA8roQhiqMHRCFiUG0ivlSIQ6rFO/IhCGdbRGDohCQgmDohBQQ2IQg4lb+AVkIWCGxWQgxpGQhCi//2Q==')">
+    <header style="background-image: url('data:image/webp;base64,UklGRoQCAABXRUJQVlA4IHgCAADQGgCdASqWAGQAPtFWoEwquzEoL5h8O2AaCWcG+Oh2vQQrj+KbRNtf9lAcMesUAYRQi9Ys/dVfPIh4Gme1KviaivtPBHZeiFIHUiSWdKr3e8vmS0byJv+zjf5zwdHcm04eaPw0Jx+gLEQWU8tcw4UQetamGWpwCIY7v61CLa+eSA+e1HFe4wc2Nkdf/eAPtaECEibiuZedg19K+XzSUdm3YvpXfKEvVhN8wQ7lwkItIxEs/Zbe+ykIuS1ROUZxJc8o6vmdwFB1v8UYD3jjhxddariGU5zqAQcVbE1tMs+AAP7s2fQ7SINmn7L4xoRumpjSS28Wh69WxqlHntTiqV5sZBbqYeK++Psk6IJzjFMlUvhW5kPJ4Vk2W05geQDCkx74XGw+Gfj+2smI8pUT5SPbVWSane7MUbXcLwYKHP9sr9FS+Rz1ri5iEk8l7ngAhtUrzWdRx7AcOR7S96tUFDMdlgjCiOtG9T3MECRXrra0ztQsSptMzd8+9oShECezPoxvJjMXwH1t4HP+oK77+9uttlXiVBmpxiCGJAbFCpC2sKKInm3hDrAwE4EwA3Rr+FlTy0b+U/qH4wFIvdHc1+/eA/+v+GS35J1OFBQO8E6VUOdDx+yt57vdILiAjeHPFB/CJG3PJKxZwVAJgYC2yHOYz/bKVdfC/HrW7FboiDmNWPjBKWc6el/+h4a0qb+if/y5lc9Nex8SyIzHwBLeXvP0qi9bPL3BNe9UfjnOC4VS0IBtJBO1h/C+1Kfp/jvSDxTbwxIsD2z9dO3r9UeT9icUAcQLJCTwAQxh/c1lGOZ/OE3VTXU3PKO/L8C/4jOPst6GmRyJgAAAAA==')">
   
-    <div class="hero" style="background-image: url(/images/talks.jpg)">
-      <h1>Talks</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/talks.webp" type="image/webp">
+  <img src="/images/talks.jpg" alt="talks.jpg" class="hero-bg">
+</picture>
+
+      <h1 class="hero-title">Talks</h1>
     </div>
   
 </header>

@@ -12,7 +12,7 @@
 <meta name="description" content="Mongoid is not designed for extensibility; if you need to modify its behaviour in a slight way, you will probably have no choice but to monkey-patch it.
 
 A while ago I was working on a feature that required displaying information from several mongodb collections. The performan…">
-<meta name="keywords" content="">
+<meta name="keywords" content="mongoid, mongodb, libraries">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -23,8 +23,9 @@ A while ago I was working on a feature that required displaying information from
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -55,10 +56,15 @@ A while ago I was working on a feature that required displaying information from
 
   </head>
   <body>
-    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkARoDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAQACAwQFBv/EABwQAQEBAQEBAQEBAAAAAAAAAAABAhESAxMhYf/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/xAAYEQEBAQEBAAAAAAAAAAAAAAAAEQESAv/aAAwDAQACEQMRAD8A+AIkAI8PAAjw8ABHh4AFXDxFCCPB4AEeEUkkUgICEk8ApquBwEiPBmRcxJ408B4CM1SD5GZEg5i5k5y1zlGsxl5Dy3uU3IRnMtcQJlcgRpmr6y6fQrz+HiirmHDwRiAcHgyKkFiPI+VyHgsRw8WkIHCIAQJUIgKAcPBEE8Hg8GQWBwPLSQfKVYzmV4wuZbfPBWsxOfl034u35/OcXr5ziVqPLvy4Ew7d/Nl4KzvllnLTOVTKpCkRYixtYzoI4Tam1WR6eotDqowK/J8qwkYPkeIBBh4Mg0MIyDxFRUtLE8VEHiuHgieHi5lUwKz4PlrMKnzFjHyeNvBuEqxlIMi/IyCxMipFSDxGjI1+f8Zn3wLHbjcitfSccP68D9v9InTo1qVDKfTq81IubVcIwKKnVZ6q9M6rOotRaupsVnU0B4eKjT8z4dFym5KkYeQ8tvJ8hGPkfLaYHwlXMY+Txt4DyLGXlNy38h4KRj5My18GYKkRMtc4HOG+MJWsxnn5rnzb5wrwlajlvzRrDr1hlrIRy3J41uU8BPCKaqbqbUXQ1FazHPdC6PoAVmtM6a4054vNTcazXVnQ2sc6aS9Y3HTNNiLGvD5RWFyHlv4DwtSMPJ8t/B8KRrwPKzwZZ+RmGnBkKsZzCvDSQs1qMblPlrUgmZHwvK5CrmMfzH828kHkSrGEw1zlUkVCkHMVwJR6KFjHcbXTHelxnWOozq9Vna1mMbqairqa1GN1nYmxpU8VlHA404eAz4Mi+HgHLbDKRplNazW2VyMs1pNMbjrmjwOD6gXSKHDwLqB7VKPoZph6H01HOt5pU055ofaRa6PQXTH2Hsi9NbpPpldh6InTomlTbm9n2cr065sf0cn6H9E5Xt1/of0cf6H9Dk7dn6H9HH+g/ovKdum/Rlr6MbtN0uYzvppdJukdDrUZquh0Oh0Qeh0poK6MRFQRRMIpGVHT1FrWaH2x9JuiLW9+qb9XPdouyHTpv1D9XN6PoidOqUekqg9PSRT0OkgHQ6SIentJA9odpIHp6SB6PSQPSSISSoQJAhSQMVCQVAJAKklAKjVJFZ1JKoSSD//Z')">
+    <header style="background-image: url('data:image/webp;base64,UklGRiwCAABXRUJQVlA4ICACAABQEwCdASoaAWQAPtFgqE+/ryymprgKo/AaCWdu4D7KDi/Fqg0chij9LzpaguBDy3KfIi40EGP8TtGLdedOMaRCS7wmPXY8sfjPFC5akWvX6sPsle7ybrnpOvOTs8j4F+6zHP4dp1/LQJFMStxoWA8jgPucasIuEbuWAeRKw/6KHZEIO3SL5AQDk7mT2e7br59KDyA79v0yFetR/hXSXnvXztZAAP7zYgol9N7YR/783uNHYSWbdjPEeYvy02Jz0d+uikZ/2Q1lcZCdpD/O1cBzJEH8975RSIAO7/VhN52AVsDDHgY+1s1eEdAX5dDrONRl6v8I7mDZrh05P5WvTwRfoJnGyUsmcE5Sv53KfN9rjnNed/axJ1+JdLWmhTVEfnX+vwKO3UyiBN5UfvhO3108DOFfQc9lJvidcL5cNzOWyxWaDSL4+kHjAGtyki4aiALSCjiqnTY/x+2nTZDwgR4qL06tEePRH9mhepG2KhaEY1i+PQSzbJNRf6uc4Ifvs/OyHyFDn7ZQ95PC5g38aGkhQrG6Ck0sot/FpQEwQCe8LXEUtwJ6PFrbZoE3yP7g43VVbqS6JpbEHanYliNBDXaPByxfRXBf2gD7zxlsF6Zn0HIQth2OFnKPEMOxfZC7vmoDk2NxwDV27eaYBZ4ajEfkiRIgDT7kNemJXsPaTShai9CuLL1nuw8e2PLj3hArN+CKq4JiiEQsEHY/6wJCdwAA')">
   
-    <div class="hero" style="background-image: url(/images/posts/mongoid_includes.jpg)">
-      <h1>One Does Not Simply Extend Mongoid</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/mongoid_includes.webp" type="image/webp">
+  <img src="/images/posts/mongoid_includes.jpg" alt="mongoid_includes.jpg" class="hero-bg">
+</source></picture>
+
+      <h1 class="hero-title">One Does Not Simply Extend Mongoid</h1>
     </div>
   
 </header>
@@ -117,7 +123,7 @@ A while ago I was working on a feature that required displaying information from
   <li>
 <strong>No Polymorphic</strong>: Polymorphic relations can’t be included.</li>
   <li>
-<strong>Criteria-only</strong>: It’s only possible to use eager loading with a <code class="highlighter-rouge">Mongoid::Criteria</code> object. We can’t leverage the functionality if we have a list of objects.</li>
+<strong>Criteria-only</strong>: It’s only possible to use eager loading with a <code class="language-plaintext highlighter-rouge">Mongoid::Criteria</code> object. We can’t leverage the functionality if we have a list of objects.</li>
 </ul>
 
 <p>Unfortunately, one of those traversed associations was both <strong>nested &amp; polymorphic</strong>, so in the beginning the only available solution was to eager load the relations manually.</p>
@@ -137,26 +143,26 @@ A while ago I was working on a feature that required displaying information from
 
 <p>Choosing these constraints allowed me to keep the library fairly small, without compromising its usefulness in more complex scenarios.</p>
 
-<p>The result is <a href="https://github.com/ElMassimo/mongoid_includes"><code class="highlighter-rouge">mongoid_includes</code></a>, a gem that enhances support for eager loading in <em>Mongoid</em>, allowing to include polymorphic and nested associations, and modify eager loading queries on the fly.</p>
+<p>The result is <a href="https://github.com/ElMassimo/mongoid_includes"><code class="language-plaintext highlighter-rouge">mongoid_includes</code></a>, a gem that enhances support for eager loading in <em>Mongoid</em>, allowing to include polymorphic and nested associations, and modify eager loading queries on the fly.</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Album</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:songs</span><span class="p">).</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:musicians</span><span class="p">,</span> <span class="ss">from: :band</span><span class="p">)</span>
 
 <span class="no">Band</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:albums</span><span class="p">,</span> <span class="ss">with: </span><span class="o">-&gt;</span><span class="p">(</span><span class="n">albums</span><span class="p">)</span> <span class="p">{</span> <span class="n">albums</span><span class="p">.</span><span class="nf">gt</span><span class="p">(</span><span class="ss">release: </span><span class="mi">1970</span><span class="p">).</span><span class="nf">limit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">})</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">Mongoid::Includes</code> extends the <code class="highlighter-rouge">includes</code> method to support polymorphic associations without any syntax change. For nested includes, it expects a <code class="highlighter-rouge">:from</code> option, indicating from which relation the include is going to be performed, eager loading it as well.</p>
+<p><code class="language-plaintext highlighter-rouge">Mongoid::Includes</code> extends the <code class="language-plaintext highlighter-rouge">includes</code> method to support polymorphic associations without any syntax change. For nested includes, it expects a <code class="language-plaintext highlighter-rouge">:from</code> option, indicating from which relation the include is going to be performed, eager loading it as well.</p>
 
-<p>While those are the most typical cases, it also supports a <code class="highlighter-rouge">:with</code> option which conveniently allows to modify the default query, and a <code class="highlighter-rouge">:loader</code> option which receives the foreign keys of the documents to include.</p>
+<p>While those are the most typical cases, it also supports a <code class="language-plaintext highlighter-rouge">:with</code> option which conveniently allows to modify the default query, and a <code class="language-plaintext highlighter-rouge">:loader</code> option which receives the foreign keys of the documents to include.</p>
 
 <blockquote>
-  <p>Polymorphic or nested includes might be a sign of a poorly designed schema. <a href="https://github.com/ElMassimo/mongoid_includes"><code class="highlighter-rouge">mongoid_includes</code></a> is very easy to use, but it should only be used if it’s truly necessary.</p>
+  <p>Polymorphic or nested includes might be a sign of a poorly designed schema. <a href="https://github.com/ElMassimo/mongoid_includes"><code class="language-plaintext highlighter-rouge">mongoid_includes</code></a> is very easy to use, but it should only be used if it’s truly necessary.</p>
 </blockquote>
 
 <h2 id="extending-mongoid">Extending Mongoid</h2>
-<p>Although it was possible to reuse the eager loading logic in <em>Mongoid</em>, doing so required a lot of fiddling and monkey-patching (using <code class="highlighter-rouge">prepend</code>), since the library does not provide any point of extension.</p>
+<p>Although it was possible to reuse the eager loading logic in <em>Mongoid</em>, doing so required a lot of fiddling and monkey-patching (using <code class="language-plaintext highlighter-rouge">prepend</code>), since the library does not provide any point of extension.</p>
 
 <p><em>Mongoid’s</em> eager loading was written to work with queries, and assumes that the included documents will match an association on the model, so it relies on the association metadata to perform the includes. There is no simple way to reuse the logic without using relation metadata.</p>
 
-<p>The biggest downside though, is that there is no way to perform eager loading for a set of documents, since the code relies on the contract of <code class="highlighter-rouge">Mongoid::Criteria</code>. We can’t use eager loading if we triggered the query by using any <code class="highlighter-rouge">Enumerable</code> method, or got the models by aggregation or any in-memory operation <img class="emoji" title=":disappointed_relieved:" alt=":disappointed_relieved:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f625.png" height="20" width="20"></p>
+<p>The biggest downside though, is that there is no way to perform eager loading for a set of documents, since the code relies on the contract of <code class="language-plaintext highlighter-rouge">Mongoid::Criteria</code>. We can’t use eager loading if we triggered the query by using any <code class="language-plaintext highlighter-rouge">Enumerable</code> method, or got the models by aggregation or any in-memory operation <img class="emoji" title=":disappointed_relieved:" alt=":disappointed_relieved:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f625.png" height="20" width="20"></p>
 
 <p>It would be a lot easier to extend <em>Mongoid’s</em> functionality if it had a more modular design. Adding support for plugins that can be attached to the query lifecycle would be a huge step in that direction—less patching means more and better extensions.</p>
 
@@ -169,9 +175,9 @@ A while ago I was working on a feature that required displaying information from
 
 <p>As a long time <em>Mongoid</em> user, I can painfully relate to this statement. <a href="/posts/mongoid-n+1/">N+1 queries</a> are one of the fastest ways to degrade performance, and lazy loading associations makes it a lot easier to introduce them by accident. By not implementing lazy loading, the library becomes a lot simpler, and it encourages good practices and efficient data access patterns <img class="emoji" title=":tropical_drink:" alt=":tropical_drink:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f379.png" height="20" width="20"></p>
 
-<p>Ecto also allows you to modify which models will be included for an association—like the <code class="highlighter-rouge">:with</code> option in <a href="https://github.com/ElMassimo/mongoid_includes"><code class="highlighter-rouge">mongoid_includes</code></a>—and you can also preload associations on a given model or models after they have been fetched from the database using the <a href="http://hexdocs.pm/ecto/Ecto.Repo.html#c:preload/2"><code class="highlighter-rouge">Repo.preload/2</code></a> method. So much win!</p>
+<p>Ecto also allows you to modify which models will be included for an association—like the <code class="language-plaintext highlighter-rouge">:with</code> option in <a href="https://github.com/ElMassimo/mongoid_includes"><code class="language-plaintext highlighter-rouge">mongoid_includes</code></a>—and you can also preload associations on a given model or models after they have been fetched from the database using the <a href="http://hexdocs.pm/ecto/Ecto.Repo.html#c:preload/2"><code class="language-plaintext highlighter-rouge">Repo.preload/2</code></a> method. So much win!</p>
 
-<p>Playing with Ecto inspired me to keep looking for a better solution for eager loading in <em>Mongoid</em>. <code class="highlighter-rouge">Mongoid::Includes</code> solves the first two limitations, but wouldn’t it be great if we could preload documents without a query? <img class="emoji" title=":wink:" alt=":wink:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f609.png" height="20" width="20"></p>
+<p>Playing with Ecto inspired me to keep looking for a better solution for eager loading in <em>Mongoid</em>. <code class="language-plaintext highlighter-rouge">Mongoid::Includes</code> solves the first two limitations, but wouldn’t it be great if we could preload documents without a query? <img class="emoji" title=":wink:" alt=":wink:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f609.png" height="20" width="20"></p>
 
   </div>
 
@@ -199,9 +205,14 @@ A while ago I was working on a feature that required displaying information from
 
 
 
-  <div class="previous-post">
+  <a id="previous-post" href="/posts/mongoid-n+1/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
     <div class="content container">
-      <a id="previous-post" href="/posts/mongoid-n+1/" class="overlay">
+      <a id="related-post" href="/posts/mongoid-n+1/" class="overlay">
         <h1>Avoiding the N+1 problem in Mongoid</h1>
         <div class="post-info">
   <span class="date">October 30, 2015</span>

@@ -21,8 +21,9 @@
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -49,10 +50,15 @@
 
   </head>
   <body>
-    <header style="background-image: url('data:image/jpeg;base64,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')">
+    <header style="background-image: url('data:image/webp;base64,UklGRrICAABXRUJQVlA4IKYCAAAwFQCdASo2AWQAPtFmqVG6v7WnopF7W/AaCWdu4DYYSK0i/FrZt7VyI7ZN7MtNPrABH9/JXMThGRWKbOlRkt298KcihD/xmw44BzrJlWNnlNYGucXAH8ufT3yTEb7tnoFIeI2a68MWKNL//+8P2N1X3jyvstP6cr60EqQfmm/QLLdYfLzhT2Q42tBzxmHx7p6vjeyMEwuySBiBBhMhKIgw5UmTx/tFidwGcWFF3XAWmv4AAP7oaXm00Zz/ZnhnmkPf1lvvle8QUSQbozpWIeHg9dcYcZN5bO+bARKbVgYGJCFJJAx8cS906BDLcsm8zLmB7wHlcICk8ilKXgGim+AU67SzsM78EG4a/zoNi/LheboHcSHftu6tYD21lbhWQvJZ82CFxz6f0itcFcFF0tKMU9XODdBJuPiEj3/opcHUAJGvq6XbdmynX6iblHG5/gZno4XbM8f7J+ZfAl6vJhwKtWI4Kb7n58KlaTwJJaZc3vurU+JspVAQbnTsAD4RCnQOTPYqxl0ksvS/qWERR9qlRaU4H66LiITVzXTGMorBCo0cNsfPlOTLcuzxnF5rMMwvSk7nX3tukgdqIiy5Qvk298IqLIoO+hxK3fC9VrdZkKaovj2/gi12ni0AtxSxlR3LJ0Tywydf5Dh0YzFd52oZ9BKaJJHmTxASX2xWtMoOBbNGeVehETirJZepcIm13U+0xDOJ33SnuvwhWkwehsZtioADF76CFMALka6i6E88OyRtquQGdfMAOLsgUE3rehuiV4PHX9/cG5PR7O4g5AMB5WmCjaOvzVKxQ6ln5P3PauNgrT16WSf5h7hgKJEs2uL2QukgizAAb2puAKkHM+LLSjsImjbj87Tm47VtzIWyOmKXFKq5QVfG/NBA4Bb3QGiOmK7TAAA=')">
   
-    <div class="hero" style="background-image: url(/images/posts.jpg)">
-      <h1>Máximo Mussini</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts.webp" type="image/webp">
+  <img src="/images/posts.jpg" alt="posts.jpg" class="hero-bg">
+</picture>
+
+      <h1 class="hero-title">Máximo Mussini</h1>
     </div>
   
 </header>
@@ -223,7 +229,7 @@ each customer uses different terminology for certain concepts within the applica
           <time datetime="2016-05-30T21:10:00-03:00" itemprop="datePublished">May 30, 2016</time>
         </span>
         
-          <p>Like most object-oriented languages, Ruby has both instance and class variables. The syntax is <code class="highlighter-rouge">@name</code> for <em>instance variables</em>, and <code class="highlighter-rouge">@@name</code> for <em>class variables</em>.</p>
+          <p>Like most object-oriented languages, Ruby has both instance and class variables. The syntax is <code class="language-plaintext highlighter-rouge">@name</code> for <em>instance variables</em>, and <code class="language-plaintext highlighter-rouge">@@name</code> for <em>class variables</em>.</p>
 
 <p>Let’s look at a simple…</p>
         
@@ -240,21 +246,6 @@ each customer uses different terminology for certain concepts within the applica
         </span>
         
           <p class="description"><p>In this post we take a look at effective ways to reduce the amount of watchers in our <em>AngularJS</em> application and improve the performance of our app.</p>
-</p>
-        
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="/posts/angular-intro/" class="post">
-      <div>
-        <span class="title ch">AngularJS: Watchers and the Digest Cycle</span>
-        <span class="date ch">
-          <time datetime="2016-03-29T22:29:00-03:00" itemprop="datePublished">March 29, 2016</time>
-        </span>
-        
-          <p class="description"><p><em>AngularJS</em> might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through <em>Angular</em>’s internals: watchers and the digest cycle.</p>
 </p>
         
       </div>
@@ -287,9 +278,9 @@ each customer uses different terminology for certain concepts within the applica
           <time datetime="2016-01-11T17:00:00-03:00" itemprop="datePublished">January 11, 2016</time>
         </span>
         
-          <p><span href="https://github.com/rails/jquery-rails"><code class="highlighter-rouge">jquery-rails</code></span> powers links and forms in Rails: it’s what makes <code class="highlighter-rouge">remote: true</code> work, allowing any link to make an AJAX request unobtrusively.</p>
+          <p><span href="https://github.com/rails/jquery-rails"><code class="language-plaintext highlighter-rouge">jquery-rails</code></span> powers links and forms in Rails: it’s what makes <code class="language-plaintext highlighter-rouge">remote: true</code> work, allowing any link to make an AJAX request unobtrusively.</p>
 
-<p><span href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="highlighter-rouge">rails-ajax_redirect</code></span> is an extension to this unobtrus…</p>
+<p><span href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="language-plaintext highlighter-rouge">rails-ajax_redirect</code></span> is an extension to this unobtrus…</p>
         
       </div>
     </a>
@@ -394,7 +385,7 @@ each customer uses different terminology for certain concepts within the applica
           <time datetime="2015-10-12T23:29:00-03:00" itemprop="datePublished">October 12, 2015</time>
         </span>
         
-          <p>By default, <span href="http://mongoid.github.io/"><em>Mongoid</em></span> will use <span href="http://martinfowler.com/eaaCatalog/singleTableInheritance.html">single-collection inheritance</span> when extending a Ruby class, by storing a <code class="highlighter-rouge">_type</code> attribute in every document in the collection that contains the concrete class name,…</p>
+          <p>By default, <span href="http://mongoid.github.io/"><em>Mongoid</em></span> will use <span href="http://martinfowler.com/eaaCatalog/singleTableInheritance.html">single-collection inheritance</span> when extending a Ruby class, by storing a <code class="language-plaintext highlighter-rouge">_type</code> attribute in every document in the collection that contains the concrete class name,…</p>
         
       </div>
     </a>

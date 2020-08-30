@@ -22,8 +22,9 @@
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -53,10 +54,15 @@
     <link rel="shortcut icon" href="/recipes.ico">
   </head>
   <body class="recipes">
-    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkAJ0DARIAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAwIAAQQF/8QAHxAAAwEBAQEBAQADAAAAAAAAAAECEQMhEjETBCJh/8QAGQEAAwEBAQAAAAAAAAAAAAAAAgEAAwQF/8QAHBEBAQADAQEBAQAAAAAAAAAAAAECERIDEyEx/9oADAMBAAIRAxEAPwDtVglp5XLu3BX6KgphQ3KQtoZrTSeQL6A/IT5DnmC+pEh8D5kZ3O1hjZdSB/a0X6F9IubTYYqQr6w/nW4X0DfaHwxomxfYuGYSH9ouFg6QU9ofFApBnHgc9JQ3GuRoLUBblLQSeGuS0tmmwf4K4imbpmznVYBfMc9HbNnNPQzvmOZur6BTegXGjmUF+hNB1Rbh0jUzr4jl7rUjUwtSFutwV0K2Qv6qB3Rll6SDmFrKrDn6Wc+XrsXzM7AqtZlcqcxO6JLQeq2xxjZphIgG5tbjC6wlR4OZMMsQvoWljC/rKyiywKrBaUrpVHN/TBfrSV2ppo5J7f8AQpcoepXS0mBXVM2x9LAXA1QStM2x9QXzDqArxo2mewXHTlc4FuQ9h0B+DND0TZvAbFzD3R10AaDxBdV6KYuhBNomg2nD6KmcvpnW2EhLHpeHLcrXVjI5KnQleA/orjA1OE6L9BcYaXhkrQudqWQWbwHSaRfNXIf+iaOVW9HPMFp+jFpag5iX9DdAr2WFyWm1QL70fKjftpitaWhyCx1Zz7jFcTdi7Ycn02Umg2x2z/kHLzltmky0Czb0FX0hOU4jSejO4Noaka45bZWAs1mgSkSdmkSRqQNhxSRz54tcaZvwE2c1wbzIvX8E6V4UxHMnPd4wHWvQ+FXbw6acvC/S50z/AF6V45BK9kZwCn80C7v0tCdMWmjn4N6K/gRe0agrWyLpbebXlBO0PQ5VpkvULEsrRQ3zrCxIPRqOOnTH4K0NhefLAm4CWjLxCOgpjQ2mpiadOErHKlZM3jOlNGTrRqJNRpGxkwLjs5Q2TMssGkyC6T4NTWGNmnRi87tD06Okpi6a6jl5eMKo9FaGwaa/1KZ8FsIdT9MMp9LpLjzwNCwG1H+fDZBLQHTlp0UvB7Ti/kkFv9LdMiWEX6WzJg9CkWztir0OYguS01I3xxYWtRptIDbCYRF0iTsTE0jFTBpkhGL9Eg+nhX6hWG56v0y59M7hscz0k9KUZ3yaT1PMokB8z+hsM0C4U+2pGaBxT7FQioLil2NIObLg+hb/AAG68Fyugrfot+hTArkzSlGk8wXNmBFJpPMFyLKHw0mMBcmE2FotoUZNZhJhDTpIjYRJukI2MiQTRESSRCTcIRrCApsaIRohpEKqNZACIQcDTyiNIExDIrIkRkMkRJMiRGQ0/9k=')">
+    <header style="background-image: url('data:image/webp;base64,UklGRmQCAABXRUJQVlA4IFgCAACQEQCdASqdAGQAPtFao0wwNy8iLxTcUuAaCWMDvZx/VLk2uUEXAcwITquSj7UsWB0VyLNGOPYhrHmVEw2dF/2znPZcooVJjVUnebkOH8sQPEWs8ohf5Rar9vbPZDwpzEDzA1OXd717aaix9OXf+Uga1D8H0dhQ4SgyV+v8cxR1Vp+SpzzYd53CSX9bekqxtsdKYUL8BAD9y1D2/6FZVU56f9ahkkFZuQs9LFiQBM+134/bJNNVIBvttrbp5cD7xET+5EuDYItynxIPP51ayHzf2/cJvYJyid/zz5sbb10PyZm4DjDCDj1bHCDMvu7LaILcgDiPZUP+u0GAmdKzVHkPCOCxSB0lfl7NUsjSZa7Ig/4yJgZqcMzdvoPMgXgj2SKarKB0NsPiPcJqvDX3OTSfMox5BMiQVak+boedvz/kMzCOO4WI3NvCEF1E+8JuZ5INCdZXTZxBI5lzCgt4WR00ohEln6weu5A0Ps33HpR52JBcRxBIgGzFXrqBPw1jOdU2c/dqB3xO13ksuXX6JahpTXkJkMqukbin9A5t7dGeU6bjtVBp1A+64bfv0dJ+PZ8HhcOr2b90FWBomcF5WSd+NTXTppIL5okrqsy6W+pArYF9j9KMpa7Kg530CWUwubFlkOsrktbWWvGwPZ0wpgdubXgZ5vmU05a5uUQsT1dGR25fA+kDgFPFcDvTr+eCq4KRSGUBNorzMseFM8gFJEhjp0aLzeCJJRc3kVrxD9BiGWdKRKk9UACz0lsMf08v/IQAvliDWJ2YqfAXo3JQjy4JP5LrBgN5AAA=')">
   
-    <div class="hero" style="background-image: url(/images/recipes.jpg)">
-      <h1>Recetas</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/recipes.webp" type="image/webp">
+  <img src="/images/recipes.jpg" alt="recipes.jpg" class="hero-bg">
+</picture>
+
+      <h1 class="hero-title">Recetas</h1>
     </div>
   
 </header>

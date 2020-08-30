@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <generator uri="http://jekyllrb.com" version="3.7.4">Jekyll</generator>
+  <generator uri="http://jekyllrb.com" version="3.9.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2020-08-29T17:07:01-03:00</updated>
+  <updated>2020-08-29T22:44:37-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -22,7 +22,11 @@
   
     <id>http://maximomussini.com/posts/vuex-stores</id>
     <content type="html" xml:base="http://maximomussini.com/posts/vuex-stores/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/vuex-stores.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/vuex-stores.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
       &lt;p&gt;&lt;a href=&quot;https://vuex.vuejs.org/&quot;&gt;Vuex&lt;/a&gt; is a state-management solution that integrates nicely with
 &lt;a href=&quot;https://vuejs.org/&quot;&gt;Vue&lt;/a&gt; components.&lt;/p&gt;
 
@@ -40,7 +44,7 @@ requires specifying the &lt;em&gt;namespace string&lt;/em&gt; as a prefix for th
 
 &lt;h3 id=&quot;a-smoother-experience-&quot;&gt;A smoother experience 🥃&lt;/h3&gt;
 
-&lt;p&gt;The &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; library helps you avoid these shortcomings
+&lt;p&gt;The &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; library helps you avoid these shortcomings
 by providing light wrappers around individual &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html&quot;&gt;Vuex store modules&lt;/a&gt;,
 which I’ve dubbed &lt;em&gt;“store-objects”&lt;/em&gt;.&lt;/p&gt;
 
@@ -55,22 +59,22 @@ properties, and dispatching actions easily by using plain method calls.&lt;/p&gt
 &lt;p&gt;In order to organize these store objects, an approach that works nicely is to:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Create one file per store module under a &lt;code class=&quot;highlighter-rouge&quot;&gt;stores&lt;/code&gt; directory.&lt;/li&gt;
-  &lt;li&gt;Always use &lt;code class=&quot;highlighter-rouge&quot;&gt;Store&lt;/code&gt; as a suffix for the file name (&lt;code class=&quot;highlighter-rouge&quot;&gt;ModalsStore&lt;/code&gt;).&lt;/li&gt;
-  &lt;li&gt;Add a &lt;code class=&quot;highlighter-rouge&quot;&gt;@stores&lt;/code&gt; webpack alias to make them convenient to import.&lt;/li&gt;
+  &lt;li&gt;Create one file per store module under a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stores&lt;/code&gt; directory.&lt;/li&gt;
+  &lt;li&gt;Always use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Store&lt;/code&gt; as a suffix for the file name (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ModalsStore&lt;/code&gt;).&lt;/li&gt;
+  &lt;li&gt;Add a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@stores&lt;/code&gt; webpack alias to make them convenient to import.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Let’s take a look at an example usage:&lt;/p&gt;
 
 &lt;div class=&quot;language-vue highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ModalsStore&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'@stores/ModalsStore'&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ModalsStore&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;@stores/ModalsStore&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ModalManager'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;ModalManager&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
   &lt;span class=&quot;na&quot;&gt;computed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;// `mapState` and friends are available to inject state or getters into the&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;// template, without the need to specify the namespace string.&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ModalsStore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mapState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'modals'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ModalsStore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mapState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;modals&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
   &lt;span class=&quot;nx&quot;&gt;beforeMount&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;// closeAllModals is an action, and it will be dispatched every time the&lt;/span&gt;
@@ -102,7 +106,7 @@ properties, and dispatching actions easily by using plain method calls.&lt;/p&gt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;As seen in this short example, state, getters, and actions can be easily injected
-in a component using &lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt; helpers to make them available in the template.&lt;/p&gt;
+in a component using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;map&lt;/code&gt; helpers to make them available in the template.&lt;/p&gt;
 
 &lt;p&gt;Actions can be dispatched by simply calling a method, which is closer to how
 they are defined, and feels very natural. Typos in action names are prevented,
@@ -121,7 +125,7 @@ simple as &lt;em&gt;search and replace&lt;/em&gt;).&lt;/p&gt;
 &lt;h3 id=&quot;code-splitting-️&quot;&gt;Code Splitting ✂️&lt;/h3&gt;
 
 &lt;p&gt;Store modules in Vuex can be &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html#dynamic-module-registration&quot;&gt;registered dynamically&lt;/a&gt;,
-so internally &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; leverages &lt;code class=&quot;highlighter-rouge&quot;&gt;registerModule&lt;/code&gt; to
+so internally &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; leverages &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;registerModule&lt;/code&gt; to
 add a new module when the store object is imported.&lt;/p&gt;
 
 &lt;p&gt;This means that store objects don’t need to be imported up-front when initially
@@ -134,7 +138,7 @@ optimized.&lt;/p&gt;
 
 &lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; provides a simple way to work with &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html&quot;&gt;Vuex modules&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; provides a simple way to work with &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html&quot;&gt;Vuex modules&lt;/a&gt;
 by allowing you to define &lt;em&gt;store objects&lt;/em&gt; to focus on one module at a time,
 making it more enjoyable to leverage Vuex.&lt;/p&gt;
 
@@ -150,6 +154,14 @@ to reason about and refactor.&lt;/p&gt;
       <email>maximomussini@gmail.com</email>
     </author>
     <category term="posts" />
+  
+    <category term="js" />
+  
+    <category term="vue" />
+  
+    <category term="vuex" />
+  
+    <category term="state" />
   
   
     <summary>It's easier to manage and understand state in Vuex when it is split between different modules. However, the default approach has some shortcomings that make modules cumbersome to use.
@@ -167,7 +179,11 @@ Read on to find out how to leverage all the goodness in Vuex using a more natura
   
     <id>http://maximomussini.com/posts/documentation-is-a-great-investment</id>
     <content type="html" xml:base="http://maximomussini.com/posts/documentation-is-a-great-investment/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/documentation-is-a-great-investment.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/documentation-is-a-great-investment.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
       &lt;p&gt;In this post I’d like to share a practice that has completely changed the way we
 work: documentation as a first-class citizen in our software development process.&lt;/p&gt;
 
@@ -315,6 +331,14 @@ after you start using it, you’ll be wondering why you didn’t start sooner :s
     </author>
     <category term="posts" />
   
+    <category term="development" />
+  
+    <category term="documentation" />
+  
+    <category term="teamwork" />
+  
+    <category term="technical_debt" />
+  
   
     <summary>Would you like to prevent problems and regressions? Refactor with confidence? Save development time? Make any area of the app accessible to other developers?
 
@@ -331,16 +355,20 @@ Read on to find out how a team that _documents their work_ is on a better path t
   
     <id>http://maximomussini.com/posts/ruby-double-splat-keywords</id>
     <content type="html" xml:base="http://maximomussini.com/posts/ruby-double-splat-keywords/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-double-splat-keywords.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;One of the nicest bits of syntax sugar in Ruby are &lt;em&gt;keywords&lt;/em&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;**&lt;/code&gt; or &lt;em&gt;double-splat&lt;/em&gt;).&lt;/p&gt;
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-double-splat-keywords.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
+      &lt;p&gt;One of the nicest bits of syntax sugar in Ruby are &lt;em&gt;keywords&lt;/em&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;**&lt;/code&gt; or &lt;em&gt;double-splat&lt;/em&gt;).&lt;/p&gt;
 
 &lt;h4 id=&quot;keywords-in-method-parameters&quot;&gt;Keywords in Method Parameters&lt;/h4&gt;
 
-&lt;p&gt;Just like the splat operator (&lt;code class=&quot;highlighter-rouge&quot;&gt;*args&lt;/code&gt;) captures any parameters as an &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; of
-arguments, the double-splat operator (&lt;code class=&quot;highlighter-rouge&quot;&gt;**attrs&lt;/code&gt;) captures any option parameters
-as a &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Just like the splat operator (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*args&lt;/code&gt;) captures any parameters as an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array&lt;/code&gt; of
+arguments, the double-splat operator (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;**attrs&lt;/code&gt;) captures any option parameters
+as a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;The nice thing is that it allows to destructure a &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; argument into any of
+&lt;p&gt;The nice thing is that it allows to destructure a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt; argument into any of
 its individual keys, and mark it as required, or make it optional and provide a
 default value for it.&lt;/p&gt;
 
@@ -376,7 +404,7 @@ default value for it.&lt;/p&gt;
 they learn the cause of this unintuitive message.&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Only &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; keys are allowed in keyword arguments 😲&lt;/p&gt;
+  &lt;p&gt;Only &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; keys are allowed in keyword arguments 😲&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Ruby handles keyword arguments differently in its internals, which unfortunately
@@ -399,8 +427,8 @@ when resolving duplicate keys, the rightmost ones will take priority.&lt;/p&gt;
 &lt;p&gt;There are a few caveats when combining hashes:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;It does not combine keys of different types, such as &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;It can &lt;strong&gt;only&lt;/strong&gt; be used with Hashes where all keys are &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt;s.&lt;/li&gt;
+  &lt;li&gt;It does not combine keys of different types, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Symbol&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;It can &lt;strong&gt;only&lt;/strong&gt; be used with Hashes where all keys are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Symbol&lt;/code&gt;s.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;jane&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:first_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jane&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:last_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Doe&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -420,22 +448,24 @@ has improved a lot since the feature was first added 🎉&lt;/p&gt;
 &lt;p&gt;When using Rails a developer might think:&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;I can obtain values from &lt;code class=&quot;highlighter-rouge&quot;&gt;params&lt;/code&gt; using &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; keys, but I can’t pass them
+  &lt;p&gt;I can obtain values from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;params&lt;/code&gt; using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; keys, but I can’t pass them
 as keyword arguments! Thought they were all &lt;em&gt;Symbol&lt;/em&gt; keys?&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;The short answer is &lt;em&gt;no&lt;/em&gt;. In Rails controllers, &lt;code class=&quot;highlighter-rouge&quot;&gt;params&lt;/code&gt; is an instance of &lt;em&gt;HashWithIndiferentAccess&lt;/em&gt;.
+&lt;p&gt;The short answer is &lt;em&gt;no&lt;/em&gt;. In Rails controllers, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;params&lt;/code&gt; is an instance of &lt;em&gt;HashWithIndiferentAccess&lt;/em&gt;.
 You may index it with &lt;em&gt;Symbol&lt;/em&gt; keys but internally it uses &lt;em&gt;String&lt;/em&gt; keys.&lt;/p&gt;
 
-&lt;p&gt;Fortunately, &lt;code class=&quot;highlighter-rouge&quot;&gt;symbolize_keys&lt;/code&gt; is our friend here, allowing us to transform any
+&lt;p&gt;Fortunately, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;symbolize_keys&lt;/code&gt; is our friend here, allowing us to transform any
 Hash, such as HTTP parameters, to something we can pass as keyword arguments.&lt;/p&gt;
 
 &lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
-&lt;p&gt;So there you have it, &lt;code class=&quot;highlighter-rouge&quot;&gt;**&lt;/code&gt; is to &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; what &lt;code class=&quot;highlighter-rouge&quot;&gt;*&lt;/code&gt; is to &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt;, and is a very
+&lt;p&gt;So there you have it, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;**&lt;/code&gt; is to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt; what &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*&lt;/code&gt; is to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array&lt;/code&gt;, and is a very
 convenient tool to write shorter, expressive code.&lt;/p&gt;
 
-&lt;p&gt;Just watch out for errors when using non-&lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; keys in keyword arguments,
+&lt;p&gt;Just watch out for errors when using non-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; keys in keyword arguments,
 at least until Ruby improves that error message 😉&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Would you like to &lt;a href=&quot;/posts/ruby-to_proc/&quot;&gt;learn about Ruby’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; shortcuts&lt;/a&gt;?&lt;/em&gt;&lt;/p&gt;
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/ruby-double-splat-keywords.jpg" />
     <author>
@@ -443,6 +473,12 @@ at least until Ruby improves that error message 😉&lt;/p&gt;
       <email>maximomussini@gmail.com</email>
     </author>
     <category term="posts" />
+  
+    <category term="ruby" />
+  
+    <category term="language" />
+  
+    <category term="keywords" />
   
   
     <summary>One of the nicest bits of syntax sugar in Ruby are _keywords_.
@@ -460,7 +496,11 @@ In this short post we will explore the keyword operator in Ruby, and a few thing
   
     <id>http://maximomussini.com/posts/trailing-commas</id>
     <content type="html" xml:base="http://maximomussini.com/posts/trailing-commas/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/trailing-commas.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/trailing-commas.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
       &lt;p&gt;Today I’d like to share a simple but very useful practice for managing Ruby and
 JS code under version control.&lt;/p&gt;
 
@@ -470,7 +510,10 @@ arrays and hash (object in JS) literals.&lt;/p&gt;
 &lt;p&gt;It’s great that both Ruby and JS allow this in their syntax, because as a result
 we are able to get cleaner diffs:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/trailing-commas/standard-vs-trailing.png&quot; alt=&quot;Standard vs Trailing&quot; class=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;picture&gt;
+  &lt;source srcset=&quot;/images/posts/trailing-commas/standard-vs-trailing.webp&quot; type=&quot;image/webp&quot; /&gt;
+  &lt;img src=&quot;/images/posts/trailing-commas/standard-vs-trailing.png&quot; alt=&quot;Standard vs Trailing&quot; class=&quot;&quot; /&gt;
+&lt;/picture&gt;
 
 &lt;p&gt;Notice how the same code change results in a drastically simpler diff: &lt;em&gt;adding
 or removing an item changes a single line, nothing more&lt;/em&gt;.&lt;/p&gt;
@@ -480,12 +523,12 @@ or removing an item changes a single line, nothing more&lt;/em&gt;.&lt;/p&gt;
 static analysis tools (&lt;a href=&quot;https://github.com/rubocop-hq/rubocop&quot;&gt;&lt;em&gt;Rubocop&lt;/em&gt;&lt;/a&gt; and &lt;a href=&quot;https://eslint.org/&quot;&gt;&lt;em&gt;ESLint&lt;/em&gt;&lt;/a&gt;),
 to require trailing commas in multi-line literals.&lt;/p&gt;
 
-&lt;p&gt;We have also set up &lt;a href=&quot;https://github.com/guard/guard&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Guard&lt;/code&gt;&lt;/a&gt; to listen for file changes and automatically run
-the tools with &lt;code class=&quot;highlighter-rouge&quot;&gt;--autofix&lt;/code&gt;, so that commas are automatically added when we
+&lt;p&gt;We have also set up &lt;a href=&quot;https://github.com/guard/guard&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Guard&lt;/code&gt;&lt;/a&gt; to listen for file changes and automatically run
+the tools with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--autofix&lt;/code&gt;, so that commas are automatically added when we
 forget; we don’t really need to think about it.&lt;/p&gt;
 
 &lt;p&gt;In &lt;em&gt;ESLint&lt;/em&gt; for JS:&lt;/p&gt;
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;s2&quot;&gt;&quot;comma-dangle&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;error&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;always-multiline&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;comma-dangle&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;always-multiline&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;In &lt;em&gt;Rubocop&lt;/em&gt; for Ruby:&lt;/p&gt;
@@ -496,7 +539,7 @@ forget; we don’t really need to think about it.&lt;/p&gt;
   &lt;span class=&quot;na&quot;&gt;EnforcedStyleForMultiline&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;comma&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;An example &lt;code class=&quot;highlighter-rouge&quot;&gt;Guardfile&lt;/code&gt; configuration:&lt;/p&gt;
+&lt;p&gt;An example &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Guardfile&lt;/code&gt; configuration:&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Run Rubocop every time we change a file, and autofix it if possible.&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:rubocop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;all_on_start: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;cli: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'-a'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
@@ -513,7 +556,7 @@ without the need to manually add the missing comma to avoid a syntax error.&lt;/
 since each line change becomes independent, unlike the usual approach where we
 are actually removing the last line without a comma to add two lines.&lt;/p&gt;
 
-&lt;p&gt;Finally, tools like &lt;a href=&quot;https://git-scm.com/docs/git-blame&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;git blame&lt;/code&gt;&lt;/a&gt; are more likely to display relevant commit
+&lt;p&gt;Finally, tools like &lt;a href=&quot;https://git-scm.com/docs/git-blame&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git blame&lt;/code&gt;&lt;/a&gt; are more likely to display relevant commit
 information, rather than the commit that added the comma.&lt;/p&gt;
 
 &lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
@@ -533,6 +576,14 @@ practice. It’s been great so far 😃&lt;/p&gt;
     </author>
     <category term="posts" />
   
+    <category term="development" />
+  
+    <category term="teamwork" />
+  
+    <category term="git" />
+  
+    <category term="devx" />
+  
   
   </entry>
 
@@ -545,7 +596,11 @@ practice. It’s been great so far 😃&lt;/p&gt;
   
     <id>http://maximomussini.com/posts/better-settings</id>
     <content type="html" xml:base="http://maximomussini.com/posts/better-settings/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/better-settings.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/better-settings.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
       &lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/better_settings&quot;&gt;&lt;em&gt;BetterSettings&lt;/em&gt;&lt;/a&gt; is a settings-management library for Ruby apps, which was
 designed in response to certain issues we faced when using &lt;a href=&quot;https://github.com/hashrocket/settingslogic&quot;&gt;&lt;em&gt;settingslogic&lt;/em&gt;&lt;/a&gt;
 (one of the most popular libraries to manage settings in Rails applications).&lt;/p&gt;
@@ -578,10 +633,10 @@ to race conditions in multi-threaded apps or multi-threaded app containers.&lt;/
 &lt;h3 id=&quot;values-are-mutable&quot;&gt;Values are mutable&lt;/h3&gt;
 &lt;p&gt;Even when not creating or modifying a setting at runtime, the values read from
 the &lt;em&gt;.yml&lt;/em&gt; file can be accidentally modified since the settings are not frozen
-(specially &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; values).&lt;/p&gt;
+(specially &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array&lt;/code&gt; values).&lt;/p&gt;
 
-&lt;p&gt;For example, when working with a &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; setting, calling &lt;code class=&quot;highlighter-rouge&quot;&gt;merge!&lt;/code&gt; or
-&lt;code class=&quot;highlighter-rouge&quot;&gt;push&lt;/code&gt; causes the setting to be changed on every subsequent access, which can
+&lt;p&gt;For example, when working with a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array&lt;/code&gt; setting, calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;merge!&lt;/code&gt; or
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;push&lt;/code&gt; causes the setting to be changed on every subsequent access, which can
 have unpredictable consequences in the application.&lt;/p&gt;
 
 &lt;p&gt;These accidental mutations are usually very hard to detect, and can cause bugs
@@ -614,13 +669,13 @@ file until the settings are accessed, making it possible for an app to start
 successfully and fail later at runtime.&lt;/p&gt;
 
 &lt;p&gt;In the end, it has the same disadvantages of simpler approaches, like using a
-plain &lt;code class=&quot;highlighter-rouge&quot;&gt;OpenStruct&lt;/code&gt; to manage settings.&lt;/p&gt;
+plain &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OpenStruct&lt;/code&gt; to manage settings.&lt;/p&gt;
 
 &lt;h2 id=&quot;a-better-way&quot;&gt;A &lt;em&gt;Better&lt;/em&gt; Way&lt;/h2&gt;
 &lt;p&gt;With that in mind, we decided to design a new solution from scratch, that could
 handle these shortcomings, and actively prevent bugs and misusage.&lt;/p&gt;
 
-&lt;p&gt;The result is &lt;a href=&quot;https://github.com/ElMassimo/better_settings&quot;&gt;&lt;em&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt;&lt;/em&gt;&lt;/a&gt;, designed after the following concerns:&lt;/p&gt;
+&lt;p&gt;The result is &lt;a href=&quot;https://github.com/ElMassimo/better_settings&quot;&gt;&lt;em&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt;&lt;/em&gt;&lt;/a&gt;, designed after the following concerns:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Predictability&lt;/strong&gt;: Once created, settings can not be added or modified, which
@@ -639,31 +694,31 @@ problems in the environment are detected during deployment.&lt;/li&gt;
 more information and examples in the &lt;a href=&quot;https://github.com/ElMassimo/better_settings&quot;&gt;README&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h3&gt;
-&lt;p&gt;Internally, settings are stored in a frozen &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt;, which is an instance
-variable in the &lt;code class=&quot;highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt; object. We delegate &lt;code class=&quot;highlighter-rouge&quot;&gt;to_h&lt;/code&gt; to this internal
-hash for easy access, but other than that, we don’t expose any &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; methods.&lt;/p&gt;
+&lt;p&gt;Internally, settings are stored in a frozen &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt;, which is an instance
+variable in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt; object. We delegate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;to_h&lt;/code&gt; to this internal
+hash for easy access, but other than that, we don’t expose any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt; methods.&lt;/p&gt;
 
-&lt;p&gt;We go through every hash &lt;em&gt;entry&lt;/em&gt;, processing any nested &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; objects,
+&lt;p&gt;We go through every hash &lt;em&gt;entry&lt;/em&gt;, processing any nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt; objects,
 freezing every wrapped &lt;em&gt;value&lt;/em&gt;, setting it in an instance variable, and making it
 accessible by defining a getter for that &lt;em&gt;key&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;It’s worth noting that we wrap nested &lt;code class=&quot;highlighter-rouge&quot;&gt;Hash&lt;/code&gt; values in instances of your
-&lt;code class=&quot;highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt; class, which will recursively repeat the process.&lt;/p&gt;
+&lt;p&gt;It’s worth noting that we wrap nested &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt; values in instances of your
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt; class, which will recursively repeat the process.&lt;/p&gt;
 
 &lt;p&gt;As a result, the entire settings graph is readable but immutable, and each
 nested object exposes getters for the available keys.&lt;/p&gt;
 
-&lt;p&gt;To make errors a bit friendlier, we implement &lt;code class=&quot;highlighter-rouge&quot;&gt;method_missing&lt;/code&gt; to provide
-context on where a setting is missing, instead of an unhelpful &lt;code class=&quot;highlighter-rouge&quot;&gt;NoMethodError&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;To make errors a bit friendlier, we implement &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;method_missing&lt;/code&gt; to provide
+context on where a setting is missing, instead of an unhelpful &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NoMethodError&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Finally, we sprinkle some syntax sugar by making every top-level key available
-as a method in the &lt;code class=&quot;highlighter-rouge&quot;&gt;Settings&lt;/code&gt; class, by delegating it to a &lt;code class=&quot;highlighter-rouge&quot;&gt;root_settings&lt;/code&gt;
-instance that is populated when calling &lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt; in the class.&lt;/p&gt;
+as a method in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Settings&lt;/code&gt; class, by delegating it to a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root_settings&lt;/code&gt;
+instance that is populated when calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;source&lt;/code&gt; in the class.&lt;/p&gt;
 
 &lt;h3 id=&quot;reading-from-multiple-files-&quot;&gt;Reading from multiple files ⚙&lt;/h3&gt;
 &lt;p&gt;Not being limited to a single source file opens up the possiblities.&lt;/p&gt;
 
-&lt;p&gt;We usually read two optional files: &lt;code class=&quot;highlighter-rouge&quot;&gt;development.yml&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;test.yml&lt;/code&gt; that are
+&lt;p&gt;We usually read two optional files: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;development.yml&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test.yml&lt;/code&gt; that are
 loaded in the &lt;em&gt;development&lt;/em&gt; and &lt;em&gt;test&lt;/em&gt; environments respectively, allowing each
 developer to easily override settings in their local setup.&lt;/p&gt;
 
@@ -682,7 +737,7 @@ developer to easily override settings in their local setup.&lt;/p&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Having a &lt;code class=&quot;highlighter-rouge&quot;&gt;development.yml&lt;/code&gt; file comes in handy when making changes that should
+&lt;p&gt;Having a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;development.yml&lt;/code&gt; file comes in handy when making changes that should
 not be shared, such as a temporary change to test a different configuration, or
 a permanent one that is only relevant in a specific local setup (such as
 different host names or port numbers).&lt;/p&gt;
@@ -692,7 +747,7 @@ section&lt;/a&gt;), but for development using an optional file is
 more convenient, as it’s located in the same folder than the main one, and
 settings can be copied and tweaked.&lt;/p&gt;
 
-&lt;p&gt;On the other hand, &lt;code class=&quot;highlighter-rouge&quot;&gt;test.yml&lt;/code&gt; makes it possible to configure tests to run with a
+&lt;p&gt;On the other hand, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;test.yml&lt;/code&gt; makes it possible to configure tests to run with a
 different formatter for the results, or configure optional behavior, like
 automatically opening the screenshots that are captured when integration tests
 fail.&lt;/p&gt;
@@ -721,7 +776,7 @@ use this simple helper:&lt;/p&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;and then in &lt;code class=&quot;highlighter-rouge&quot;&gt;application.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;and then in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application.yml&lt;/code&gt;:&lt;/p&gt;
 
 &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;mailer&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;%= Env.require('MAILER_PORT', 587) %&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -729,9 +784,9 @@ use this simple helper:&lt;/p&gt;
 &lt;p&gt;By using this helper, we can be very &lt;em&gt;strict on servers&lt;/em&gt;－where we need
 everything to be configured (such as hosts, ports, and third-party integrations)－and
 &lt;em&gt;lenient in development&lt;/em&gt;－where we can just provide a default value and then
-override it by using &lt;code class=&quot;highlighter-rouge&quot;&gt;development.yml&lt;/code&gt; if necessary.&lt;/p&gt;
+override it by using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;development.yml&lt;/code&gt; if necessary.&lt;/p&gt;
 
-&lt;p&gt;We prefer this pattern over using &lt;code class=&quot;highlighter-rouge&quot;&gt;ENV.fetch&lt;/code&gt; with a default value as a
+&lt;p&gt;We prefer this pattern over using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ENV.fetch&lt;/code&gt; with a default value as a
 fallback, since that would cover up a missing environment variable in the servers.&lt;/p&gt;
 
 &lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
@@ -739,7 +794,7 @@ fallback, since that would cover up a missing environment variable in the server
 for Ruby apps that encourages good practices, is friendlier for team
 collaboration and source-control, and prevents bugs.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/better_settings&quot;&gt;&lt;em&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt;&lt;/em&gt;&lt;/a&gt;: simple, immutable, better.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/better_settings&quot;&gt;&lt;em&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BetterSettings&lt;/code&gt;&lt;/em&gt;&lt;/a&gt;: simple, immutable, better.&lt;/p&gt;
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/better-settings.jpg" />
     <author>
@@ -747,6 +802,14 @@ collaboration and source-control, and prevents bugs.&lt;/p&gt;
       <email>maximomussini@gmail.com</email>
     </author>
     <category term="posts" />
+  
+    <category term="ruby" />
+  
+    <category term="rails" />
+  
+    <category term="settings" />
+  
+    <category term="libraries" />
   
   
   </entry>
@@ -760,7 +823,11 @@ collaboration and source-control, and prevents bugs.&lt;/p&gt;
   
     <id>http://maximomussini.com/posts/i18n-multitenant</id>
     <content type="html" xml:base="http://maximomussini.com/posts/i18n-multitenant/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/i18n-multitenant.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/i18n-multitenant.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
       &lt;p&gt;When providing services to different companies or customers with the same
 software, such as enterprise or white-label applications, it’s not unusual that
 each customer uses different terminology for certain concepts within the application.&lt;/p&gt;
@@ -787,8 +854,8 @@ barrier and reducing the resistance to change in large organizations.&lt;/p&gt;
 that are available in most platforms.&lt;/p&gt;
 
 &lt;p&gt;Just like we might allow a customer to switch between American or British
-variants of the English language (&lt;code class=&quot;highlighter-rouge&quot;&gt;en-US&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;en-UK&lt;/code&gt;), we can create additional
-language-variants or locales for each customer or domain (&lt;code class=&quot;highlighter-rouge&quot;&gt;en-LAW&lt;/code&gt;):&lt;/p&gt;
+variants of the English language (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;en-US&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;en-UK&lt;/code&gt;), we can create additional
+language-variants or locales for each customer or domain (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;en-LAW&lt;/code&gt;):&lt;/p&gt;
 
 &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;en-LAW&lt;/span&gt;
   &lt;span class=&quot;s&quot;&gt;customer&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;client&lt;/span&gt;
@@ -797,7 +864,7 @@ language-variants or locales for each customer or domain (&lt;code class=&quot;h
 &lt;p&gt;We can then use i18n fallbacks, so that any keys that are not defined in our
 domain-specific locale &lt;em&gt;fall back&lt;/em&gt; to the usual definition in the language.&lt;/p&gt;
 
-&lt;p&gt;In the example above, any users that have the &lt;code class=&quot;highlighter-rouge&quot;&gt;LAW&lt;/code&gt; translation preset assigned
+&lt;p&gt;In the example above, any users that have the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LAW&lt;/code&gt; translation preset assigned
 would see &lt;em&gt;“client”&lt;/em&gt;, but other users might see &lt;em&gt;“customer”&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;This allows us to achieve a nice balance between configurability and productivity.&lt;/p&gt;
@@ -810,7 +877,7 @@ and it becomes easier to test all the different combinations in the application.
 
 &lt;h3 id=&quot;a-solution-for-ruby-apps-&quot;&gt;A solution for Ruby apps 💎&lt;/h3&gt;
 
-&lt;p&gt;I have wrapped a Ruby solution as the &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;i18n_multitenant&lt;/code&gt;&lt;/a&gt; gem.
+&lt;p&gt;I have wrapped a Ruby solution as the &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i18n_multitenant&lt;/code&gt;&lt;/a&gt; gem.
 Please &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant&quot;&gt;check the readme&lt;/a&gt; for a more thorough explanation of
 how language variants are used, and a few examples on how to organize
 translations in order to effectively implement the approach.&lt;/p&gt;
@@ -818,14 +885,14 @@ translations in order to effectively implement the approach.&lt;/p&gt;
 &lt;h4 id=&quot;what-about-translations-in-the-browser&quot;&gt;What about translations in the browser?&lt;/h4&gt;
 
 &lt;p&gt;For single-page applications or other apps where it’s desirable to perform the
-translations in the browser, we can use a library such as &lt;a href=&quot;https://github.com/fnando/i18n-js&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;i18n-js&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+translations in the browser, we can use a library such as &lt;a href=&quot;https://github.com/fnando/i18n-js&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i18n-js&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;It’s possible to &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant#front-end_translations&quot;&gt;configure it to use fallbacks&lt;/a&gt;,
 allowing us to reuse the same translation files in the JS world.&lt;/p&gt;
 
 &lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;i18n&lt;/code&gt; fallbacks provide a simple way to adapt the terminology used in our
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i18n&lt;/code&gt; fallbacks provide a simple way to adapt the terminology used in our
 software based on different domains and users needs, making it &lt;em&gt;feel more familiar&lt;/em&gt;
 and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;/em&gt;.&lt;/p&gt;
     </content>
@@ -835,6 +902,14 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
       <email>maximomussini@gmail.com</email>
     </author>
     <category term="posts" />
+  
+    <category term="i18n" />
+  
+    <category term="translations" />
+  
+    <category term="enterprise" />
+  
+    <category term="libraries" />
   
   
   </entry>
@@ -848,7 +923,11 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
   
     <id>http://maximomussini.com/posts/mongoid-aggregation-dsl</id>
     <content type="html" xml:base="http://maximomussini.com/posts/mongoid-aggregation-dsl/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/mongoid-aggregation-dsl.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/mongoid-aggregation-dsl.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
       &lt;p&gt;&lt;em&gt;Mongoid&lt;/em&gt; provides support for &lt;a href=&quot;https://docs.mongodb.com/manual/core/aggregation-pipeline/&quot;&gt;&lt;em&gt;MongoDB’s Aggregation Framework&lt;/em&gt;&lt;/a&gt;, but writing raw queries can be confusing and is extremely verbose:&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;aggregate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
@@ -868,7 +947,7 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 
 &lt;p&gt;Turns out &lt;a href=&quot;https://github.com/mongoid/origin&quot;&gt;&lt;em&gt;Origin&lt;/em&gt;&lt;/a&gt;—the gem that powers &lt;em&gt;Mongoid’s&lt;/em&gt; query DSL—already provides methods for each aggregation operation. The only problem is that it doesn’t provide a way to execute the aggregation, and there’s no documentation about it :grimacing:&lt;/p&gt;
 
-&lt;p&gt;Every aggregation method call adds an operation to an internal pipeline, which we can manually retrieve by calling the &lt;code class=&quot;highlighter-rouge&quot;&gt;pipeline&lt;/code&gt; method:&lt;/p&gt;
+&lt;p&gt;Every aggregation method call adds an operation to an internal pipeline, which we can manually retrieve by calling the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pipeline&lt;/code&gt; method:&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;products&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;country: :US&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
   &lt;span class=&quot;nf&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;categories: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;price: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
@@ -885,9 +964,9 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 &lt;span class=&quot;c1&quot;&gt;# {&quot;$sort&quot;=&amp;gt;{&quot;avg_price&quot;=&amp;gt;-1}}&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;# {&quot;$limit&quot;=&amp;gt;30}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Notice how using the DSL we obtain the same aggregation pipeline that we have in the first example, except it’s way more concise, and we are able to use &lt;code class=&quot;highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; extensions like &lt;code class=&quot;highlighter-rouge&quot;&gt;avg&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;max&lt;/code&gt;, or &lt;code class=&quot;highlighter-rouge&quot;&gt;add_to_set&lt;/code&gt;, which add a great deal of expressiveness and make our queries more concise.&lt;/p&gt;
+&lt;p&gt;Notice how using the DSL we obtain the same aggregation pipeline that we have in the first example, except it’s way more concise, and we are able to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; extensions like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;avg&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;max&lt;/code&gt;, or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;add_to_set&lt;/code&gt;, which add a great deal of expressiveness and make our queries more concise.&lt;/p&gt;
 
-&lt;p&gt;Now all we have to do is pass the pipeline to the &lt;code class=&quot;highlighter-rouge&quot;&gt;aggregate&lt;/code&gt; method:&lt;/p&gt;
+&lt;p&gt;Now all we have to do is pass the pipeline to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aggregate&lt;/code&gt; method:&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;aggregate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;products&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pipeline&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -926,6 +1005,12 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
     </author>
     <category term="posts" />
   
+    <category term="mongoid" />
+  
+    <category term="mongodb" />
+  
+    <category term="aggregation" />
+  
   
   </entry>
 
@@ -938,8 +1023,12 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
   
     <id>http://maximomussini.com/posts/ruby-class-variables</id>
     <content type="html" xml:base="http://maximomussini.com/posts/ruby-class-variables/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-class-variables.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;Like most object-oriented languages, Ruby has both instance and class variables. The syntax is &lt;code class=&quot;highlighter-rouge&quot;&gt;@name&lt;/code&gt; for &lt;em&gt;instance variables&lt;/em&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;@@name&lt;/code&gt; for &lt;em&gt;class variables&lt;/em&gt;.&lt;/p&gt;
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-class-variables.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
+      &lt;p&gt;Like most object-oriented languages, Ruby has both instance and class variables. The syntax is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@name&lt;/code&gt; for &lt;em&gt;instance variables&lt;/em&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@@name&lt;/code&gt; for &lt;em&gt;class variables&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;Let’s look at a simple example to understand how we might use &lt;em&gt;class variables&lt;/em&gt;:&lt;/p&gt;
 
@@ -973,7 +1062,7 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 &lt;span class=&quot;c1&quot;&gt;# [Cat]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;@@animals&lt;/code&gt; &lt;em&gt;class variable&lt;/em&gt; is &lt;strong&gt;shared&lt;/strong&gt; among subclasses, and we can refer to it by using the same syntax from both class and instance methods.&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@@animals&lt;/code&gt; &lt;em&gt;class variable&lt;/em&gt; is &lt;strong&gt;shared&lt;/strong&gt; among subclasses, and we can refer to it by using the same syntax from both class and instance methods.&lt;/p&gt;
 
 &lt;h3 id=&quot;limitations-of-class-variables&quot;&gt;Limitations of Class Variables&lt;/h3&gt;
 &lt;p&gt;Now, what happens if we wanted to do something different, like storing metadata or configuration in each subclass?&lt;/p&gt;
@@ -1001,7 +1090,7 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 &lt;span class=&quot;c1&quot;&gt;# &quot;meow!&quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Because &lt;em&gt;class variables&lt;/em&gt; are shared between the parent class and its subclasses, the value of &lt;code class=&quot;highlighter-rouge&quot;&gt;@@sound&lt;/code&gt; gets stepped over by the last subclass, rather than it taking a different value for each subclass as intended.&lt;/p&gt;
+&lt;p&gt;Because &lt;em&gt;class variables&lt;/em&gt; are shared between the parent class and its subclasses, the value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@@sound&lt;/code&gt; gets stepped over by the last subclass, rather than it taking a different value for each subclass as intended.&lt;/p&gt;
 
 &lt;h2 id=&quot;class-instance-variables&quot;&gt;Class Instance Variables&lt;/h2&gt;
 &lt;p&gt;Fortunately, there’s a simple way to achieve this in Ruby:&lt;/p&gt;
@@ -1031,10 +1120,10 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 &lt;span class=&quot;c1&quot;&gt;# 'meow!'&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;By using instance variables, each subclass gets its own variable so &lt;code class=&quot;highlighter-rouge&quot;&gt;@sound&lt;/code&gt; does not get stepped over, and each subclass can configure the variable as needed. So, &lt;em&gt;how does it work&lt;/em&gt;?&lt;/p&gt;
+&lt;p&gt;By using instance variables, each subclass gets its own variable so &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@sound&lt;/code&gt; does not get stepped over, and each subclass can configure the variable as needed. So, &lt;em&gt;how does it work&lt;/em&gt;?&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Classes in Ruby are plain objects, instances of the &lt;code class=&quot;highlighter-rouge&quot;&gt;Class&lt;/code&gt; class.&lt;/p&gt;
+  &lt;p&gt;Classes in Ruby are plain objects, instances of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt; class.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Let that sink in for a bit :smile:&lt;/p&gt;
@@ -1045,14 +1134,14 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 
 &lt;p&gt;Although they are often called &lt;em&gt;class instance variables&lt;/em&gt; to differentiate them from actual &lt;em&gt;class variables&lt;/em&gt;, there’s nothing special about them—they are just plain ole’ instance variables.&lt;/p&gt;
 
-&lt;p&gt;The key practical difference is that &lt;em&gt;class variables&lt;/em&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;@@&lt;/code&gt;) are shared among a class and all of its descendants, whereas &lt;em&gt;class instance variables&lt;/em&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;@&lt;/code&gt;) are not shared and each class has separate instance variables just like you would expect from different objects.&lt;/p&gt;
+&lt;p&gt;The key practical difference is that &lt;em&gt;class variables&lt;/em&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@@&lt;/code&gt;) are shared among a class and all of its descendants, whereas &lt;em&gt;class instance variables&lt;/em&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@&lt;/code&gt;) are not shared and each class has separate instance variables just like you would expect from different objects.&lt;/p&gt;
 
 &lt;h3 id=&quot;limitations-of-class-instance-variables&quot;&gt;Limitations of Class Instance Variables&lt;/h3&gt;
-&lt;p&gt;It’s worth noting that in the last example we lost the convenience of referencing the &lt;code class=&quot;highlighter-rouge&quot;&gt;@sound&lt;/code&gt; variable directly on the &lt;code class=&quot;highlighter-rouge&quot;&gt;talk&lt;/code&gt; method like we did in the &lt;a href=&quot;#limitations-of-class-variables&quot;&gt;second example&lt;/a&gt;, and instead need to define a getter method at the class level in order to access it.&lt;/p&gt;
+&lt;p&gt;It’s worth noting that in the last example we lost the convenience of referencing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@sound&lt;/code&gt; variable directly on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;talk&lt;/code&gt; method like we did in the &lt;a href=&quot;#limitations-of-class-variables&quot;&gt;second example&lt;/a&gt;, and instead need to define a getter method at the class level in order to access it.&lt;/p&gt;
 
 &lt;p&gt;This is because the same syntax is used for regular &lt;em&gt;instance variables&lt;/em&gt;, so we can only refer to class instance variables directly when we are in the class scope—like in &lt;strong&gt;class methods&lt;/strong&gt; and in the &lt;strong&gt;top-level context&lt;/strong&gt; of a class definition.&lt;/p&gt;
 
-&lt;p&gt;Also, since we can’t use &lt;em&gt;class instance variables&lt;/em&gt; to share values between a class and its descendants, in cases where we would like to access the variable of a parent class we will need to refer to it using a fully qualified getter (such as &lt;code class=&quot;highlighter-rouge&quot;&gt;Animal.sound&lt;/code&gt;) or use &lt;a href=&quot;https://github.com/ElMassimo/queryable/blob/7c5eb3448456e6e84a907cbf4a567c576433428a/lib/queryable/default_scope.rb#L38-L50&quot;&gt;metaprogramming&lt;/a&gt; in order to achieve that.&lt;/p&gt;
+&lt;p&gt;Also, since we can’t use &lt;em&gt;class instance variables&lt;/em&gt; to share values between a class and its descendants, in cases where we would like to access the variable of a parent class we will need to refer to it using a fully qualified getter (such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Animal.sound&lt;/code&gt;) or use &lt;a href=&quot;https://github.com/ElMassimo/queryable/blob/7c5eb3448456e6e84a907cbf4a567c576433428a/lib/queryable/default_scope.rb#L38-L50&quot;&gt;metaprogramming&lt;/a&gt; in order to achieve that.&lt;/p&gt;
 
 &lt;h2 id=&quot;driving-it-home-house-car&quot;&gt;Driving it home :house: :car:&lt;/h2&gt;
 &lt;p&gt;In general, &lt;em&gt;class instance variables&lt;/em&gt; are the way to go because they are not shared, which is very useful when building libraries or DSLs, and we don’t run the risk of the value getting stepped over by accident in a subclass.&lt;/p&gt;
@@ -1061,7 +1150,9 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 
 &lt;p&gt;When inheritance is not in play we can use either, but it’s better to be consistent and pick a “default”. I always use &lt;em&gt;class instance variables&lt;/em&gt; unless I actually need the variable to be shared.&lt;/p&gt;
 
-&lt;p&gt;We should now be less fuzzy on what &lt;code class=&quot;highlighter-rouge&quot;&gt;@&lt;/code&gt; means when used in class methods or in a class definition, and when to use &lt;em&gt;class instance variables&lt;/em&gt; instead of &lt;em&gt;class variables&lt;/em&gt; :smiley:&lt;/p&gt;
+&lt;p&gt;We should now be less fuzzy on what &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@&lt;/code&gt; means when used in class methods or in a class definition, and when to use &lt;em&gt;class instance variables&lt;/em&gt; instead of &lt;em&gt;class variables&lt;/em&gt; :smiley:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Would you like to &lt;a href=&quot;/posts/ruby-to_proc/&quot;&gt;learn about Ruby’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; shortcuts&lt;/a&gt;?&lt;/em&gt;&lt;/p&gt;
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/ruby-class-variables.jpg" />
     <author>
@@ -1069,6 +1160,10 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
       <email>maximomussini@gmail.com</email>
     </author>
     <category term="posts" />
+  
+    <category term="ruby" />
+  
+    <category term="language" />
   
   
   </entry>
@@ -1082,17 +1177,21 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
   
     <id>http://maximomussini.com/posts/angular-less-watchers</id>
     <content type="html" xml:base="http://maximomussini.com/posts/angular-less-watchers/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/angular-less-watchers.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;Like we saw in the &lt;a href=&quot;/posts/angular-intro/&quot;&gt;previous post&lt;/a&gt;, &lt;em&gt;AngularJS&lt;/em&gt; uses watchers to detect changes, allowing it to update views as needed. &lt;em&gt;Angular&lt;/em&gt; will create a watcher for every expression that we add to our templates using data-bindings, &lt;code class=&quot;highlighter-rouge&quot;&gt;ng-repeat&lt;/code&gt;, or similar directives.&lt;/p&gt;
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/angular-less-watchers.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
 
-&lt;p&gt;As we learned, each time a watcher is created &lt;em&gt;Angular&lt;/em&gt; will add the expression to a &lt;a href=&quot;/posts/angular-intro/#the-watch-list-and-dirty-checking&quot;&gt;&lt;em&gt;watch list&lt;/em&gt;&lt;/a&gt;, which is then iterated during each digest cycle to evaluate every expression and detect changes. That means, the more watchers are registered, the more &lt;em&gt;Angular&lt;/em&gt; has to process during &lt;a href=&quot;/posts/angular-intro/#repeat-the-digest-cycle&quot;&gt;the digest cycle&lt;/a&gt;.&lt;/p&gt;
+      &lt;p&gt;Like we saw in the &lt;a href=&quot;/posts/cucumber-to_or_not_to/&quot;&gt;previous post&lt;/a&gt;, &lt;em&gt;AngularJS&lt;/em&gt; uses watchers to detect changes, allowing it to update views as needed. &lt;em&gt;Angular&lt;/em&gt; will create a watcher for every expression that we add to our templates using data-bindings, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ng-repeat&lt;/code&gt;, or similar directives.&lt;/p&gt;
+
+&lt;p&gt;As we learned, each time a watcher is created &lt;em&gt;Angular&lt;/em&gt; will add the expression to a &lt;a href=&quot;/posts/cucumber-to_or_not_to/#the-watch-list-and-dirty-checking&quot;&gt;&lt;em&gt;watch list&lt;/em&gt;&lt;/a&gt;, which is then iterated during each digest cycle to evaluate every expression and detect changes. That means, the more watchers are registered, the more &lt;em&gt;Angular&lt;/em&gt; has to process during &lt;a href=&quot;/posts/cucumber-to_or_not_to/#repeat-the-digest-cycle&quot;&gt;the digest cycle&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;In pages that have many components—such as long lists and grids—the amount of watchers can be very high, which can negatively affect the performance of our app and make it feel unresponsive.&lt;/p&gt;
 
 &lt;p&gt;In this post we will take a look at two techniques that can help us mitigate this problem and speed up our applications.&lt;/p&gt;
 
 &lt;h2 id=&quot;one-time-bindings&quot;&gt;One-Time Bindings&lt;/h2&gt;
-&lt;p&gt;One of the most convenient techniques that we have to reduce the amount of watchers is the use of &lt;em&gt;one-time bindings&lt;/em&gt;. Any expression that starts with &lt;code class=&quot;highlighter-rouge&quot;&gt;::&lt;/code&gt; is considered a &lt;em&gt;one-time expression&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;One of the most convenient techniques that we have to reduce the amount of watchers is the use of &lt;em&gt;one-time bindings&lt;/em&gt;. Any expression that starts with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;::&lt;/code&gt; is considered a &lt;em&gt;one-time expression&lt;/em&gt;.&lt;/p&gt;
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ng-repeat=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user in ::users&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
   &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;{{ ::user.name }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
@@ -1117,7 +1216,7 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;recompile-on=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user:changed&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ ::user.name }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;This technique has three key aspects: one-time expressions, compilation, and event propagation. Let’s see how the &lt;code class=&quot;highlighter-rouge&quot;&gt;recompileOn&lt;/code&gt; directive could be written:&lt;/p&gt;
+&lt;p&gt;This technique has three key aspects: one-time expressions, compilation, and event propagation. Let’s see how the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;recompileOn&lt;/code&gt; directive could be written:&lt;/p&gt;
 
 &lt;div class=&quot;language-coffeescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Public: Recompiles an element if an event occurs.&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
@@ -1156,9 +1255,9 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;One-time bindings provide a very efficient way to render dynamic values once without taking up watchers, while &lt;code class=&quot;highlighter-rouge&quot;&gt;$on&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;$compile&lt;/code&gt; provide a helpful way to render from scratch when we need to. This combination works very well for complex pages where the amount of watchers is taking a toll on performance.&lt;/p&gt;
+&lt;p&gt;One-time bindings provide a very efficient way to render dynamic values once without taking up watchers, while &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$on&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$compile&lt;/code&gt; provide a helpful way to render from scratch when we need to. This combination works very well for complex pages where the amount of watchers is taking a toll on performance.&lt;/p&gt;
 
-&lt;p&gt;There are many variations that we can introduce to the implementation of &lt;code class=&quot;highlighter-rouge&quot;&gt;recompileOn&lt;/code&gt;, such as allowing to pass several event names, or checking the event arguments for a specific value, such as an id. We can take this idea as far as we want to :rocket:&lt;/p&gt;
+&lt;p&gt;There are many variations that we can introduce to the implementation of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;recompileOn&lt;/code&gt;, such as allowing to pass several event names, or checking the event arguments for a specific value, such as an id. We can take this idea as far as we want to :rocket:&lt;/p&gt;
 
 &lt;p&gt;As with any optimization, it’s important to consider whether the performance improvement justifies the additional complexity. Use it wisely!&lt;/p&gt;
     </content>
@@ -1169,102 +1268,115 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
     </author>
     <category term="posts" />
   
+    <category term="angular" />
+  
   
     <summary>In this post we take a look at effective ways to reduce the amount of watchers in our _AngularJS_ application and improve the performance of our app.</summary>
   
   </entry>
 
   <entry>
-    <title>AngularJS: Watchers and the Digest Cycle</title>
-    <link href="http://maximomussini.com/posts/angular-intro/" rel="alternate" type="text/html" title="AngularJS: Watchers and the Digest Cycle" />
-    <published>2016-03-29T22:29:00-03:00</published>
+    <title>Positive-Negative Assertions in Cucumber</title>
+    <link href="http://maximomussini.com/posts/cucumber-to_or_not_to/" rel="alternate" type="text/html" title="Positive-Negative Assertions in Cucumber" />
+    <published>2016-02-03T15:34:00-03:00</published>
   
-    <updated>2016-03-29T22:29:00-03:00</updated>
+    <updated>2016-02-03T15:34:00-03:00</updated>
   
-    <id>http://maximomussini.com/posts/angular-intro</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/angular-intro/">
-      &lt;img src=&quot;http://maximomussini.com/images/posts/angular-intro.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;/&gt;
-      &lt;p&gt;&lt;em&gt;AngularJS&lt;/em&gt; might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through &lt;em&gt;Angular&lt;/em&gt;’s internals: watchers and the digest cycle.&lt;/p&gt;
+    <id>http://maximomussini.com/posts/cucumber-to_or_not_to</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/cucumber-to_or_not_to/">
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
 
-&lt;h2 id=&quot;bindings-and-watchers&quot;&gt;Bindings and Watchers&lt;/h2&gt;
-&lt;p&gt;One of the most useful features in &lt;em&gt;AngularJS&lt;/em&gt; are data-bindings, which allow us to bind a model or property to a view; whenever the model changes, the view is updated automatically.&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;https://github.com/cucumber/cucumber-ruby&quot;&gt;&lt;em&gt;Cucumber&lt;/em&gt;&lt;/a&gt; steps often involve asserting a condition or the opposite of it. For example:&lt;/p&gt;
 
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ng-model=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user.name&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;{{ user.name }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'li.comment'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;text: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;How does that work? When you write an expression like &lt;code class=&quot;highlighter-rouge&quot;&gt;{{ user.name }}&lt;/code&gt;, &lt;em&gt;Angular&lt;/em&gt; creates a &lt;em&gt;watcher&lt;/em&gt; that observes the &lt;code class=&quot;highlighter-rouge&quot;&gt;user.name&lt;/code&gt; property, which will be triggered whenever the model changes, allowing &lt;em&gt;Angular&lt;/em&gt; to update the view content.&lt;/p&gt;
+&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should not see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'li.comment'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;text: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;We can also create watchers manually and execute arbitrary code when the model changes:&lt;/p&gt;
+&lt;p&gt;Not only is it boring to write steps like this: it also has the downside of introducing duplication into our test steps. If the DOM changes, we are forced to update both steps.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$watch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'user.name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;oldName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'user.name changed from'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;oldName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'to'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;newName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;p&gt;Even worse, if the DOM changes and we forget to update the negative assertion, it will always pass since the element doesn’t even exist!&lt;/p&gt;
 
-&lt;p&gt;The first argument passed to &lt;code class=&quot;highlighter-rouge&quot;&gt;$watch&lt;/code&gt; is known as the &lt;em&gt;model&lt;/em&gt;, and the second argument is the &lt;em&gt;listener&lt;/em&gt; function, which is called whenever the model (or more precisely, value of the watched expression) changes.&lt;/p&gt;
+&lt;p&gt;Let’s give it another shot, but this time we will encapsulate the DOM references:&lt;/p&gt;
 
-&lt;p&gt;Now that we know what watchers can do for us, let’s dig a bit deeper and learn how they work. How does &lt;em&gt;Angular&lt;/em&gt; figure out when &lt;code class=&quot;highlighter-rouge&quot;&gt;user.name&lt;/code&gt; changed in order to call the &lt;em&gt;listener&lt;/em&gt;?&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;have_css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'li.comment'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;text: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;h2 id=&quot;the-watch-list-and-dirty-checking&quot;&gt;The Watch List and Dirty Checking&lt;/h2&gt;
+&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
-&lt;p&gt;Each time a watcher is created, &lt;em&gt;Angular&lt;/em&gt; adds the expression to a &lt;em&gt;watch list&lt;/em&gt; to track changes. &lt;em&gt;Angular&lt;/em&gt; will walk down the watch list from time to time and resolve each watcher through a process called &lt;em&gt;dirty checking&lt;/em&gt;:&lt;/p&gt;
+&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should not see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;Keep the last value for each watched expression.&lt;/li&gt;
-  &lt;li&gt;Evaluate the expression: if the value is the same than the last one continue down the watch list.&lt;/li&gt;
-  &lt;li&gt;If the value is different the expression is &lt;strong&gt;dirty&lt;/strong&gt;, so propagate the change by calling each &lt;em&gt;listener&lt;/em&gt; with the old and the new value.&lt;/li&gt;
-  &lt;li&gt;Once the change has been synchronized across the app, replace the last value with the new value.&lt;/li&gt;
-  &lt;li&gt;Continue to the next expression in the watch list.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;The code is easier to read, and we solved a potential maintainability issue, nice! It’s possible to add a little touch of regular expressions to combine both steps into one:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should( not)? see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If we write &lt;em&gt;“should not see”&lt;/em&gt; then the group will match and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;should_not&lt;/code&gt; variable will contain &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot; not&quot;&lt;/code&gt;. If we write &lt;em&gt;“should see”&lt;/em&gt; then the group won’t capture anything and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;should_not&lt;/code&gt; will be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nil&lt;/code&gt;. This allows us to make a simple conditional check.&lt;/p&gt;
+
+&lt;p&gt;We can leverage Ruby’s expressiveness and take it a bit further:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should( not)? see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;send&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:not_to&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Shorter, but not necessarily easier to understand. Fortunately, we can create our own custom RSpec matcher to encapsulate this pattern and make it easier to reuse and understand:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# features/support/to_or.rb&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;PositiveNegativeExpectationHandler&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_or&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Expectations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ExpectationTarget&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;PositiveNegativeExpectationHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Finally, we are able to express the step in a very concise and readable way:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should( not)? see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;For every UI element that is bound to a $scope object, a watch is created and added to the &lt;em&gt;watch list&lt;/em&gt;, which is checked on every digest loop.&lt;/p&gt;
+  &lt;p&gt;No magic here :tophat:, just clever naming :rabbit:&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&quot;repeat-the-digest-cycle&quot;&gt;:repeat: The Digest Cycle&lt;/h2&gt;
-&lt;p&gt;And it’s in the &lt;a href=&quot;https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$digest&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$digest&lt;/code&gt;&lt;/a&gt; cycle where every watcher in the watch list is evaluated, and the changes propagated to the &lt;em&gt;listeners&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;to_or&lt;/code&gt; has been a very helpful addition to our projects, allowing us to write simple steps that read like English.&lt;/p&gt;
 
-&lt;p&gt;This cycle starts as a result of a call to &lt;code class=&quot;highlighter-rouge&quot;&gt;$scope.$digest()&lt;/code&gt;, which often happens as a result of an action performed by the user. For example, clicking an element with the &lt;code class=&quot;highlighter-rouge&quot;&gt;ng-click&lt;/code&gt; directive will explicitly call &lt;code class=&quot;highlighter-rouge&quot;&gt;$scope.$digest()&lt;/code&gt; and start the loop.&lt;/p&gt;
-
-&lt;p&gt;Once the cycle starts, it will go through the &lt;em&gt;watch list&lt;/em&gt;, propagating changes to &lt;em&gt;listeners&lt;/em&gt; as needed.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;There are many &lt;em&gt;Angular&lt;/em&gt; directives and services that will automatically trigger a digest cycle, such as &lt;code class=&quot;highlighter-rouge&quot;&gt;ng-model&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;$timeout&lt;/code&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;crown-keep-calm-and-digest&quot;&gt;:crown: Keep Calm and Digest&lt;/h2&gt;
-&lt;p&gt;Once &lt;em&gt;Angular&lt;/em&gt; has run through the entire watch list, if any value changed, it will start a new digest cycle until no model is changed and no watchers are triggered.&lt;/p&gt;
-
-&lt;p&gt;Why does it run the loop all over again? Because any &lt;code class=&quot;highlighter-rouge&quot;&gt;$watch&lt;/code&gt; listener could change the value of an expression that was evaluated earlier in the digest loop, so &lt;em&gt;Angular&lt;/em&gt; wouldn’t be able to detect and propagate that change.&lt;/p&gt;
-
-&lt;p&gt;Remember that &lt;em&gt;Angular&lt;/em&gt; uses dirty-checking as a way to determine if the watched expression changed, so the only way to guarantee all changes are propagated is to go through the &lt;em&gt;watch list&lt;/em&gt; again and check that no values were changed during the previous digest cycle.&lt;/p&gt;
-
-&lt;p&gt;This means that the digest loop will run a minimum of two times, even when &lt;em&gt;listeners&lt;/em&gt; don’t change any models.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Minimize changes to watched models when inside listener functions, each change could trigger an extra digest loop.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;If the loop runs ten times or more, &lt;em&gt;Angular&lt;/em&gt; will throw an exception to prevent a possible infinite loop, which would make the app unusable.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;Because of the nature of &lt;em&gt;Angular&lt;/em&gt;’s internals, it’s very important to minimize the amount of watchers in order to keep the digest cycle fast.&lt;/p&gt;
-
-&lt;p&gt;At the same time, it’s important to ensure that our application doesn’t trigger more digest cycles than necessary, since each loop requires evaluating every watcher in the list.&lt;/p&gt;
-
-&lt;p&gt;While watchers are a very useful feature, the digest cycle implementation takes a brute force approach, which makes it almost magical at times, but is inefficient and can cause performance problems in complex applications.&lt;/p&gt;
-
-&lt;p&gt;In the next post, we will take a look at some techniques that help to reduce the amount of watchers and improve the performance of our app. Stay tuned! :smiley:&lt;/p&gt;
+&lt;p&gt;You can copy the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PositiveNegativeExpectationHandler&lt;/code&gt; to a support file in your project, like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;features/support/to_or.rb&lt;/code&gt;, and start using it right away :smiley:&lt;/p&gt;
     </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/angular-intro.jpg" />
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg" />
     <author>
       <name>Máximo Mussini</name>
       <email>maximomussini@gmail.com</email>
     </author>
     <category term="posts" />
   
+    <category term="rails" />
   
-    <summary>_AngularJS_ might not be hip anymore, but it's still a useful framework to create interactive web apps. In this post we will take a brief tour through _Angular_'s internals: watchers and the digest cycle.</summary>
+    <category term="testing" />
+  
+    <category term="cucumber" />
+  
   
   </entry>
 

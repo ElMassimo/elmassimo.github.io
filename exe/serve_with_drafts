@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# exe/serve_with_drafts: Starts the Jekyll development server including drafts.
+set -e
+cd "$(dirname "$0")/.."
+exe/serve --drafts "$@"

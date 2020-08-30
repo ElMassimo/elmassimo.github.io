@@ -18,7 +18,7 @@ affect reliability, and how we can overcome them.
 
 Even if you are not familiar with these libraries, reading this article might
 help you to learn about potentially harmful practic…">
-<meta name="keywords" content="">
+<meta name="keywords" content="ruby, rails, settings, libraries">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -29,8 +29,9 @@ help you to learn about potentially harmful practic…">
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -73,10 +74,15 @@ help you to learn about potentially harmful practic…" />
 
   </head>
   <body>
-    <header style="background-image: url('data:image/jpeg;base64,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')">
+    <header style="background-image: url('data:image/webp;base64,UklGRkQDAABXRUJQVlA4IDgDAACQHwCdASoaAWQAPtFYo0y1tzarLXlbSuAaCWVu4DBodiOQJFqHwfDxxX17pM7Ps1Tb8PwSvxhGLo1JH9zuMHna3wvlXDQKflSqVHdRnzfeu5MELXHgKKF44pF/yg3O0lTwVe6lNR1C7HpZHDTrhLO564AN2goajMGK2FuYS8LnU+4Kj1EcOlA79elTiXgAuQBvaozkmdp7wv4hfa+zPwuE++VGQ1Ggiw2+VDRnkTGSfhmPJxOw9l/sccTC7m94VUiLY6mxqWbnnA+osi7BM1ITmvCCKHqAA7alqF0npk2R2IE7SyBsl+wXl1PLrLLAfXwxG7gwrZGEhlZfk7MZZwVswvWUAwAA/vA5hbZP3+U9GPMiaN6KD2CXh6LV6f5oM5SOxyNid7YNWEPDtzXZmr9P5TygeEqLEDA1Fl79ikdOZHglRqApIxch33Q3Jla1nFnUROiErF0tGLhuNnmOmUPAECiqDbwK+CwYxIUmfhgEOS1prrjIxeIqX0+CBsFnBh8tclUABAwNxqrjYq8Zwr2ulMZdg9VMBAgs6+3OTZiTLvh3YRLXxooRZ8LaoDSozMx/iw1/8OUDQImq+EYZ8b2vjiImioP3nFGmKezAtPKUcZPaMRH/NI4fR4xYRmernWQ2QGIDODNnYVcVM3VuuHRcnuWD0HcJ4bIPo6f66r7JVThgZEbqUTlkVnUmhcvCBSKzTp5SiM4NuBEtMM76XxeL30xfkB1hpckmZE2+Pqd4aW16t4uRVKUyWMMCnnCXcOPKnTZRz8RExBI4xq+pr9YMuXDF9z7240yAAgQEAeUlk3Wv3OxrNM0wJ3eMlt+BmCXVS0UeL/HQDG1c5SCCkBELThx13Rg9YA3CnGiMWwjbNc4tPh+6OV/EVDvBB7KYy5MZMA2kUQOVE1Kp1pzGxEMs2XD9B45ghMOqmbbL1rjzKIITrhYqKruFqqIsx2OK0/cGDLzL4s1nMBxPD67CbYQ4ZiXghWH3PvNMPZJo4URcRXj0n+Z3fPDXBfG5rF8RjtBaakvFWlwb/YzLWK49wpQFR3qEqqDy7tSMzXYYQ1laLgILTVYMOxWCLPEvxwEjd8AiZOnR8K9AAA==')">
   
-    <div class="hero" style="background-image: url(/images/posts/better-settings.jpg)">
-      <h1>Better Settings in Ruby apps</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/better-settings.webp" type="image/webp">
+  <img src="/images/posts/better-settings.jpg" alt="better-settings.jpg" class="hero-bg">
+</picture>
+
+      <h1 class="hero-title">Better Settings in Ruby apps</h1>
     </div>
   
 </header>
@@ -155,10 +161,10 @@ to race conditions in multi-threaded apps or multi-threaded app containers.</p>
 <h3 id="values-are-mutable">Values are mutable</h3>
 <p>Even when not creating or modifying a setting at runtime, the values read from
 the <em>.yml</em> file can be accidentally modified since the settings are not frozen
-(specially <code class="highlighter-rouge">String</code>, <code class="highlighter-rouge">Hash</code>, and <code class="highlighter-rouge">Array</code> values).</p>
+(specially <code class="language-plaintext highlighter-rouge">String</code>, <code class="language-plaintext highlighter-rouge">Hash</code>, and <code class="language-plaintext highlighter-rouge">Array</code> values).</p>
 
-<p>For example, when working with a <code class="highlighter-rouge">Hash</code> or <code class="highlighter-rouge">Array</code> setting, calling <code class="highlighter-rouge">merge!</code> or
-<code class="highlighter-rouge">push</code> causes the setting to be changed on every subsequent access, which can
+<p>For example, when working with a <code class="language-plaintext highlighter-rouge">Hash</code> or <code class="language-plaintext highlighter-rouge">Array</code> setting, calling <code class="language-plaintext highlighter-rouge">merge!</code> or
+<code class="language-plaintext highlighter-rouge">push</code> causes the setting to be changed on every subsequent access, which can
 have unpredictable consequences in the application.</p>
 
 <p>These accidental mutations are usually very hard to detect, and can cause bugs
@@ -191,13 +197,13 @@ file until the settings are accessed, making it possible for an app to start
 successfully and fail later at runtime.</p>
 
 <p>In the end, it has the same disadvantages of simpler approaches, like using a
-plain <code class="highlighter-rouge">OpenStruct</code> to manage settings.</p>
+plain <code class="language-plaintext highlighter-rouge">OpenStruct</code> to manage settings.</p>
 
 <h2 id="a-better-way">A <em>Better</em> Way</h2>
 <p>With that in mind, we decided to design a new solution from scratch, that could
 handle these shortcomings, and actively prevent bugs and misusage.</p>
 
-<p>The result is <a href="https://github.com/ElMassimo/better_settings"><em><code class="highlighter-rouge">BetterSettings</code></em></a>, designed after the following concerns:</p>
+<p>The result is <a href="https://github.com/ElMassimo/better_settings"><em><code class="language-plaintext highlighter-rouge">BetterSettings</code></em></a>, designed after the following concerns:</p>
 
 <ul>
   <li><strong>Predictability</strong>: Once created, settings can not be added or modified, which
@@ -216,31 +222,31 @@ problems in the environment are detected during deployment.</li>
 more information and examples in the <a href="https://github.com/ElMassimo/better_settings">README</a>.</p>
 
 <h3 id="how-does-it-work">How does it work?</h3>
-<p>Internally, settings are stored in a frozen <code class="highlighter-rouge">Hash</code>, which is an instance
-variable in the <code class="highlighter-rouge">BetterSettings</code> object. We delegate <code class="highlighter-rouge">to_h</code> to this internal
-hash for easy access, but other than that, we don’t expose any <code class="highlighter-rouge">Hash</code> methods.</p>
+<p>Internally, settings are stored in a frozen <code class="language-plaintext highlighter-rouge">Hash</code>, which is an instance
+variable in the <code class="language-plaintext highlighter-rouge">BetterSettings</code> object. We delegate <code class="language-plaintext highlighter-rouge">to_h</code> to this internal
+hash for easy access, but other than that, we don’t expose any <code class="language-plaintext highlighter-rouge">Hash</code> methods.</p>
 
-<p>We go through every hash <em>entry</em>, processing any nested <code class="highlighter-rouge">Array</code> and <code class="highlighter-rouge">Hash</code> objects,
+<p>We go through every hash <em>entry</em>, processing any nested <code class="language-plaintext highlighter-rouge">Array</code> and <code class="language-plaintext highlighter-rouge">Hash</code> objects,
 freezing every wrapped <em>value</em>, setting it in an instance variable, and making it
 accessible by defining a getter for that <em>key</em>.</p>
 
-<p>It’s worth noting that we wrap nested <code class="highlighter-rouge">Hash</code> values in instances of your
-<code class="highlighter-rouge">BetterSettings</code> class, which will recursively repeat the process.</p>
+<p>It’s worth noting that we wrap nested <code class="language-plaintext highlighter-rouge">Hash</code> values in instances of your
+<code class="language-plaintext highlighter-rouge">BetterSettings</code> class, which will recursively repeat the process.</p>
 
 <p>As a result, the entire settings graph is readable but immutable, and each
 nested object exposes getters for the available keys.</p>
 
-<p>To make errors a bit friendlier, we implement <code class="highlighter-rouge">method_missing</code> to provide
-context on where a setting is missing, instead of an unhelpful <code class="highlighter-rouge">NoMethodError</code>.</p>
+<p>To make errors a bit friendlier, we implement <code class="language-plaintext highlighter-rouge">method_missing</code> to provide
+context on where a setting is missing, instead of an unhelpful <code class="language-plaintext highlighter-rouge">NoMethodError</code>.</p>
 
 <p>Finally, we sprinkle some syntax sugar by making every top-level key available
-as a method in the <code class="highlighter-rouge">Settings</code> class, by delegating it to a <code class="highlighter-rouge">root_settings</code>
-instance that is populated when calling <code class="highlighter-rouge">source</code> in the class.</p>
+as a method in the <code class="language-plaintext highlighter-rouge">Settings</code> class, by delegating it to a <code class="language-plaintext highlighter-rouge">root_settings</code>
+instance that is populated when calling <code class="language-plaintext highlighter-rouge">source</code> in the class.</p>
 
 <h3 id="reading-from-multiple-files-">Reading from multiple files ⚙</h3>
 <p>Not being limited to a single source file opens up the possiblities.</p>
 
-<p>We usually read two optional files: <code class="highlighter-rouge">development.yml</code> and <code class="highlighter-rouge">test.yml</code> that are
+<p>We usually read two optional files: <code class="language-plaintext highlighter-rouge">development.yml</code> and <code class="language-plaintext highlighter-rouge">test.yml</code> that are
 loaded in the <em>development</em> and <em>test</em> environments respectively, allowing each
 developer to easily override settings in their local setup.</p>
 
@@ -259,7 +265,7 @@ developer to easily override settings in their local setup.</p>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>Having a <code class="highlighter-rouge">development.yml</code> file comes in handy when making changes that should
+<p>Having a <code class="language-plaintext highlighter-rouge">development.yml</code> file comes in handy when making changes that should
 not be shared, such as a temporary change to test a different configuration, or
 a permanent one that is only relevant in a specific local setup (such as
 different host names or port numbers).</p>
@@ -269,7 +275,7 @@ section</a>), but for development using an optional file is
 more convenient, as it’s located in the same folder than the main one, and
 settings can be copied and tweaked.</p>
 
-<p>On the other hand, <code class="highlighter-rouge">test.yml</code> makes it possible to configure tests to run with a
+<p>On the other hand, <code class="language-plaintext highlighter-rouge">test.yml</code> makes it possible to configure tests to run with a
 different formatter for the results, or configure optional behavior, like
 automatically opening the screenshots that are captured when integration tests
 fail.</p>
@@ -298,7 +304,7 @@ use this simple helper:</p>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>and then in <code class="highlighter-rouge">application.yml</code>:</p>
+<p>and then in <code class="language-plaintext highlighter-rouge">application.yml</code>:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">mailer</span><span class="pi">:</span> <span class="s">&lt;%= Env.require('MAILER_PORT', 587) %&gt;</span>
 </code></pre></div></div>
@@ -306,9 +312,9 @@ use this simple helper:</p>
 <p>By using this helper, we can be very <em>strict on servers</em>－where we need
 everything to be configured (such as hosts, ports, and third-party integrations)－and
 <em>lenient in development</em>－where we can just provide a default value and then
-override it by using <code class="highlighter-rouge">development.yml</code> if necessary.</p>
+override it by using <code class="language-plaintext highlighter-rouge">development.yml</code> if necessary.</p>
 
-<p>We prefer this pattern over using <code class="highlighter-rouge">ENV.fetch</code> with a default value as a
+<p>We prefer this pattern over using <code class="language-plaintext highlighter-rouge">ENV.fetch</code> with a default value as a
 fallback, since that would cover up a missing environment variable in the servers.</p>
 
 <h2 id="summary">Summary</h2>
@@ -316,7 +322,7 @@ fallback, since that would cover up a missing environment variable in the server
 for Ruby apps that encourages good practices, is friendlier for team
 collaboration and source-control, and prevents bugs.</p>
 
-<p><a href="https://github.com/ElMassimo/better_settings"><em><code class="highlighter-rouge">BetterSettings</code></em></a>: simple, immutable, better.</p>
+<p><a href="https://github.com/ElMassimo/better_settings"><em><code class="language-plaintext highlighter-rouge">BetterSettings</code></em></a>: simple, immutable, better.</p>
 
   </div>
 
@@ -344,21 +350,31 @@ collaboration and source-control, and prevents bugs.</p>
 
 
 
-  <div class="previous-post">
+  <a id="previous-post" href="/posts/i18n-multitenant/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
     <div class="content container">
-      <a id="previous-post" href="/posts/i18n-multitenant/" class="overlay">
-        <h1>i18n Multitenancy: Customer-Specific Translations</h1>
+      <a id="related-post" href="/posts/ruby-double-splat-keywords/" class="overlay">
+        <h1>Ruby Keywords and the Double Splat Operator</h1>
         <div class="post-info">
-  <span class="date">January 26, 2017</span>
+  <span class="date">January 30, 2020</span>
   <span class="reading-time">3 min read</span>
 </div>
 
         <div class="post">
-          <p>When providing services to different companies or customers with the same
-software, such as enterprise or white-label applications, it’s not unusual that
-each customer uses different terminology for certain concepts within the application.</p>
+          <p>One of the nicest bits of syntax sugar in Ruby are <em>keywords</em> (<code class="language-plaintext highlighter-rouge">**</code> or <em>double-splat</em>).</p>
 
-<p>While they might be similar in terms of operations …</p>
+<h4 id="keywords-in-method-parameters">Keywords in Method Parameters</h4>
+
+<p>Just like the splat operator (<code class="language-plaintext highlighter-rouge">*args</code>) captures any parameters as an <code class="language-plaintext highlighter-rouge">Array</code> of
+arguments, the double-splat operator (<code class="language-plaintext highlighter-rouge">**attrs</code>) captures any option parameters
+as a <code class="language-plaintext highlighter-rouge">Hash</code>.</p>
+
+<p>The nice thing is that it allows to destructure a <code class="language-plaintext highlighter-rouge">Hash</code> argument into any of
+its individual keys, and mark it as r…</p>
         </div>
       </a>
     </div>

@@ -14,7 +14,7 @@ software, such as enterprise or white-label applications, it’s not unusual tha
 each customer uses different terminology for certain concepts within the application.
 
 While they might be similar in terms of operations …">
-<meta name="keywords" content="">
+<meta name="keywords" content="i18n, translations, enterprise, libraries">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -25,8 +25,9 @@ While they might be similar in terms of operations …">
 
 <!-- Styles -->
 <link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -61,10 +62,15 @@ While they might be similar in terms of operations …" />
 
   </head>
   <body>
-    <header style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCABkARoDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAgABAwQFB//EAB0QAQEBAQEBAQEBAQAAAAAAAAABAhESAxMhMUH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAWEQEBAQAAAAAAAAAAAAAAAAAAEQH/2gAMAwEAAhEDEQA/APn5JAkkCSQJUgSeLwEIuLMgHh4OZFMCM+LxpMCnzWDKZWZbT5inzIVhMr5bz5r+axKwmVmW/wCa+FhWHk+W/hPBCsPJ8t/CeSJWPk+W3g+Fi1j5Plv4TykGHlONrkPkgy4eNPJ8pFZcPGnk+SDlKllUU8XgIeCkWZEDxZBzA5hYVlMimG0+Y581iVhMCnzdGfkOfJYlc8+Y583RPmOYWDnnzHPm3mFmSKwnzFPm38nyqMfzPhtw8Bj4PlrxOAy8pctbAWAz4eCqBEmV8iihGdgbGlBRQWJYOhqAOHgkAPE4Iori4sg5kUwzBnMimWkwKYWIzmBzDSZHMtQZ5w0zgeYORUBMNM4WDygc/Mc+Y8wfEqxj5PB6BaUUp09UEQ+j6BaG03QLoBdToehulB2htDdBugFagerKAoIMEihoKKgoFKUqCUK0PRFKdPQDMimVgoCeV4ep1QUWA6KCDlFKCChVFK0zWcWIN87Ffow6l1UitNbBds7oPVRr7Ptl1OqNvZ9sOr0Gt0nWfVgD6G0pQTqdJkVD1ZT5PEWCml9Mz1FFaEPVgKG1QaoJaHpqCHp6h4A5VlDIOQU9K+U4IsjSQEHKKqwPVzUGmZ1rn59T4zru+Xzlibq5jkvyrLeOPU18pxxfbPOpmkcVMi6/1ctsp5Dctv8AgNFWM+FU6IqwPVlUHIbDKK1lpnxcw1c0RpMJcDzVqVqMLkPlvw+Skc9yGx03LLUWpGVDRaB1UTicF1OoJw8PT0B5jSQMFKirYCitDaCdPURUH0Waz6soO34647vl9Jx5ON8b4+3Gdxa9Pf1nHD99y9Bfv/P9c/0+nVzDdDvX9SbZa0H03GK6f0DdsfR9EK09JdA6nVhRelmmfVlCtpoXthKvpIVrdGaY+l6Ra6M7HNuWaHNM7i5ro9CmnPNCmki1tdMd6N0y3ozCh1QWm0LTK9TqIC9PoKA6V6Sw0eoSohJVCSVFlFLSRF9UGrSVRnQkqirCQKEgSSCkkCYSAoKEoqyihKKtZaJRWdQlUKEgiEg//9k=')">
+    <header style="background-image: url('data:image/webp;base64,UklGRvQBAABXRUJQVlA4IOgBAAAwEgCdASoaAWQAPtFiqVAqpTEmpNXq6iAaCWlu4Du6Dj+GAqrr8wIW5Teg5IfN/anrWeZFOsR28B+0b8d1DgDmbWFVvNfEidx7GT9s0ccPM0eALp4cWi0pDGyRI/HCLhdiv9iqNQV4/7ygMOPSPXAvEj0qTZaBRINrVLPhL+/yk7UAKw8wgan93HsFz5WwXohpO53LtU5YRAjAAP7znaUEwsCIOiRNWApXT0/pZrze+nZeejPzDIDobj3TEZ5lAeQmQ+2NbMOZHcl7m7sR3Y0W1n8RE80oWDFlJRyWNnnQmSHB7EaKrf7B23Hk75KqTJ+rebrI5BoGuyqjVPFELP2zcKjuS5Q8W424PixqEHgmgwBJw0ffPmFzlSypJYukyQdd0/XNFDDz171WqGXP09UrGDm7MIPLAzKU8BE70yLGUvUaPWEbEgL7/tVt5CDqgy5n+2t7RbiujotOtCrQ3k7B7s91qpS1k6On2aAA0haKzMduhYazJqmmn1oTxFtrEYDmkPxYAovLLGKJ8rtL7NXy25l0rO6xKRy9c3ynCd3s+dlTX5OAWqA02b+RRJaDlcD1LgMYlWzem3bZB3p6ZcZI7SHw3w/nrsI52T1adspcbf00czQ9d7/VxEhbA6BhKt6n3otSi+AAAA==')">
   
-    <div class="hero" style="background-image: url(/images/posts/i18n-multitenant.jpg)">
-      <h1>i18n Multitenancy: Customer-Specific Translations</h1>
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/i18n-multitenant.webp" type="image/webp">
+  <img src="/images/posts/i18n-multitenant.jpg" alt="i18n-multitenant.jpg" class="hero-bg">
+</picture>
+
+      <h1 class="hero-title">i18n Multitenancy: Customer-Specific Translations</h1>
     </div>
   
 </header>
@@ -137,8 +143,8 @@ barrier and reducing the resistance to change in large organizations.</p>
 that are available in most platforms.</p>
 
 <p>Just like we might allow a customer to switch between American or British
-variants of the English language (<code class="highlighter-rouge">en-US</code> and <code class="highlighter-rouge">en-UK</code>), we can create additional
-language-variants or locales for each customer or domain (<code class="highlighter-rouge">en-LAW</code>):</p>
+variants of the English language (<code class="language-plaintext highlighter-rouge">en-US</code> and <code class="language-plaintext highlighter-rouge">en-UK</code>), we can create additional
+language-variants or locales for each customer or domain (<code class="language-plaintext highlighter-rouge">en-LAW</code>):</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">en-LAW</span>
   <span class="s">customer</span><span class="pi">:</span> <span class="s">client</span>
@@ -147,7 +153,7 @@ language-variants or locales for each customer or domain (<code class="highlight
 <p>We can then use i18n fallbacks, so that any keys that are not defined in our
 domain-specific locale <em>fall back</em> to the usual definition in the language.</p>
 
-<p>In the example above, any users that have the <code class="highlighter-rouge">LAW</code> translation preset assigned
+<p>In the example above, any users that have the <code class="language-plaintext highlighter-rouge">LAW</code> translation preset assigned
 would see <em>“client”</em>, but other users might see <em>“customer”</em>.</p>
 
 <p>This allows us to achieve a nice balance between configurability and productivity.</p>
@@ -160,7 +166,7 @@ and it becomes easier to test all the different combinations in the application.
 
 <h3 id="a-solution-for-ruby-apps-">A solution for Ruby apps 💎</h3>
 
-<p>I have wrapped a Ruby solution as the <a href="https://github.com/ElMassimo/i18n_multitenant"><code class="highlighter-rouge">i18n_multitenant</code></a> gem.
+<p>I have wrapped a Ruby solution as the <a href="https://github.com/ElMassimo/i18n_multitenant"><code class="language-plaintext highlighter-rouge">i18n_multitenant</code></a> gem.
 Please <a href="https://github.com/ElMassimo/i18n_multitenant">check the readme</a> for a more thorough explanation of
 how language variants are used, and a few examples on how to organize
 translations in order to effectively implement the approach.</p>
@@ -168,14 +174,14 @@ translations in order to effectively implement the approach.</p>
 <h4 id="what-about-translations-in-the-browser">What about translations in the browser?</h4>
 
 <p>For single-page applications or other apps where it’s desirable to perform the
-translations in the browser, we can use a library such as <a href="https://github.com/fnando/i18n-js"><code class="highlighter-rouge">i18n-js</code></a>.</p>
+translations in the browser, we can use a library such as <a href="https://github.com/fnando/i18n-js"><code class="language-plaintext highlighter-rouge">i18n-js</code></a>.</p>
 
 <p>It’s possible to <a href="https://github.com/ElMassimo/i18n_multitenant#front-end_translations">configure it to use fallbacks</a>,
 allowing us to reuse the same translation files in the JS world.</p>
 
 <h3 id="summary">Summary</h3>
 
-<p><code class="highlighter-rouge">i18n</code> fallbacks provide a simple way to adapt the terminology used in our
+<p><code class="language-plaintext highlighter-rouge">i18n</code> fallbacks provide a simple way to adapt the terminology used in our
 software based on different domains and users needs, making it <em>feel more familiar</em>
 and easier to use <em>without restricting the software’s flexibility</em>.</p>
 
@@ -205,28 +211,30 @@ and easier to use <em>without restricting the software’s flexibility</em>.</p>
 
 
 
-  <div class="previous-post">
+  <a id="previous-post" href="/posts/mongoid-aggregation-dsl/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
     <div class="content container">
-      <a id="previous-post" href="/posts/mongoid-aggregation-dsl/" class="overlay">
-        <h1>Aggregation DSL in Mongoid</h1>
+      <a id="related-post" href="/posts/better-settings/" class="overlay">
+        <h1>Better Settings in Ruby apps</h1>
         <div class="post-info">
-  <span class="date">June 30, 2016</span>
-  <span class="reading-time">2 min read</span>
+  <span class="date">March 02, 2019</span>
+  <span class="reading-time">6 min read</span>
 </div>
 
         <div class="post">
-          <p><em>Mongoid</em> provides support for <span href="https://docs.mongodb.com/manual/core/aggregation-pipeline/"><em>MongoDB’s Aggregation Framework</em></span>, but writing raw queries can be confusing and is extremely verbose:</p>
+          <p><span href="%7B%7Bpage.github%7D%7D"><em>BetterSettings</em></span> is a settings-management library for Ruby apps, which was
+designed in response to certain issues we faced when using <span href="%7B%7Bpage.settingslogic%7D%7D"><em>settingslogic</em></span>
+(one of the most popular libraries to manage settings in Rails applications).</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Product</span><span class="p">.</span><span class="nf">collection</span><span class="p">.</span><span class="nf">aggregate</span> <span class="p">[</span>
-  <span class="p">{</span> <span class="s1">'$match'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'country'</span> <span class="o">=&gt;</span> <span class="s1">'US'</span> <span class="p">}</span> <span class="p">},</span>
-  <span class="p">{</span> <span class="s1">'$project'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'categories'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'price'</span> <span class="o">=&gt;</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
-  <span class="p">{</span> <span class="s1">'$unwind'</span> <span class="o">=&gt;</span> <span class="s1">'$category_ids'</span> <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="s1">'$group'</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="s1">'_id'</span> <span class="o">=&gt;</span> <span class="s1">'$category_ids'</span><span class="p">,</span>
-      <span class="s1">'avg_price'</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'$avg'</span> <span class="o">=&gt;</span> <span class="s1">'$price'</span> <span class="p">}</span>
-    <span class="p">}</span>
-  …</code></pre></div></div>
+<p>In this post we’ll talk about <em>settingslogic</em> and its design decisions, how they
+affect reliability, and how we can overcome them.</p>
+
+<p>Even if you are not familiar with these libraries, reading this article might
+help you to learn about potentially harmful practic…</p>
         </div>
       </a>
     </div>

@@ -15,4 +15,4 @@ export RACK_ENV
 # Boot the app and any other necessary processes.
 echo "\n== Starting server =="
 
-bin/jekyll serve --drafts "$@"
+bin/jekyll serve "$@"
