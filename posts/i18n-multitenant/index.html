@@ -138,7 +138,7 @@ barrier and reducing the resistance to change in large organizations.</p>
   <p>…fits right in with our usual flow.</p>
 </blockquote>
 
-<h3 id="using-i18n-fallbacks-">Using i18n fallbacks 🌎</h3>
+<h2 id="using-i18n-fallbacks-">Using i18n fallbacks 🌎</h2>
 
 <p>Fortunately, we can easily accomplish this by leveraging the existing i18n tools
 that are available in most platforms.</p>
@@ -165,14 +165,14 @@ almost effortless to dynamically customize the language used in the app.</p>
 <p>Dictionaries for different domains or specific customers can be added with ease,
 and it becomes easier to test all the different combinations in the application.</p>
 
-<h3 id="a-solution-for-ruby-apps-">A solution for Ruby apps 💎</h3>
+<h2 id="a-solution-for-ruby-apps-">A solution for Ruby apps 💎</h2>
 
 <p>I have wrapped a Ruby solution as the <a href="https://github.com/ElMassimo/i18n_multitenant"><code class="language-plaintext highlighter-rouge">i18n_multitenant</code></a> gem.
 Please <a href="https://github.com/ElMassimo/i18n_multitenant">check the readme</a> for a more thorough explanation of
 how language variants are used, and a few examples on how to organize
 translations in order to effectively implement the approach.</p>
 
-<h4 id="what-about-translations-in-the-browser">What about translations in the browser?</h4>
+<h3 id="what-about-translations-in-the-browser">What about translations in the browser?</h3>
 
 <p>For single-page applications or other apps where it’s desirable to perform the
 translations in the browser, we can use a library such as <a href="https://github.com/fnando/i18n-js"><code class="language-plaintext highlighter-rouge">i18n-js</code></a>.</p>
@@ -180,7 +180,7 @@ translations in the browser, we can use a library such as <a href="https://githu
 <p>It’s possible to <a href="https://github.com/ElMassimo/i18n_multitenant#front-end_translations">configure it to use fallbacks</a>,
 allowing us to reuse the same translation files in the JS world.</p>
 
-<h3 id="summary">Summary</h3>
+<h2 id="summary">Summary</h2>
 
 <p><code class="language-plaintext highlighter-rouge">i18n</code> fallbacks provide a simple way to adapt the terminology used in our
 software based on different domains and users needs, making it <em>feel more familiar</em>
@@ -254,8 +254,8 @@ if (document.location.hostname.search('maximomussini.com') !== -1) {
 }
 </script>
 
-<script src="/assets/js/anchors.js"></script>
-<script src="/assets/js/shortcuts.js"></script>
+<script src="/assets/js/anchors.js" async></script>
+<script src="/assets/js/shortcuts.js" async></script>
 
   </body>
 </html>

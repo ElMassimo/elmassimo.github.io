@@ -117,7 +117,7 @@ In this short post we will explore the keyword operator in Ruby, and a few thing
   <div class="post">
     <p>One of the nicest bits of syntax sugar in Ruby are <em>keywords</em> (<code class="language-plaintext highlighter-rouge">**</code> or <em>double-splat</em>).</p>
 
-<h4 id="keywords-in-method-parameters">Keywords in Method Parameters</h4>
+<h2 id="keywords-in-method-parameters">Keywords in Method Parameters</h2>
 
 <p>Just like the splat operator (<code class="language-plaintext highlighter-rouge">*args</code>) captures any parameters as an <code class="language-plaintext highlighter-rouge">Array</code> of
 arguments, the double-splat operator (<code class="language-plaintext highlighter-rouge">**attrs</code>) captures any option parameters
@@ -165,7 +165,7 @@ they learn the cause of this unintuitive message.</p>
 <p>Ruby handles keyword arguments differently in its internals, which unfortunately
 leaks into this error message.</p>
 
-<h4 id="merging-hashes-with-the-double-splat-operator">Merging Hashes with the Double-Splat operator</h4>
+<h2 id="merging-hashes-with-the-double-splat-operator">Merging Hashes with the Double-Splat operator</h2>
 
 <p>The double-splat operator can also be used to combine hashes. The order matters,
 when resolving duplicate keys, the rightmost ones will take priority.</p>
@@ -198,7 +198,7 @@ when resolving duplicate keys, the rightmost ones will take priority.</p>
 <p>This message used to be very cryptic like the one for keyword arguments, but it
 has improved a lot since the feature was first added 🎉</p>
 
-<h4 id="a-quick-note-about-rails">A quick note about Rails</h4>
+<h2 id="a-quick-note-about-rails">A quick note about Rails</h2>
 
 <p>When using Rails a developer might think:</p>
 
@@ -213,7 +213,7 @@ You may index it with <em>Symbol</em> keys but internally it uses <em>String</em
 <p>Fortunately, <code class="language-plaintext highlighter-rouge">symbolize_keys</code> is our friend here, allowing us to transform any
 Hash, such as HTTP parameters, to something we can pass as keyword arguments.</p>
 
-<h3 id="summary">Summary</h3>
+<h2 id="summary">Summary</h2>
 <p>So there you have it, <code class="language-plaintext highlighter-rouge">**</code> is to <code class="language-plaintext highlighter-rouge">Hash</code> what <code class="language-plaintext highlighter-rouge">*</code> is to <code class="language-plaintext highlighter-rouge">Array</code>, and is a very
 convenient tool to write shorter, expressive code.</p>
 
@@ -299,8 +299,8 @@ if (document.location.hostname.search('maximomussini.com') !== -1) {
 }
 </script>
 
-<script src="/assets/js/anchors.js"></script>
-<script src="/assets/js/shortcuts.js"></script>
+<script src="/assets/js/anchors.js" async></script>
+<script src="/assets/js/shortcuts.js" async></script>
 
   </body>
 </html>

@@ -130,7 +130,7 @@ approach to avoid duplication.</p>
 <p>Another weak spot is that dispatching actions feels very unnatural, and also
 requires specifying the <em>namespace string</em> as a prefix for the action name.</p>
 
-<h3 id="a-smoother-experience-">A smoother experience 🥃</h3>
+<h2 id="a-smoother-experience-">A smoother experience 🥃</h2>
 
 <p>The <a href="https://github.com/ElMassimo/vuex-stores"><code class="language-plaintext highlighter-rouge">vuex-stores</code></a> library helps you avoid these shortcomings
 by providing light wrappers around individual <a href="https://vuex.vuejs.org/guide/modules.html">Vuex store modules</a>,
@@ -142,7 +142,7 @@ properties, and dispatching actions easily by using plain method calls.</p>
 <p>As a result, it’s possible to leverage all the goodness in Vuex, using an
 <a href="https://github.com/ElMassimo/vuex-stores#api-%EF%B8%8F">elegant and convenient API</a>.</p>
 
-<h3 id="conventions-">Conventions 🔤</h3>
+<h2 id="conventions-">Conventions 🔤</h2>
 
 <p>In order to organize these store objects, an approach that works nicely is to:</p>
 
@@ -210,7 +210,7 @@ simple as <em>search and replace</em>).</p>
 
 <p>There are more code samples available in the <a href="https://github.com/ElMassimo/vuex-stores#api-%EF%B8%8F">documentation</a> 📖</p>
 
-<h3 id="code-splitting-️">Code Splitting ✂️</h3>
+<h2 id="code-splitting-️">Code Splitting ✂️</h2>
 
 <p>Store modules in Vuex can be <a href="https://vuex.vuejs.org/guide/modules.html#dynamic-module-registration">registered dynamically</a>,
 so internally <a href="https://github.com/ElMassimo/vuex-stores"><code class="language-plaintext highlighter-rouge">vuex-stores</code></a> leverages <code class="language-plaintext highlighter-rouge">registerModule</code> to
@@ -224,7 +224,7 @@ the code associated to a store object will only be loaded if needed.</p>
 using the conventions described above, code loading and execution will be
 optimized.</p>
 
-<h3 id="summary">Summary</h3>
+<h2 id="summary">Summary</h2>
 
 <p><a href="https://github.com/ElMassimo/vuex-stores"><code class="language-plaintext highlighter-rouge">vuex-stores</code></a> provides a simple way to work with <a href="https://vuex.vuejs.org/guide/modules.html">Vuex modules</a>
 by allowing you to define <em>store objects</em> to focus on one module at a time,
@@ -296,8 +296,8 @@ if (document.location.hostname.search('maximomussini.com') !== -1) {
 }
 </script>
 
-<script src="/assets/js/anchors.js"></script>
-<script src="/assets/js/shortcuts.js"></script>
+<script src="/assets/js/anchors.js" async></script>
+<script src="/assets/js/shortcuts.js" async></script>
 
   </body>
 </html>

@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.9.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2020-08-29T23:30:20-03:00</updated>
+  <updated>2020-08-29T23:51:55-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -43,7 +43,7 @@ approach to avoid duplication.&lt;/p&gt;
 &lt;p&gt;Another weak spot is that dispatching actions feels very unnatural, and also
 requires specifying the &lt;em&gt;namespace string&lt;/em&gt; as a prefix for the action name.&lt;/p&gt;
 
-&lt;h3 id=&quot;a-smoother-experience-&quot;&gt;A smoother experience 🥃&lt;/h3&gt;
+&lt;h2 id=&quot;a-smoother-experience-&quot;&gt;A smoother experience 🥃&lt;/h2&gt;
 
 &lt;p&gt;The &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; library helps you avoid these shortcomings
 by providing light wrappers around individual &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html&quot;&gt;Vuex store modules&lt;/a&gt;,
@@ -55,7 +55,7 @@ properties, and dispatching actions easily by using plain method calls.&lt;/p&gt
 &lt;p&gt;As a result, it’s possible to leverage all the goodness in Vuex, using an
 &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores#api-%EF%B8%8F&quot;&gt;elegant and convenient API&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h3 id=&quot;conventions-&quot;&gt;Conventions 🔤&lt;/h3&gt;
+&lt;h2 id=&quot;conventions-&quot;&gt;Conventions 🔤&lt;/h2&gt;
 
 &lt;p&gt;In order to organize these store objects, an approach that works nicely is to:&lt;/p&gt;
 
@@ -123,7 +123,7 @@ simple as &lt;em&gt;search and replace&lt;/em&gt;).&lt;/p&gt;
 
 &lt;p&gt;There are more code samples available in the &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores#api-%EF%B8%8F&quot;&gt;documentation&lt;/a&gt; 📖&lt;/p&gt;
 
-&lt;h3 id=&quot;code-splitting-️&quot;&gt;Code Splitting ✂️&lt;/h3&gt;
+&lt;h2 id=&quot;code-splitting-️&quot;&gt;Code Splitting ✂️&lt;/h2&gt;
 
 &lt;p&gt;Store modules in Vuex can be &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html#dynamic-module-registration&quot;&gt;registered dynamically&lt;/a&gt;,
 so internally &lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; leverages &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;registerModule&lt;/code&gt; to
@@ -137,7 +137,7 @@ the code associated to a store object will only be loaded if needed.&lt;/p&gt;
 using the conventions described above, code loading and execution will be
 optimized.&lt;/p&gt;
 
-&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/vuex-stores&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vuex-stores&lt;/code&gt;&lt;/a&gt; provides a simple way to work with &lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html&quot;&gt;Vuex modules&lt;/a&gt;
 by allowing you to define &lt;em&gt;store objects&lt;/em&gt; to focus on one module at a time,
@@ -192,7 +192,7 @@ work: documentation as a first-class citizen in our software development process
 &lt;p&gt;Documentation facilitates understanding, which is &lt;em&gt;vital&lt;/em&gt; to enable
 change and continuous improvement.&lt;/p&gt;
 
-&lt;h3 id=&quot;how-is-it-helpful-thinking&quot;&gt;How is it helpful? :thinking:&lt;/h3&gt;
+&lt;h2 id=&quot;how-is-it-helpful-thinking&quot;&gt;How is it helpful? :thinking:&lt;/h2&gt;
 
 &lt;p&gt;Traditionally, we aim to produce clean and maintainable code to make it more
 reliable, and write tests to protect it. We use good variable names, split
@@ -215,7 +215,7 @@ straightforward as possible: it will save us a lot of time and frustration down
 the line. Knowing the context will allow us to make informed decisions,
 which are &lt;em&gt;better&lt;/em&gt; decisions.&lt;/p&gt;
 
-&lt;h3 id=&quot;best-time-to-start-was-years-ago-second-best-time-is-now-hourglass&quot;&gt;Best time to start was years ago, second best time is now :hourglass:&lt;/h3&gt;
+&lt;h2 id=&quot;best-time-to-start-was-years-ago-second-best-time-is-now-hourglass&quot;&gt;Best time to start was years ago, second best time is now :hourglass:&lt;/h2&gt;
 
 &lt;p&gt;If we are to make our software easier to understand, and thus easier to change,
 we should &lt;strong&gt;&lt;em&gt;document our intent&lt;/em&gt;&lt;/strong&gt; in every possible way. Think about it as a
@@ -233,7 +233,7 @@ record then might be hopeless or painfully time-consuming to remember later.&lt;
 &lt;p&gt;The overhead of documenting on the spot is negligible, but the overall benefits
 are certainly not!&lt;/p&gt;
 
-&lt;h3 id=&quot;documenting-is-intrinsically-a-valuable-activity-moneybag&quot;&gt;Documenting is intrinsically a valuable activity :moneybag:&lt;/h3&gt;
+&lt;h2 id=&quot;documenting-is-intrinsically-a-valuable-activity-moneybag&quot;&gt;Documenting is intrinsically a valuable activity :moneybag:&lt;/h2&gt;
 
 &lt;p&gt;To get the best out of it, we should imagine we are someone else trying to
 understand our work. Which things will not be so obvious a few months from now?
@@ -252,7 +252,7 @@ someone actually reads the resulting documentation.&lt;/p&gt;
 It’s also useful to cross-reference classes and objects that interact with each
 other. Aim for the bigger picture, and work your way down as needed.&lt;/p&gt;
 
-&lt;h3 id=&quot;a-lightweight-approach-is-good-enough-zap&quot;&gt;A lightweight approach is good enough :zap:&lt;/h3&gt;
+&lt;h2 id=&quot;a-lightweight-approach-is-good-enough-zap&quot;&gt;A lightweight approach is good enough :zap:&lt;/h2&gt;
 
 &lt;p&gt;In practice, we’ve found that using a conventional but minimal
 &lt;a href=&quot;https://gist.github.com/ElMassimo/a118d08482d9db8e71d622e136f10155#which-format-to-use&quot;&gt;syntax&lt;/a&gt; for comments works well, and that it’s better to
@@ -278,7 +278,7 @@ convenient. Using &lt;em&gt;Goto Symbol&lt;/em&gt; or &lt;em&gt;Goto Definition&
   &lt;p&gt;Won’t the comments become outdated really quickly? :scream_cat:&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;version-control-to-the-rescue-&quot;&gt;Version control to the rescue! 🦸&lt;/h3&gt;
+&lt;h2 id=&quot;version-control-to-the-rescue-&quot;&gt;Version control to the rescue! 🦸&lt;/h2&gt;
 
 &lt;p&gt;More often than not, the core concepts in the software we write rarely change,
 so the documentation tends to be useful even when not entirely accurate.&lt;/p&gt;
@@ -296,7 +296,7 @@ invaluable amount of time when trying to understand past decisions.&lt;/p&gt;
 refactoring or removing code without fear of accidentally breaking the app, or
 going against an otherwise long-forgotten decision.&lt;/p&gt;
 
-&lt;h3 id=&quot;pull-requests-as-the-unit-of-change-&quot;&gt;Pull Requests as the unit of change 🧩&lt;/h3&gt;
+&lt;h2 id=&quot;pull-requests-as-the-unit-of-change-&quot;&gt;Pull Requests as the unit of change 🧩&lt;/h2&gt;
 
 &lt;p&gt;Usually in a team environment, the &lt;em&gt;pull request&lt;/em&gt; replaces the &lt;em&gt;commit&lt;/em&gt; as the &lt;em&gt;unit
 of change&lt;/em&gt;. Besides providing a platform for code review, pull requests are
@@ -312,7 +312,7 @@ easier to follow the work.&lt;/p&gt;
 later on, in addition to improving the communication and quality of the reviews.
 Two for one!&lt;/p&gt;
 
-&lt;h3 id=&quot;tldr-document-all-the-things-pencil2-book&quot;&gt;TL’DR: Document all the things! :pencil2: :book:&lt;/h3&gt;
+&lt;h2 id=&quot;tldr-document-all-the-things-pencil2-book&quot;&gt;TL’DR: Document all the things! :pencil2: :book:&lt;/h2&gt;
 
 &lt;p&gt;Code is read a lot more often than it’s written, which is why inline docs
 provide a great return for their tiny cost. Same can be said about writing
@@ -365,7 +365,7 @@ Read on to find out how a team that _documents their work_ is on a better path t
 
       &lt;p&gt;One of the nicest bits of syntax sugar in Ruby are &lt;em&gt;keywords&lt;/em&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;**&lt;/code&gt; or &lt;em&gt;double-splat&lt;/em&gt;).&lt;/p&gt;
 
-&lt;h4 id=&quot;keywords-in-method-parameters&quot;&gt;Keywords in Method Parameters&lt;/h4&gt;
+&lt;h2 id=&quot;keywords-in-method-parameters&quot;&gt;Keywords in Method Parameters&lt;/h2&gt;
 
 &lt;p&gt;Just like the splat operator (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*args&lt;/code&gt;) captures any parameters as an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array&lt;/code&gt; of
 arguments, the double-splat operator (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;**attrs&lt;/code&gt;) captures any option parameters
@@ -413,7 +413,7 @@ they learn the cause of this unintuitive message.&lt;/p&gt;
 &lt;p&gt;Ruby handles keyword arguments differently in its internals, which unfortunately
 leaks into this error message.&lt;/p&gt;
 
-&lt;h4 id=&quot;merging-hashes-with-the-double-splat-operator&quot;&gt;Merging Hashes with the Double-Splat operator&lt;/h4&gt;
+&lt;h2 id=&quot;merging-hashes-with-the-double-splat-operator&quot;&gt;Merging Hashes with the Double-Splat operator&lt;/h2&gt;
 
 &lt;p&gt;The double-splat operator can also be used to combine hashes. The order matters,
 when resolving duplicate keys, the rightmost ones will take priority.&lt;/p&gt;
@@ -446,7 +446,7 @@ when resolving duplicate keys, the rightmost ones will take priority.&lt;/p&gt;
 &lt;p&gt;This message used to be very cryptic like the one for keyword arguments, but it
 has improved a lot since the feature was first added 🎉&lt;/p&gt;
 
-&lt;h4 id=&quot;a-quick-note-about-rails&quot;&gt;A quick note about Rails&lt;/h4&gt;
+&lt;h2 id=&quot;a-quick-note-about-rails&quot;&gt;A quick note about Rails&lt;/h2&gt;
 
 &lt;p&gt;When using Rails a developer might think:&lt;/p&gt;
 
@@ -461,7 +461,7 @@ You may index it with &lt;em&gt;Symbol&lt;/em&gt; keys but internally it uses &l
 &lt;p&gt;Fortunately, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;symbolize_keys&lt;/code&gt; is our friend here, allowing us to transform any
 Hash, such as HTTP parameters, to something we can pass as keyword arguments.&lt;/p&gt;
 
-&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 &lt;p&gt;So there you have it, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;**&lt;/code&gt; is to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hash&lt;/code&gt; what &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*&lt;/code&gt; is to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array&lt;/code&gt;, and is a very
 convenient tool to write shorter, expressive code.&lt;/p&gt;
 
@@ -523,7 +523,7 @@ we are able to get cleaner diffs:&lt;/p&gt;
 &lt;p&gt;Notice how the same code change results in a drastically simpler diff: &lt;em&gt;adding
 or removing an item changes a single line, nothing more&lt;/em&gt;.&lt;/p&gt;
 
-&lt;h3 id=&quot;automation-&quot;&gt;Automation 🤖&lt;/h3&gt;
+&lt;h2 id=&quot;automation-&quot;&gt;Automation 🤖&lt;/h2&gt;
 &lt;p&gt;To make this practice effortless, we have modified the configuration of the
 static analysis tools (&lt;a href=&quot;https://github.com/rubocop-hq/rubocop&quot;&gt;&lt;em&gt;Rubocop&lt;/em&gt;&lt;/a&gt; and &lt;a href=&quot;https://eslint.org/&quot;&gt;&lt;em&gt;ESLint&lt;/em&gt;&lt;/a&gt;),
 to require trailing commas in multi-line literals.&lt;/p&gt;
@@ -551,7 +551,7 @@ forget; we don’t really need to think about it.&lt;/p&gt;
   &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;other-benefits-&quot;&gt;Other Benefits 👩‍💻👨‍💻&lt;/h3&gt;
+&lt;h2 id=&quot;other-benefits-&quot;&gt;Other Benefits 👩‍💻👨‍💻&lt;/h2&gt;
 
 &lt;p&gt;Reordering lines, or sorting them alphabetically with the help of an editor
 (like &lt;a href=&quot;https://www.sublimetext.com/&quot;&gt;&lt;em&gt;Sublime Text&lt;/em&gt;&lt;/a&gt;), will always result in valid code,
@@ -564,7 +564,7 @@ are actually removing the last line without a comma to add two lines.&lt;/p&gt;
 &lt;p&gt;Finally, tools like &lt;a href=&quot;https://git-scm.com/docs/git-blame&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git blame&lt;/code&gt;&lt;/a&gt; are more likely to display relevant commit
 information, rather than the commit that added the comma.&lt;/p&gt;
 
-&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Using trailing commas in multi-line literals results in code that is
 syntactically more stable to changes, and keeps a cleaner history in source control.&lt;/p&gt;
 
@@ -855,7 +855,7 @@ barrier and reducing the resistance to change in large organizations.&lt;/p&gt;
   &lt;p&gt;…fits right in with our usual flow.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;using-i18n-fallbacks-&quot;&gt;Using i18n fallbacks 🌎&lt;/h3&gt;
+&lt;h2 id=&quot;using-i18n-fallbacks-&quot;&gt;Using i18n fallbacks 🌎&lt;/h2&gt;
 
 &lt;p&gt;Fortunately, we can easily accomplish this by leveraging the existing i18n tools
 that are available in most platforms.&lt;/p&gt;
@@ -882,14 +882,14 @@ almost effortless to dynamically customize the language used in the app.&lt;/p&g
 &lt;p&gt;Dictionaries for different domains or specific customers can be added with ease,
 and it becomes easier to test all the different combinations in the application.&lt;/p&gt;
 
-&lt;h3 id=&quot;a-solution-for-ruby-apps-&quot;&gt;A solution for Ruby apps 💎&lt;/h3&gt;
+&lt;h2 id=&quot;a-solution-for-ruby-apps-&quot;&gt;A solution for Ruby apps 💎&lt;/h2&gt;
 
 &lt;p&gt;I have wrapped a Ruby solution as the &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i18n_multitenant&lt;/code&gt;&lt;/a&gt; gem.
 Please &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant&quot;&gt;check the readme&lt;/a&gt; for a more thorough explanation of
 how language variants are used, and a few examples on how to organize
 translations in order to effectively implement the approach.&lt;/p&gt;
 
-&lt;h4 id=&quot;what-about-translations-in-the-browser&quot;&gt;What about translations in the browser?&lt;/h4&gt;
+&lt;h3 id=&quot;what-about-translations-in-the-browser&quot;&gt;What about translations in the browser?&lt;/h3&gt;
 
 &lt;p&gt;For single-page applications or other apps where it’s desirable to perform the
 translations in the browser, we can use a library such as &lt;a href=&quot;https://github.com/fnando/i18n-js&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i18n-js&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -897,7 +897,7 @@ translations in the browser, we can use a library such as &lt;a href=&quot;https
 &lt;p&gt;It’s possible to &lt;a href=&quot;https://github.com/ElMassimo/i18n_multitenant#front-end_translations&quot;&gt;configure it to use fallbacks&lt;/a&gt;,
 allowing us to reuse the same translation files in the JS world.&lt;/p&gt;
 
-&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 
 &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i18n&lt;/code&gt; fallbacks provide a simple way to adapt the terminology used in our
 software based on different domains and users needs, making it &lt;em&gt;feel more familiar&lt;/em&gt;
@@ -1073,7 +1073,7 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
 
 &lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@@animals&lt;/code&gt; &lt;em&gt;class variable&lt;/em&gt; is &lt;strong&gt;shared&lt;/strong&gt; among subclasses, and we can refer to it by using the same syntax from both class and instance methods.&lt;/p&gt;
 
-&lt;h3 id=&quot;limitations-of-class-variables&quot;&gt;Limitations of Class Variables&lt;/h3&gt;
+&lt;h2 id=&quot;limitations-of-class-variables&quot;&gt;Limitations of Class Variables&lt;/h2&gt;
 &lt;p&gt;Now, what happens if we wanted to do something different, like storing metadata or configuration in each subclass?&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
