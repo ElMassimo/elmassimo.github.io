@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.9.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2020-08-29T22:44:37-03:00</updated>
+  <updated>2020-08-29T23:30:20-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -23,7 +23,8 @@
     <id>http://maximomussini.com/posts/vuex-stores</id>
     <content type="html" xml:base="http://maximomussini.com/posts/vuex-stores/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/vuex-stores.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
@@ -180,7 +181,8 @@ Read on to find out how to leverage all the goodness in Vuex using a more natura
     <id>http://maximomussini.com/posts/documentation-is-a-great-investment</id>
     <content type="html" xml:base="http://maximomussini.com/posts/documentation-is-a-great-investment/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/documentation-is-a-great-investment.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
@@ -356,7 +358,8 @@ Read on to find out how a team that _documents their work_ is on a better path t
     <id>http://maximomussini.com/posts/ruby-double-splat-keywords</id>
     <content type="html" xml:base="http://maximomussini.com/posts/ruby-double-splat-keywords/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-double-splat-keywords.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
@@ -497,7 +500,8 @@ In this short post we will explore the keyword operator in Ruby, and a few thing
     <id>http://maximomussini.com/posts/trailing-commas</id>
     <content type="html" xml:base="http://maximomussini.com/posts/trailing-commas/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/trailing-commas.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
@@ -511,7 +515,8 @@ arrays and hash (object in JS) literals.&lt;/p&gt;
 we are able to get cleaner diffs:&lt;/p&gt;
 
 &lt;picture&gt;
-  &lt;source srcset=&quot;/images/posts/trailing-commas/standard-vs-trailing.webp&quot; type=&quot;image/webp&quot; /&gt;
+  &lt;source srcset=&quot;/images/posts/trailing-commas/standard-vs-trailing.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot; /&gt;
+  &lt;source srcset=&quot;/images/posts/trailing-commas/standard-vs-trailing-500.webp&quot; type=&quot;image/webp&quot; /&gt;
   &lt;img src=&quot;/images/posts/trailing-commas/standard-vs-trailing.png&quot; alt=&quot;Standard vs Trailing&quot; class=&quot;&quot; /&gt;
 &lt;/picture&gt;
 
@@ -597,7 +602,8 @@ practice. It’s been great so far 😃&lt;/p&gt;
     <id>http://maximomussini.com/posts/better-settings</id>
     <content type="html" xml:base="http://maximomussini.com/posts/better-settings/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/better-settings.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
@@ -824,7 +830,8 @@ collaboration and source-control, and prevents bugs.&lt;/p&gt;
     <id>http://maximomussini.com/posts/i18n-multitenant</id>
     <content type="html" xml:base="http://maximomussini.com/posts/i18n-multitenant/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/i18n-multitenant.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
@@ -924,7 +931,8 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
     <id>http://maximomussini.com/posts/mongoid-aggregation-dsl</id>
     <content type="html" xml:base="http://maximomussini.com/posts/mongoid-aggregation-dsl/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/mongoid-aggregation-dsl.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
@@ -1024,7 +1032,8 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
     <id>http://maximomussini.com/posts/ruby-class-variables</id>
     <content type="html" xml:base="http://maximomussini.com/posts/ruby-class-variables/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-class-variables.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
@@ -1178,7 +1187,8 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
     <id>http://maximomussini.com/posts/angular-less-watchers</id>
     <content type="html" xml:base="http://maximomussini.com/posts/angular-less-watchers/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/angular-less-watchers.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
@@ -1285,7 +1295,8 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
     <id>http://maximomussini.com/posts/cucumber-to_or_not_to</id>
     <content type="html" xml:base="http://maximomussini.com/posts/cucumber-to_or_not_to/">
       &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 

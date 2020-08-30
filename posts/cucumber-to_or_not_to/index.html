@@ -33,7 +33,7 @@ Not only is it boring to write steps like this: it also has the downside of intr
 <link rel="preconnect" href="//fonts.googleapis.com">
 <link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=2" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -84,9 +84,10 @@ Not only is it boring to write steps like this: it also has the downside of intr
   
     <div class="hero">
       <picture>
-  <source srcset="/images/posts/cucumber-to_or_not_to.webp" type="image/webp">
+  <source srcset="/images/posts/cucumber-to_or_not_to.webp" type="image/webp" media="(min-width: 600px)">
+  <source srcset="/images/posts/cucumber-to_or_not_to-500.webp" type="image/webp">
   <img src="/images/posts/cucumber-to_or_not_to.jpg" alt="cucumber-to_or_not_to.jpg" class="hero-bg">
-</source></picture>
+</source></source></picture>
 
       <h1 class="hero-title">Positive-Negative Assertions in Cucumber</h1>
     </div>

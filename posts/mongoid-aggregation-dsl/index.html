@@ -34,7 +34,7 @@ Product.collection.aggregate [
 <link rel="preconnect" href="//fonts.googleapis.com">
 <link rel="preconnect" href="//www.google-analytics.com">
 <link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/css/styles.css?v=1" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=2" media="screen, projection">
 
 <!-- Icons -->
 <link rel="shortcut icon" href="/favicon.ico">
@@ -87,9 +87,10 @@ Product.collection.aggregate [
   
     <div class="hero">
       <picture>
-  <source srcset="/images/posts/mongoid-aggregation-dsl.webp" type="image/webp">
+  <source srcset="/images/posts/mongoid-aggregation-dsl.webp" type="image/webp" media="(min-width: 600px)">
+  <source srcset="/images/posts/mongoid-aggregation-dsl-500.webp" type="image/webp">
   <img src="/images/posts/mongoid-aggregation-dsl.jpg" alt="mongoid-aggregation-dsl.jpg" class="hero-bg">
-</source></picture>
+</source></source></picture>
 
       <h1 class="hero-title">Aggregation DSL in Mongoid</h1>
     </div>
