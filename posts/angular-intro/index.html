@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  AngularJS: Watchers and the Digest Cycle · Máximo Mussini
+
+</title>
+
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="AngularJS might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through Angular’s internals: watchers and the digest cycle.
+">
+<meta name="keywords" content="angular">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+<meta name="theme-color" content="#5C7E8F" />
+
+<!-- Styles -->
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.rel='stylesheet'" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=4" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="icon" sizes="192x192" href="/icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/angular-intro/">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="AngularJS: Watchers and the Digest Cycle">
+<meta property="og:image" content="http://maximomussini.com/images/posts/angular-intro.jpg">
+<meta property="og:description" content="AngularJS might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through Angular’s internals: watchers and the digest cycle.
+">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="AngularJS: Watchers and the Digest Cycle" />
+<meta name="twitter:description" value="AngularJS might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through Angular’s internals: watchers and the digest cycle.
+" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/angular-intro.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/angular-intro/" />
+
+  </head>
+  <body>
+    <header style="background-image: url('data:image/webp;base64,UklGRkQCAABXRUJQVlA4IDgCAACwFQCdASoaAWQAPtFmqk+/r60iJ/hJG/AaCWVu3a0BGd0VoT7fuJk33AWVFucHLLku95Yr5UMMa139BAJbmlkkgCaGB6RCVDjRIbpD+nzeJy/8H2ELuHQ+wcCeK+JudiCk/U439gRctSvMdvbbg35J3hO/iMRJt47S5jCB4i/mAUxlIXdxIL0PR1zd2ifEkIxxrAxqv2Mc7ltdBg1oyPFitAA0e5QB0uEEsH3YhVwEUpI+iO9yAAD+7tTfrjN+vHD/+N4/t3/t34v4oWrjoRRDFyQ/mLs8DVPiXGU03gCtScWtA0S7s9tGK+T45y0/sbc/qAVTcGvuaoQKBaWkCvNq5FFdJQPT9bj50+H2M1BSSS884q3fGncylG4qhITjC9dR4MndAtY1KM7khHLcDcGFA+Ei1fS6Og5IZ4rG9/seuqXbsHbOH9IVwQTYIOhndU3eaMH067TYFzwiqGoU8EOBI2jgt/6t4d6Sm2s/aqkEcr1M2PTI5inIb+L2XbaA4C43TWs7OUV5riFIJ8tLSA6wSQbegGHpR78AJc+wulquVkwEv/z8jwT8e94j7qi4W0pwsnwaTua92OKdDItGou1hZOLbOebHjXyHm9HJdUWflZJU5mBYE/xSN5lBI+2yWkWGIZ0J2HWimZQJ7pyyEozoVC5AsGwalD8gtlD02VbegUwb9NDkiSxasr9beDS9GmmCTmoXwAIME5Neii3rwqsMKnIAE/8UliH+D9MnUelTVfOcTSiBUAAA')">
+  
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/angular-intro.webp" type="image/webp" media="(min-width: 600px)">
+  <source srcset="/images/posts/angular-intro-500.webp" type="image/webp">
+  <img src="/images/posts/angular-intro.jpg" alt="angular-intro.jpg" class="hero-bg">
+</source></source></picture>
+
+      <h1 class="hero-title">AngularJS: Watchers and the Digest Cycle</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr>
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">March 29, 2016</span>
+  <span class="reading-time">5 min read</span>
+</div>
+
+
+  <div class="post">
+    <p><em>AngularJS</em> might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through <em>Angular</em>’s internals: watchers and the digest cycle.</p>
+
+<h2 id="bindings-and-watchers">Bindings and Watchers</h2>
+<p>One of the most useful features in <em>AngularJS</em> are data-bindings, which allow us to bind a model or property to a view; whenever the model changes, the view is updated automatically.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;input</span> <span class="na">ng-model=</span><span class="s">"user.name"</span> <span class="na">type=</span><span class="s">"text"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;h1&gt;</span>{{ user.name }}<span class="nt">&lt;/h1&gt;</span>
+</code></pre></div></div>
+
+<p>How does that work? When you write an expression like <code class="language-plaintext highlighter-rouge">{{ user.name }}</code>, <em>Angular</em> creates a <em>watcher</em> that observes the <code class="language-plaintext highlighter-rouge">user.name</code> property, which will be triggered whenever the model changes, allowing <em>Angular</em> to update the view content.</p>
+
+<p>We can also create watchers manually and execute arbitrary code when the model changes:</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">$scope</span><span class="p">.</span><span class="nx">$watch</span><span class="p">(</span><span class="dl">'</span><span class="s1">user.name</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newName</span><span class="p">,</span> <span class="nx">oldName</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">user.name changed from</span><span class="dl">'</span><span class="p">,</span> <span class="nx">oldName</span><span class="p">,</span> <span class="dl">'</span><span class="s1">to</span><span class="dl">'</span><span class="p">,</span> <span class="nx">newName</span><span class="p">);</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>The first argument passed to <code class="language-plaintext highlighter-rouge">$watch</code> is known as the <em>model</em>, and the second argument is the <em>listener</em> function, which is called whenever the model (or more precisely, value of the watched expression) changes.</p>
+
+<p>Now that we know what watchers can do for us, let’s dig a bit deeper and learn how they work. How does <em>Angular</em> figure out when <code class="language-plaintext highlighter-rouge">user.name</code> changed in order to call the <em>listener</em>?</p>
+
+<h2 id="the-watch-list-and-dirty-checking">The Watch List and Dirty Checking</h2>
+
+<p>Each time a watcher is created, <em>Angular</em> adds the expression to a <em>watch list</em> to track changes. <em>Angular</em> will walk down the watch list from time to time and resolve each watcher through a process called <em>dirty checking</em>:</p>
+
+<ul>
+  <li>Keep the last value for each watched expression.</li>
+  <li>Evaluate the expression: if the value is the same than the last one continue down the watch list.</li>
+  <li>If the value is different the expression is <strong>dirty</strong>, so propagate the change by calling each <em>listener</em> with the old and the new value.</li>
+  <li>Once the change has been synchronized across the app, replace the last value with the new value.</li>
+  <li>Continue to the next expression in the watch list.</li>
+</ul>
+
+<blockquote>
+  <p>For every UI element that is bound to a $scope object, a watch is created and added to the <em>watch list</em>, which is checked on every digest loop.</p>
+</blockquote>
+
+<h2 id="repeat-the-digest-cycle">
+<img class="emoji" title=":repeat:" alt=":repeat:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f501.png" height="20" width="20"> The Digest Cycle</h2>
+<p>And it’s in the <a href="https://docs.angularjs.org/api/ng/type/%24rootScope.Scope#%24digest"><code class="language-plaintext highlighter-rouge">$digest</code></a> cycle where every watcher in the watch list is evaluated, and the changes propagated to the <em>listeners</em>.</p>
+
+<p>This cycle starts as a result of a call to <code class="language-plaintext highlighter-rouge">$scope.$digest()</code>, which often happens as a result of an action performed by the user. For example, clicking an element with the <code class="language-plaintext highlighter-rouge">ng-click</code> directive will explicitly call <code class="language-plaintext highlighter-rouge">$scope.$digest()</code> and start the loop.</p>
+
+<p>Once the cycle starts, it will go through the <em>watch list</em>, propagating changes to <em>listeners</em> as needed.</p>
+
+<blockquote>
+  <p>There are many <em>Angular</em> directives and services that will automatically trigger a digest cycle, such as <code class="language-plaintext highlighter-rouge">ng-model</code> and <code class="language-plaintext highlighter-rouge">$timeout</code>.</p>
+</blockquote>
+
+<h2 id="crown-keep-calm-and-digest">
+<img class="emoji" title=":crown:" alt=":crown:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f451.png" height="20" width="20"> Keep Calm and Digest</h2>
+<p>Once <em>Angular</em> has run through the entire watch list, if any value changed, it will start a new digest cycle until no model is changed and no watchers are triggered.</p>
+
+<p>Why does it run the loop all over again? Because any <code class="language-plaintext highlighter-rouge">$watch</code> listener could change the value of an expression that was evaluated earlier in the digest loop, so <em>Angular</em> wouldn’t be able to detect and propagate that change.</p>
+
+<p>Remember that <em>Angular</em> uses dirty-checking as a way to determine if the watched expression changed, so the only way to guarantee all changes are propagated is to go through the <em>watch list</em> again and check that no values were changed during the previous digest cycle.</p>
+
+<p>This means that the digest loop will run a minimum of two times, even when <em>listeners</em> don’t change any models.</p>
+
+<blockquote>
+  <p>Minimize changes to watched models when inside listener functions, each change could trigger an extra digest loop.</p>
+</blockquote>
+
+<p>If the loop runs ten times or more, <em>Angular</em> will throw an exception to prevent a possible infinite loop, which would make the app unusable.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Because of the nature of <em>Angular</em>’s internals, it’s very important to minimize the amount of watchers in order to keep the digest cycle fast.</p>
+
+<p>At the same time, it’s important to ensure that our application doesn’t trigger more digest cycles than necessary, since each loop requires evaluating every watcher in the list.</p>
+
+<p>While watchers are a very useful feature, the digest cycle implementation takes a brute force approach, which makes it almost magical at times, but is inefficient and can cause performance problems in complex applications.</p>
+
+<p>In the next post, we will take a look at some techniques that help to reduce the amount of watchers and improve the performance of our app. Stay tuned! <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20"></p>
+
+  </div>
+
+  <div class="ending">
+  <a href="/" class="logo">
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo">
+</a>
+
+  <span>by</span>
+  <a href="https://twitter.com/MaximoMussini" class="author-name">Máximo<span class="last-name"> Mussini</span></a>
+  <a class="twitter-share-button" href="//twitter.com/intent/tweet?original_referer=http://maximomussini.com/posts/angular-intro/&amp;ref_src=twsrc%5Etfw&amp;text=AngularJS:%20Watchers%20and%20the%20Digest%20Cycle%20%C2%B7%20M%C3%A1ximo%20Mussini&amp;tw_p=tweetbutton&amp;url=http://maximomussini.com/posts/angular-intro/&amp;via=MaximoMussini" rel="noopener" target="_blank"><i class="twitter-icon"></i><span class="twitter-label">Tweet</span></a>
+
+</div>
+
+</div>
+
+
+
+  <a id="next-post" href="/posts/angular-less-watchers/" class="hidden"></a>
+
+
+
+
+  <a id="previous-post" href="/posts/cucumber-to_or_not_to/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
+    <div class="content container">
+      <a id="related-post" href="/posts/angular-less-watchers/" class="overlay">
+        <h1>Optimizing AngularJS performance with events</h1>
+        <div class="post-info">
+  <span class="date">April 15, 2016</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+        <div class="post">
+          <p>Like we saw in the <span href="%7B%7B%20page.previous.url%20%7D%7D">previous post</span>, <em>AngularJS</em> uses watchers to detect changes, allowing it to update views as needed. <em>Angular</em> will create a watcher for every expression that we add to our templates using data-bindings, <code class="language-plaintext highlighter-rouge">ng-repeat</code>, or similar directives.</p>
+
+<p>As we learned, each time a watcher is created <em>Angular</em> will add the expression to a <span href="%7B%7B%20page.previous.url%20%7D%7D#the-watch-list-and-dirty-checking"><em>watch list</em></span>, which is then iterated during each digest cycle to evaluate every expression and detect changes. Th…</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js" async></script>
+<script src="/assets/js/shortcuts.js" async></script>
+
+  </body>
+</html>

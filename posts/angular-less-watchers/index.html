@@ -109,9 +109,9 @@
 
 
   <div class="post">
-    <p>Like we saw in the <a href="/posts/cucumber-to_or_not_to/">previous post</a>, <em>AngularJS</em> uses watchers to detect changes, allowing it to update views as needed. <em>Angular</em> will create a watcher for every expression that we add to our templates using data-bindings, <code class="language-plaintext highlighter-rouge">ng-repeat</code>, or similar directives.</p>
+    <p>Like we saw in the <a href="/posts/angular-intro/">previous post</a>, <em>AngularJS</em> uses watchers to detect changes, allowing it to update views as needed. <em>Angular</em> will create a watcher for every expression that we add to our templates using data-bindings, <code class="language-plaintext highlighter-rouge">ng-repeat</code>, or similar directives.</p>
 
-<p>As we learned, each time a watcher is created <em>Angular</em> will add the expression to a <a href="/posts/cucumber-to_or_not_to/#the-watch-list-and-dirty-checking"><em>watch list</em></a>, which is then iterated during each digest cycle to evaluate every expression and detect changes. That means, the more watchers are registered, the more <em>Angular</em> has to process during <a href="/posts/cucumber-to_or_not_to/#repeat-the-digest-cycle">the digest cycle</a>.</p>
+<p>As we learned, each time a watcher is created <em>Angular</em> will add the expression to a <a href="/posts/angular-intro/#the-watch-list-and-dirty-checking"><em>watch list</em></a>, which is then iterated during each digest cycle to evaluate every expression and detect changes. That means, the more watchers are registered, the more <em>Angular</em> has to process during <a href="/posts/angular-intro/#repeat-the-digest-cycle">the digest cycle</a>.</p>
 
 <p>In pages that have many components—such as long lists and grids—the amount of watchers can be very high, which can negatively affect the performance of our app and make it feel unresponsive.</p>
 
@@ -210,32 +210,25 @@
 
 
 
-  <a id="previous-post" href="/posts/cucumber-to_or_not_to/" class="hidden"></a>
+  <a id="previous-post" href="/posts/angular-intro/" class="hidden"></a>
 
 
 
 
   <div class="related-post">
     <div class="content container">
-      <a id="related-post" href="/posts/cucumber-to_or_not_to/" class="overlay">
-        <h1>Positive-Negative Assertions in Cucumber</h1>
+      <a id="related-post" href="/posts/angular-intro/" class="overlay">
+        <h1>AngularJS: Watchers and the Digest Cycle</h1>
         <div class="post-info">
-  <span class="date">February 03, 2016</span>
-  <span class="reading-time">3 min read</span>
+  <span class="date">March 29, 2016</span>
+  <span class="reading-time">5 min read</span>
 </div>
 
         <div class="post">
-          <p><span href="https://github.com/cucumber/cucumber-ruby"><em>Cucumber</em></span> steps often involve asserting a condition or the opposite of it. For example:</p>
+          <p><em>AngularJS</em> might not be hip anymore, but it’s still a useful framework to create interactive web apps. In this post we will take a brief tour through <em>Angular</em>’s internals: watchers and the digest cycle.</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span><span class="p">(</span><span class="sr">/^I should see a "(.*?)" comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
-  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">).</span><span class="nf">to</span> <span class="n">have_css</span><span class="p">(</span><span class="s1">'li.comment'</span><span class="p">,</span> <span class="ss">text: </span><span class="n">message</span><span class="p">)</span>
-<span class="k">end</span>
-
-<span class="no">Then</span><span class="p">(</span><span class="sr">/^I should not see a "(.*?)" comment$/</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">message</span><span class="o">|</span>
-  <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="p">).</span><span class="nf">not_to</span> <span class="n">have_css</span><span class="p">(</span><span class="s1">'li.comment'</span><span class="p">,</span> <span class="ss">text: </span><span class="n">message</span><span class="p">)</span>
-<span class="k">end</span></code></pre></figure>
-
-<p>Not only is it boring to write steps like this: it also has the downside of introducing duplication into…</p>
+<h2 id="bindings-and-watchers">Bindings and Watchers</h2>
+<p>One of the most useful features in <em>AngularJS</em> are d…</p>
         </div>
       </a>
     </div>

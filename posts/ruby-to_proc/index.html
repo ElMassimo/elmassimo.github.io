@@ -139,7 +139,7 @@
   <p>Huh? <img class="emoji" title=":confused:" alt=":confused:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f615.png" height="20" width="20"></p>
 </blockquote>
 
-<p>It turns out the <em>magic</em> is in how Ruby defines <code class="language-plaintext highlighter-rouge">to_proc</code> for symbols. In recent versions of Ruby, the method is <a href="http://ruby-doc.org/core-2.2.3/Symbol.html#method-i-to_proc">defined in C</a>, but it would look like this in Ruby:</p>
+<p>It turns out the <em>magic</em> is in how Ruby defines <code class="language-plaintext highlighter-rouge">to_proc</code> for symbols. In recent versions of Ruby, the method is <a href="https://ruby-doc.org/core/Symbol.html#method-i-to_proc">defined in C</a>, but it would look like this in Ruby:</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Symbol</span>
   <span class="k">def</span> <span class="nf">to_proc</span>

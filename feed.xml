@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.9.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2020-08-30T01:34:31-03:00</updated>
+  <updated>2020-10-29T13:40:38-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -12,6 +12,146 @@
     <name>Máximo Mussini</name>
     <email>maximomussini@gmail.com</email>
   </author>
+
+  <entry>
+    <title>Generating a JS API from Rails Routes</title>
+    <link href="http://maximomussini.com/posts/js-from-routes/" rel="alternate" type="text/html" title="Generating a JS API from Rails Routes" />
+    <published>2020-06-22T00:00:00-03:00</published>
+  
+    <updated>2020-06-22T00:00:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/js-from-routes</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/js-from-routes/">
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/js-from-routes.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
+      &lt;p&gt;One idea I’ve always appreciated about the routing approach in Rails is &lt;strong&gt;path helpers&lt;/strong&gt;, which are automatically generated from route definitions.&lt;/p&gt;
+
+&lt;p&gt;Some advantages of using path helpers are:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;There’s no need to take care of manually interpolating ids and parameters to
+build a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt; URL.&lt;/li&gt;
+  &lt;li&gt;Any change to the route definition affects the helper, so if a route is
+removed or modified, the path helper is no longer available.&lt;/li&gt;
+  &lt;li&gt;Code that uses an outdated path helper causes a runtime error, which can be
+detected by integration or unit tests, instead of rendering a path that would
+end up in a 404, like it would happen when using manual string interpolation.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;path-helpers-in-js&quot;&gt;Path Helpers in JS&lt;/h2&gt;
+&lt;p&gt;Traditionally, frontend code in Rails replicates the path structure as defined in the backend, hardcoding the paths for every endpoint that needs to be accessed, and specifying HTTP verbs as needed (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;POST&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PATCH&lt;/code&gt;).&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/search&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;query&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This approach is very cumbersome, and it is possible to introduce typos, or
+make mistakes like choosing the wrong HTTP verb (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PUT&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PATCH&lt;/code&gt;, and so on).&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;We could avoid these problems if we had path helpers in JS.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;While some tools that allowed to expose path helpers to JS already existed, they were created when &lt;a href=&quot;https://github.com/rails/sprockets&quot;&gt;sprockets&lt;/a&gt; was &lt;em&gt;the&lt;/em&gt; way to compile frontend assets in Rails, long before the &lt;a href=&quot;https://github.com/rails/webpacker&quot;&gt;Webpack&lt;/a&gt; era.&lt;/p&gt;
+
+&lt;p&gt;I wanted a solution that provided an enjoyable front-end development experience. One that could leverage Webpack loaders and aliases, and was based on ES6 modules to allow tree-shaking, was easy to inspect, and where changes could be tracked under version control.&lt;/p&gt;
+
+&lt;p&gt;And that’s why I created &lt;a href=&quot;https://github.com/ElMassimo/js_from_routes&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JsFromRoutes&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;shaping-the-vision-&quot;&gt;Shaping the Vision ✨&lt;/h3&gt;
+&lt;p&gt;From a developer’s UX perspective, the goal was to simplify how to make &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API&quot;&gt;requests&lt;/a&gt; to a Rails API.&lt;/p&gt;
+
+&lt;p&gt;This meant not thinking about paths, parameter interpolation, nor HTTP verbs. Just plain function calls and promises.&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;UsersRequests&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;@requests/UsersRequests&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;UsersRequests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;email&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;These functions would be automatically generated from the Rails route definitions. The generation process should be transparent, and happen automatically as routes are added and the application is reloaded.&lt;/p&gt;
+
+&lt;p&gt;For maintainability, as well as for tree-shaking purposes, it was desirable to do a simple mapping: &lt;em&gt;one request object per controller&lt;/em&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;@services/ApiService&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/users/search&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/users&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;destroy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/users/:id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Delegating the actual request to an existing service would allow to keep the generated code lean. Any changes or improvements could then be made on the service itself, without having to regenerate the code. For example, switching from &lt;a href=&quot;https://github.com/axios/axios&quot;&gt;axios&lt;/a&gt; to &lt;a href=&quot;https://github.com/developit/redaxios&quot;&gt;redaxios&lt;/a&gt;, or to the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API&quot;&gt;fetch API&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;generating-js-from-rails-routes-️&quot;&gt;Generating JS from Rails Routes ⚙️&lt;/h3&gt;
+
+&lt;p&gt;Although the routes DSL in Rails wasn’t designed for inspection purposes, it does provide
+the necessary metadata: the name of the endpoints, the HTTP verbs, and the paths including named parameters.&lt;/p&gt;
+
+&lt;p&gt;By doing some slight processing to the information in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Rails.application.routes&lt;/code&gt;, and combining that with an ERB template, we are able to generate the JS functions we need.&lt;/p&gt;
+
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import { request } from '@services/ApiService'
+
+export default {
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each_with_index&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;helper&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;: options =&amp;gt;
+    request('&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;verb&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;', '&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;', options),
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;automating-the-flow-&quot;&gt;Automating the Flow 🤖&lt;/h3&gt;
+&lt;p&gt;Why trigger the generation manually? Let the machines do it 😃&lt;/p&gt;
+
+&lt;p&gt;By adding a hook to Rails’ reload process in development, we can automatically
+generate files from routes when a route is added, modified, or removed.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;ActiveSupport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Reloader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_prepare&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;JsFromRoutes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;generate!&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In order to optimize file generation, we split the generated JS files by
+controller, and add a cache key based on the routes to avoid rewriting the file
+if the route definition hasn’t changed.&lt;/p&gt;
+
+&lt;p&gt;When the Webpack development server is running, this automatically triggers a
+new build, and our request method or path helper is ready to be used!&lt;/p&gt;
+
+&lt;h3 id=&quot;the-gem-&quot;&gt;The Gem 💎&lt;/h3&gt;
+
+&lt;p&gt;The flow described above is now available through the &lt;a href=&quot;https://github.com/ElMassimo/js_from_routes&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;js_from_routes&lt;/code&gt;&lt;/a&gt; gem. The library provides additional configuration options, &lt;a href=&quot;https://github.com/ElMassimo/js_from_routes&quot;&gt;visit the readme&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;p&gt;This approach has similar benefits to path helpers in Rails:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;No need to manually specify the URL, preventing mistakes and saving development time.&lt;/li&gt;
+  &lt;li&gt;If an action is renamed or removed, the helper ceases to exist, which causes an error that is easier to detect than a 404.&lt;/li&gt;
+  &lt;li&gt;The HTTP verb is embedded in the helper, so it’s transparent for the client code. Changing the verb in the route causes the JS code to be regenerated, no need to update the consumers!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/js_from_routes&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;js_from_routes&lt;/code&gt;&lt;/a&gt; allows to automatically generate path and API helpers from Rails route definitions, allowing you to save development effort and focus on the things that matter.&lt;/p&gt;
+
+&lt;p&gt;Since introducing this tool, we have saved a lot of time that we would have
+spent writing boilerplate code, avoided a lot of mistakes like typos and
+interpolation errors, and made the front-end development experience more
+enjoyable 😃&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/js-from-routes.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+  </entry>
 
   <entry>
     <title>Store Objects for Vuex</title>
@@ -608,7 +748,7 @@ practice. It’s been great so far 😃&lt;/p&gt;
 &lt;/picture&gt;
 
       &lt;p&gt;&lt;a href=&quot;https://github.com/ElMassimo/better_settings&quot;&gt;&lt;em&gt;BetterSettings&lt;/em&gt;&lt;/a&gt; is a settings-management library for Ruby apps, which was
-designed in response to certain issues we faced when using &lt;a href=&quot;https://github.com/hashrocket/settingslogic&quot;&gt;&lt;em&gt;settingslogic&lt;/em&gt;&lt;/a&gt;
+designed in response to certain issues we faced when using &lt;a href=&quot;https://github.com/settingslogic/settingslogic&quot;&gt;&lt;em&gt;settingslogic&lt;/em&gt;&lt;/a&gt;
 (one of the most popular libraries to manage settings in Rails applications).&lt;/p&gt;
 
 &lt;p&gt;In this post we’ll talk about &lt;em&gt;settingslogic&lt;/em&gt; and its design decisions, how they
@@ -1192,9 +1332,9 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
   &lt;img src=&quot;http://maximomussini.com/images/posts/angular-less-watchers.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
 &lt;/picture&gt;
 
-      &lt;p&gt;Like we saw in the &lt;a href=&quot;/posts/cucumber-to_or_not_to/&quot;&gt;previous post&lt;/a&gt;, &lt;em&gt;AngularJS&lt;/em&gt; uses watchers to detect changes, allowing it to update views as needed. &lt;em&gt;Angular&lt;/em&gt; will create a watcher for every expression that we add to our templates using data-bindings, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ng-repeat&lt;/code&gt;, or similar directives.&lt;/p&gt;
+      &lt;p&gt;Like we saw in the &lt;a href=&quot;/posts/angular-intro/&quot;&gt;previous post&lt;/a&gt;, &lt;em&gt;AngularJS&lt;/em&gt; uses watchers to detect changes, allowing it to update views as needed. &lt;em&gt;Angular&lt;/em&gt; will create a watcher for every expression that we add to our templates using data-bindings, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ng-repeat&lt;/code&gt;, or similar directives.&lt;/p&gt;
 
-&lt;p&gt;As we learned, each time a watcher is created &lt;em&gt;Angular&lt;/em&gt; will add the expression to a &lt;a href=&quot;/posts/cucumber-to_or_not_to/#the-watch-list-and-dirty-checking&quot;&gt;&lt;em&gt;watch list&lt;/em&gt;&lt;/a&gt;, which is then iterated during each digest cycle to evaluate every expression and detect changes. That means, the more watchers are registered, the more &lt;em&gt;Angular&lt;/em&gt; has to process during &lt;a href=&quot;/posts/cucumber-to_or_not_to/#repeat-the-digest-cycle&quot;&gt;the digest cycle&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As we learned, each time a watcher is created &lt;em&gt;Angular&lt;/em&gt; will add the expression to a &lt;a href=&quot;/posts/angular-intro/#the-watch-list-and-dirty-checking&quot;&gt;&lt;em&gt;watch list&lt;/em&gt;&lt;/a&gt;, which is then iterated during each digest cycle to evaluate every expression and detect changes. That means, the more watchers are registered, the more &lt;em&gt;Angular&lt;/em&gt; has to process during &lt;a href=&quot;/posts/angular-intro/#repeat-the-digest-cycle&quot;&gt;the digest cycle&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;In pages that have many components—such as long lists and grids—the amount of watchers can be very high, which can negatively affect the performance of our app and make it feel unresponsive.&lt;/p&gt;
 
@@ -1282,112 +1422,6 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
   
   
     <summary>In this post we take a look at effective ways to reduce the amount of watchers in our _AngularJS_ application and improve the performance of our app.</summary>
-  
-  </entry>
-
-  <entry>
-    <title>Positive-Negative Assertions in Cucumber</title>
-    <link href="http://maximomussini.com/posts/cucumber-to_or_not_to/" rel="alternate" type="text/html" title="Positive-Negative Assertions in Cucumber" />
-    <published>2016-02-03T15:34:00-03:00</published>
-  
-    <updated>2016-02-03T15:34:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/cucumber-to_or_not_to</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/cucumber-to_or_not_to/">
-      &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
-  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
-  &lt;img src=&quot;http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
-&lt;/picture&gt;
-
-      &lt;p&gt;&lt;a href=&quot;https://github.com/cucumber/cucumber-ruby&quot;&gt;&lt;em&gt;Cucumber&lt;/em&gt;&lt;/a&gt; steps often involve asserting a condition or the opposite of it. For example:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'li.comment'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;text: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should not see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'li.comment'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;text: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Not only is it boring to write steps like this: it also has the downside of introducing duplication into our test steps. If the DOM changes, we are forced to update both steps.&lt;/p&gt;
-
-&lt;p&gt;Even worse, if the DOM changes and we forget to update the negative assertion, it will always pass since the element doesn’t even exist!&lt;/p&gt;
-
-&lt;p&gt;Let’s give it another shot, but this time we will encapsulate the DOM references:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;have_css&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'li.comment'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;text: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should not see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;The code is easier to read, and we solved a potential maintainability issue, nice! It’s possible to add a little touch of regular expressions to combine both steps into one:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should( not)? see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;not_to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;If we write &lt;em&gt;“should not see”&lt;/em&gt; then the group will match and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;should_not&lt;/code&gt; variable will contain &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot; not&quot;&lt;/code&gt;. If we write &lt;em&gt;“should see”&lt;/em&gt; then the group won’t capture anything and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;should_not&lt;/code&gt; will be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nil&lt;/code&gt;. This allows us to make a simple conditional check.&lt;/p&gt;
-
-&lt;p&gt;We can leverage Ruby’s expressiveness and take it a bit further:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should( not)? see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;send&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;should_not&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:not_to&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Shorter, but not necessarily easier to understand. Fortunately, we can create our own custom RSpec matcher to encapsulate this pattern and make it easier to reuse and understand:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# features/support/to_or.rb&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;PositiveNegativeExpectationHandler&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_or&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matcher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Expectations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ExpectationTarget&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;PositiveNegativeExpectationHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Finally, we are able to express the step in a very concise and readable way:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^I should( not)? see a &quot;(.*?)&quot; comment$/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have_comment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;No magic here :tophat:, just clever naming :rabbit:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;to_or&lt;/code&gt; has been a very helpful addition to our projects, allowing us to write simple steps that read like English.&lt;/p&gt;
-
-&lt;p&gt;You can copy the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PositiveNegativeExpectationHandler&lt;/code&gt; to a support file in your project, like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;features/support/to_or.rb&lt;/code&gt;, and start using it right away :smiley:&lt;/p&gt;
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/cucumber-to_or_not_to.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
-    <category term="rails" />
-  
-    <category term="testing" />
-  
-    <category term="cucumber" />
-  
   
   </entry>
 
