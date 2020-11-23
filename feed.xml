@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.9.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2020-10-29T13:40:38-03:00</updated>
+  <updated>2020-11-22T21:58:19-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -681,6 +681,9 @@ forget; we don’t really need to think about it.&lt;/p&gt;
   &lt;span class=&quot;na&quot;&gt;EnforcedStyleForMultiline&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;comma&lt;/span&gt;
 
 &lt;span class=&quot;s&quot;&gt;Style/TrailingCommaInHashLiteral&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;EnforcedStyleForMultiline&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;comma&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;Style/TrailingCommaInArguments&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
   &lt;span class=&quot;na&quot;&gt;EnforcedStyleForMultiline&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;comma&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
