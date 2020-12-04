@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.9.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2020-12-01T16:17:17-03:00</updated>
+  <updated>2020-12-04T19:09:50-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -12,6 +12,147 @@
     <name>Máximo Mussini</name>
     <email>maximomussini@gmail.com</email>
   </author>
+
+  <entry>
+    <title>What is the Singleton Class in Ruby?</title>
+    <link href="http://maximomussini.com/posts/understanding-the-singleton-class/" rel="alternate" type="text/html" title="What is the Singleton Class in Ruby?" />
+    <published>2020-12-04T00:00:00-03:00</published>
+  
+    <updated>2020-12-04T00:00:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/understanding-the-singleton-class</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/understanding-the-singleton-class/">
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/understanding-the-singleton-class.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
+      &lt;p&gt;The &lt;em&gt;singleton class&lt;/em&gt;, also referred to as the &lt;em&gt;metaclass&lt;/em&gt; or the &lt;em&gt;eigenclass&lt;/em&gt;. What is it exactly?&lt;/p&gt;
+
+&lt;p&gt;Let’s begin by discussing the &lt;strong&gt;main purpose&lt;/strong&gt; of metaclasses in Ruby.&lt;/p&gt;
+
+&lt;h2 id=&quot;classes-and-method-dispatching&quot;&gt;Classes and Method Dispatching&lt;/h2&gt;
+
+&lt;p&gt;In Ruby, everything is an &lt;em&gt;object&lt;/em&gt;, and every object has a &lt;em&gt;class&lt;/em&gt;, which defines the &lt;em&gt;methods&lt;/em&gt; the object can respond to.&lt;/p&gt;
+
+&lt;p&gt;These two statements also apply to classes, which is what makes it possible for classes in Ruby to have their own instance variables and to receive methods.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
+  &lt;span class=&quot;vi&quot;&gt;@description&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'A multicellular eukaryotic organism.'&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;description&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@description&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; &quot;A multicellular eukaryotic organism.&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In contrast with other languages, in Ruby what we usually refer to as &lt;em&gt;class methods&lt;/em&gt; are simply &lt;em&gt;instance methods&lt;/em&gt; of a class object.&lt;/p&gt;
+
+&lt;p&gt;Now, if a class in Ruby is an object, and every object has a class which defines its methods, then a class in Ruby &lt;em&gt;has a class which defines its methods&lt;/em&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; Class&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt; defined those methods, then they would be available for any class object.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# NoMethodError (undefined method `description' for Integer:Class)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;How does Ruby pull it off then?&lt;/p&gt;
+
+&lt;h2 id=&quot;the-metaclass-of-a-class&quot;&gt;The Metaclass of a Class&lt;/h2&gt;
+
+&lt;p&gt;Ruby deals with it by giving every &lt;em&gt;object&lt;/em&gt; its own unique class, which defines the methods available for that object. Its very own &lt;em&gt;&lt;strong&gt;metaclass&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The metaclass is called the &lt;a href=&quot;https://en.wikipedia.org/wiki/Singleton_pattern&quot;&gt;&lt;em&gt;singleton class&lt;/em&gt;&lt;/a&gt; because there is &lt;em&gt;one single instance&lt;/em&gt; of it.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_class&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; #&amp;lt;Class:Animal&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This class is hidden in the inheritance chain (it doesn’t show up when calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ancestors&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;class&lt;/code&gt; returns &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt;), but we can think of it as &lt;em&gt;&lt;strong&gt;the first ancestor&lt;/strong&gt;&lt;/em&gt; when it comes to dispatching methods.&lt;/p&gt;
+
+&lt;p&gt;When calling a method on an object, Ruby will perform the method lookup by first checking on the object’s &lt;em&gt;metaclass&lt;/em&gt;, before traversing the rest of the method chain.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_methods&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; [:description]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Just like instance methods are defined in a class, class methods are defined in the &lt;em&gt;metaclass&lt;/em&gt; of a class object.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;This design enables Ruby to share the same dispatch mechanism for class methods: &lt;em&gt;&lt;strong&gt;internally all methods are instance methods&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;the-metaclass-hierarchy&quot;&gt;The Metaclass Hierarchy&lt;/h2&gt;
+
+&lt;p&gt;In the diagram below we can see that each class has a corresponding &lt;em&gt;metaclass&lt;/em&gt;, which is where their respective &lt;em&gt;class methods&lt;/em&gt; are defined.&lt;/p&gt;
+
+&lt;picture&gt;
+  &lt;source srcset=&quot;/images/posts/understanding-the-singleton-class/the-metaclass-hierarchy.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot; /&gt;
+  &lt;source srcset=&quot;/images/posts/understanding-the-singleton-class/the-metaclass-hierarchy-500.webp&quot; type=&quot;image/webp&quot; /&gt;
+  &lt;img src=&quot;/images/posts/understanding-the-singleton-class/the-metaclass-hierarchy.jpg&quot; alt=&quot;Diagram of the Metaclass Hierarchy&quot; class=&quot;&quot; /&gt;
+&lt;/picture&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The inheritance chain of metaclasses is what allows to inherit and override class methods and call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;super&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And that is the main purpose of metaclasses in Ruby.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-metaclass-of-an-object&quot;&gt;The Metaclass of an Object&lt;/h2&gt;
+
+&lt;p&gt;Notice how the instance also has its own metaclass: &lt;em&gt;classes are just a particular kind of object&lt;/em&gt;. When we call a method on an instance, Ruby will also look in its metaclass first.&lt;/p&gt;
+
+&lt;p&gt;Let’s see a few examples of how we can use the metaclass to define methods that are specific to a particular instance.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;animal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;other_animal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;animal&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;bark&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'Woof'&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;animal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;greet&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;'hi'&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;define_singleton_method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:roar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Rawr!'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;bark&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; &quot;Woof&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;greet&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; &quot;Hi&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;roar&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; &quot;Rawr!&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_methods&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; [:bark, :roar, :greet]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;instance_methods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; [:bark, :roar, :greet]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;other_animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;bark&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# NoMethodError (undefined method `bark' for #&amp;lt;Animal&amp;gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;other_animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_methods&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; []&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You will certainly recognize the first two patterns, they use the same syntax that is typically used with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;self&lt;/code&gt; to define &lt;em&gt;class methods&lt;/em&gt;!&lt;/p&gt;
+
+&lt;p&gt;Once again, &lt;em&gt;classes are just a particular kind of object&lt;/em&gt;. And yet, unlike classes, modifying the behavior of a particular object is rarely used in practice.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;em&gt;next post&lt;/em&gt;, I’ll share a few useful applications of this pattern, stay tuned!&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/understanding-the-singleton-class.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+  
+    <summary>The _singleton class_, also referred to as the _metaclass_ or the _eigenclass_. What is it exactly?
+In this post we dive into Ruby's internals to demistify this aspect of the language.</summary>
+  
+  </entry>
 
   <entry>
     <title>Generating a JS API from Rails Routes</title>
@@ -1317,114 +1458,6 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
   
     <category term="language" />
   
-  
-  </entry>
-
-  <entry>
-    <title>Optimizing AngularJS performance with events</title>
-    <link href="http://maximomussini.com/posts/angular-less-watchers/" rel="alternate" type="text/html" title="Optimizing AngularJS performance with events" />
-    <published>2016-04-15T20:38:00-03:00</published>
-  
-    <updated>2016-04-15T20:38:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/angular-less-watchers</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/angular-less-watchers/">
-      &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
-  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
-  &lt;img src=&quot;http://maximomussini.com/images/posts/angular-less-watchers.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
-&lt;/picture&gt;
-
-      &lt;p&gt;Like we saw in the &lt;a href=&quot;/posts/angular-intro/&quot;&gt;previous post&lt;/a&gt;, &lt;em&gt;AngularJS&lt;/em&gt; uses watchers to detect changes, allowing it to update views as needed. &lt;em&gt;Angular&lt;/em&gt; will create a watcher for every expression that we add to our templates using data-bindings, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ng-repeat&lt;/code&gt;, or similar directives.&lt;/p&gt;
-
-&lt;p&gt;As we learned, each time a watcher is created &lt;em&gt;Angular&lt;/em&gt; will add the expression to a &lt;a href=&quot;/posts/angular-intro/#the-watch-list-and-dirty-checking&quot;&gt;&lt;em&gt;watch list&lt;/em&gt;&lt;/a&gt;, which is then iterated during each digest cycle to evaluate every expression and detect changes. That means, the more watchers are registered, the more &lt;em&gt;Angular&lt;/em&gt; has to process during &lt;a href=&quot;/posts/angular-intro/#repeat-the-digest-cycle&quot;&gt;the digest cycle&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In pages that have many components—such as long lists and grids—the amount of watchers can be very high, which can negatively affect the performance of our app and make it feel unresponsive.&lt;/p&gt;
-
-&lt;p&gt;In this post we will take a look at two techniques that can help us mitigate this problem and speed up our applications.&lt;/p&gt;
-
-&lt;h2 id=&quot;one-time-bindings&quot;&gt;One-Time Bindings&lt;/h2&gt;
-&lt;p&gt;One of the most convenient techniques that we have to reduce the amount of watchers is the use of &lt;em&gt;one-time bindings&lt;/em&gt;. Any expression that starts with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;::&lt;/code&gt; is considered a &lt;em&gt;one-time expression&lt;/em&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ng-repeat=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user in ::users&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;{{ ::user.name }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;em&gt;Angular&lt;/em&gt; will remove a &lt;em&gt;one-time expression&lt;/em&gt; from the watch list once it has been &lt;a href=&quot;https://docs.angularjs.org/guide/expression#value-stabilization-algorithm&quot;&gt;resolved&lt;/a&gt;, unlike normal expressions which are evaluated on every digest cycle.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;If the expression will not change once set, it is a candidate for one-time binding. For example, internationalization :uk: :es:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;As a result, we have less expressions being watched, which makes the digest loop faster, increases the responsiveness of the app, and allows more information to be displayed at the same time.&lt;/p&gt;
-
-&lt;p&gt;Using one-time bindings is an easy and effective way to reduce the amount of watchers, but there’s a catch. &lt;em&gt;Angular&lt;/em&gt; won’t detect changes on each digest cycle and update the view, which makes them only suitable for values that won’t change.&lt;/p&gt;
-
-&lt;h2 id=&quot;recompiling-with-events&quot;&gt;Recompiling with Events&lt;/h2&gt;
-&lt;p&gt;What about expressions with a value that might change, yet remain the same most of the time? It’s a waste to evaluate them on every digest cycle, but we can’t just use one-time expressions since the value might eventually change.&lt;/p&gt;
-
-&lt;p&gt;A technique that I have been using in pages where performance is critical is &lt;em&gt;event-driven recompilation&lt;/em&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;recompile-on=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user:changed&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;{{ ::user.name }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This technique has three key aspects: one-time expressions, compilation, and event propagation. Let’s see how the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;recompileOn&lt;/code&gt; directive could be written:&lt;/p&gt;
-
-&lt;div class=&quot;language-coffeescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Public: Recompiles an element if an event occurs.&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# NOTE: Do not use in combination with ng-if or ng-repeat, unless a one-time&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# binding is used in the expression.&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;directive&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'recompileOn'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;directive&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;priority&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;restrict&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'A'&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;compile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;outerHTML&lt;/span&gt;
-
-      &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;# Internal: Will trigger a recompilation if the event is triggered.&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;recompileOnEvent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eventName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-          &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;$on&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;eventName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;# Remove the previously added listener, if any.&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;removeListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-            &lt;span class=&quot;c1&quot;&gt;# Replace the element after the digest loop that triggered the event has ended.&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;$evalAsync&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-              &lt;span class=&quot;nx&quot;&gt;newEl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;$parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-              &lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;replaceWith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newEl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-              &lt;span class=&quot;c1&quot;&gt;# Destroy the old scope, since a new one was created by using compile.&lt;/span&gt;
-              &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;$destroy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-        &lt;span class=&quot;nx&quot;&gt;removeListener&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;recompileOnEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;attrs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;recompileOn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;The directive will listen for a particular event on the current &lt;em&gt;scope&lt;/em&gt;, and force a recompilation of the element when the event is triggered. This means that every directive inside the element will be processed from scratch, including our &lt;em&gt;one-time expressions&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Events can be triggered as usual:&lt;/p&gt;
-
-&lt;div class=&quot;language-coffeescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;$scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;$broadcast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'user:changed'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;One-time bindings provide a very efficient way to render dynamic values once without taking up watchers, while &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$on&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$compile&lt;/code&gt; provide a helpful way to render from scratch when we need to. This combination works very well for complex pages where the amount of watchers is taking a toll on performance.&lt;/p&gt;
-
-&lt;p&gt;There are many variations that we can introduce to the implementation of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;recompileOn&lt;/code&gt;, such as allowing to pass several event names, or checking the event arguments for a specific value, such as an id. We can take this idea as far as we want to :rocket:&lt;/p&gt;
-
-&lt;p&gt;As with any optimization, it’s important to consider whether the performance improvement justifies the additional complexity. Use it wisely!&lt;/p&gt;
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/angular-less-watchers.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
-    <category term="angular" />
-  
-  
-    <summary>In this post we take a look at effective ways to reduce the amount of watchers in our _AngularJS_ application and improve the performance of our app.</summary>
   
   </entry>
 
