@@ -4,7 +4,7 @@
   <generator uri="http://jekyllrb.com" version="3.9.0">Jekyll</generator>
   <link href="http://maximomussini.com/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://maximomussini.com/" rel="alternate" type="text/html" />
-  <updated>2020-12-04T19:09:50-03:00</updated>
+  <updated>2020-12-06T19:21:52-03:00</updated>
   <id>http://maximomussini.com/</id>
   <title>Máximo Mussini</title>
   <subtitle>Thoughts about development and product design.</subtitle>
@@ -12,6 +12,296 @@
     <name>Máximo Mussini</name>
     <email>maximomussini@gmail.com</email>
   </author>
+
+  <entry>
+    <title>Practical Applications of the Singleton Class in Ruby</title>
+    <link href="http://maximomussini.com/posts/practical-applications-of-the-singleton-class/" rel="alternate" type="text/html" title="Practical Applications of the Singleton Class in Ruby" />
+    <published>2020-12-06T00:00:00-03:00</published>
+  
+    <updated>2020-12-06T00:00:00-03:00</updated>
+  
+    <id>http://maximomussini.com/posts/practical-applications-of-the-singleton-class</id>
+    <content type="html" xml:base="http://maximomussini.com/posts/practical-applications-of-the-singleton-class/">
+      &lt;picture&gt;
+  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
+  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
+  &lt;img src=&quot;http://maximomussini.com/images/posts/practical-applications-of-the-singleton-class.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
+&lt;/picture&gt;
+
+      &lt;p&gt;In the &lt;a href=&quot;/posts/understanding-the-singleton-class&quot;&gt;previous post&lt;/a&gt;, we discussed how the &lt;em&gt;singleton class&lt;/em&gt; powers class methods in Ruby, and how every object instance has &lt;a href=&quot;/posts/understanding-the-singleton-class&quot;&gt;&lt;em&gt;its own&lt;/em&gt; singleton class&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this post, we will cover a few practical usages of the &lt;em&gt;singleton class&lt;/em&gt; as a way to modify the behavior of a particular object.&lt;/p&gt;
+
+&lt;h2 id=&quot;adding-methods-and-mixins&quot;&gt;Adding Methods and Mixins&lt;/h2&gt;
+
+&lt;p&gt;Since the &lt;em&gt;singleton class&lt;/em&gt; of an object is specific to it, we can add methods to it, remove methods, or include modules, all without affecting other instances.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;When calling a method on an object, Ruby will first look into its singleton class to find it, before traversing the rest of the &lt;a href=&quot;/posts/understanding-the-singleton-class/#the-metaclass-hierarchy&quot;&gt;method chain&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;defining-singleton-methods&quot;&gt;Defining Singleton Methods&lt;/h3&gt;
+
+&lt;p&gt;Let’s cover a few of the syntaxes we can use to define methods for a specific object.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;define_singleton_method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;'Alice'&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;define_method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:to_s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; in &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;location&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;'Wonderland'&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;inspect&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;to_s&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;inspect&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; &quot;Alice in Wonderland: #&amp;lt;Object:0x00007fe7b5071238&amp;gt;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The last two syntaxes should be familiar, we usually use them inside a class definition with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;self&lt;/code&gt; as the receiver (inside the class definition &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;self&lt;/code&gt; is the class object).&lt;/p&gt;
+
+&lt;p&gt;These four different ways of defining a method are equivalent, each one is defining a &lt;em&gt;&lt;strong&gt;singleton method&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A &lt;em&gt;&lt;strong&gt;singleton method&lt;/strong&gt;&lt;/em&gt; is a method defined in the &lt;em&gt;singleton class&lt;/em&gt; of an object.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As we saw in the &lt;a href=&quot;/posts/understanding-the-singleton-class&quot;&gt;previous post&lt;/a&gt;, class methods are simply &lt;em&gt;singleton methods&lt;/em&gt; of a class object, which explains why the same syntaxes can be used with a different receiver: they do &lt;em&gt;the same thing&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;adding-mixins-to-the-singleton-class&quot;&gt;Adding Mixins to the Singleton Class&lt;/h3&gt;
+
+&lt;p&gt;We are not limited to adding or overriding methods, we can also work with modules.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Greeting&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;introduce&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;Hey, I'm &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;NiceGreeting&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;introduce&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;, nice to meet you!&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Greeting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;NiceGreeting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;introduce&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; &quot;Hey, I'm Alice, nice to meet you!&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ancestors&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; [#&amp;lt;Class:#&amp;lt;Object:...&amp;gt;&amp;gt;, NiceGreeting, Greeting, ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The example above illustrates how &lt;a href=&quot;/posts/understanding-the-singleton-class/#the-metaclass-hierarchy&quot;&gt;module inheritance&lt;/a&gt; works when dealing with the &lt;em&gt;singleton class&lt;/em&gt;. Using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extend&lt;/code&gt; is like &lt;em&gt;including&lt;/em&gt; a module in the &lt;em&gt;singleton class&lt;/em&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extend&lt;/code&gt; on an object will make the module methods available on &lt;em&gt;that&lt;/em&gt; object. In a class definition the object is implicit: &lt;em&gt;the &lt;a href=&quot;/posts/understanding-the-singleton-class/#the-metaclass-of-a-class&quot;&gt;class object&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;practical-applications&quot;&gt;Practical Applications&lt;/h2&gt;
+
+&lt;p&gt;Let’s now dive into a few scenarios where all of this flexibility becomes useful.&lt;/p&gt;
+
+&lt;h3 id=&quot;test-doubles-and-method-stubbing&quot;&gt;Test Doubles and Method Stubbing&lt;/h3&gt;
+
+&lt;p&gt;A &lt;em&gt;test double&lt;/em&gt; is any object that stands in for a real object during a test. &lt;a href=&quot;https://github.com/rspec/rspec-mocks&quot;&gt;Some libraries&lt;/a&gt; allow to easily create doubles, and stub some of their methods:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;book&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;instance_double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Book'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;pages: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;236&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;book&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pages&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; 236&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A &lt;em&gt;method stub&lt;/em&gt; is an instruction to an object to return a known value in response to a message:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;allow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;book&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;receive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Free Play'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;book&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; &quot;Free Play&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Most libraries implement both of these features by leveraging the &lt;em&gt;singleton class&lt;/em&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Let’s see how we might be able to implement a very simplistic version of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;double&lt;/code&gt;, which returns an object that can respond to the specified methods:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;method_stubs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;tap&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;instance_variable_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'@name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;method_stubs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;define_singleton_method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;book&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Book'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;pages: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;236&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;title: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Free Play'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;book&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pages&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; 236&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;book&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; &quot;Free Play&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;By using &lt;a href=&quot;https://ruby-doc.org/core-2.7.2/Object.html#method-i-define_singleton_method&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;define_singleton_method&lt;/code&gt;&lt;/a&gt; we can create a test double that conforms to the provided options, without having to use temporary classes or structs, nor affecting other object instances.&lt;/p&gt;
+
+&lt;h3 id=&quot;rspec-example-group-methods&quot;&gt;RSpec Example Group Methods&lt;/h3&gt;
+
+&lt;p&gt;When writing tests with RSpec, it’s a good practice to keep helpers and state as local as possible. A typical way to do that is to include helpers only for certain types of tests.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EmailSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Helpers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;type: :controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Behind the scenes, RSpec will leverage the &lt;em&gt;singleton class&lt;/em&gt; of a specific example group to include the module, without affecting other test scenarios.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;before&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:each&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;type: :controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;example_group_instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EmailSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Helpers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We can use this to our advantage as a way to define scenario-specific methods as well:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;before&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:each&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:as&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;example_group_instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;define_singleton_method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:current_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;instance_exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:as&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;feature&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Visiting a page'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;before&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sign_in_as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;current_user&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'can visit the page as a user'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'can visit the page as an admin'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;as: &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Admin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Check &lt;a href=&quot;https://github.com/ElMassimo/capybara_test_helpers/blob/367fdb898f9c02059dc54f2351a3a46f72cffac8/lib/capybara_test_helpers/rspec.rb#L24&quot;&gt;this example&lt;/a&gt; in the &lt;a href=&quot;https://github.com/ElMassimo/capybara_test_helpers&quot;&gt;&lt;em&gt;Capybara Test Helpers&lt;/em&gt;&lt;/a&gt; library, which uses it to &lt;a href=&quot;https://capybara-test-helpers.netlify.app/guide/essentials/injection.html#test-helpers-in-rspec&quot;&gt;inject test helpers&lt;/a&gt; using a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:test_helpers&lt;/code&gt; option.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;feature&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Cities'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;scenario&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'adding a city'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;test_helpers: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:cities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;visit_page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:cities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;name: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Minneapolis'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;should&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;have_city&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Minneapolis'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;custom-cache-keys&quot;&gt;Custom Cache Keys&lt;/h3&gt;
+
+&lt;p&gt;When using Rails’ cache, &lt;a href=&quot;https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L435-L445&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fetch_multi&lt;/code&gt;&lt;/a&gt; supports passing a list of keys, which will be yielded to the block in order to calculate the value to cache.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache_key_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch_multi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;What if we need the item instead of the key in order to calculte the value to cache?&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;items_by_cache_key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;index_by&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache_key_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;cache_keys&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;items_by_cache_key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;keys&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch_multi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cache_keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;items_by_cache_key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Quite awkward. However, &lt;a href=&quot;https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L435-L445&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fetch_multi&lt;/code&gt;&lt;/a&gt; also supports passing a list of objects, in which case it will call &lt;a href=&quot;https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L649-L653&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cache_key&lt;/code&gt;&lt;/a&gt; on the objects to &lt;a href=&quot;https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L649-L653&quot;&gt;obtain the cache keys&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch_multi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;But what if the items don’t respond to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cache_key&lt;/code&gt;?&lt;/p&gt;
+
+&lt;p&gt;We can leverage &lt;a href=&quot;https://ruby-doc.org/core-2.7.2/Object.html#method-i-define_singleton_method&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;define_singleton_method&lt;/code&gt;&lt;/a&gt; to define it differently for each item:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;define_singleton_method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:cache_key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache_key_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch_multi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Check &lt;a href=&quot;https://github.com/ElMassimo/oj_serializers/blob/385aea5d97c477be9ff121edd622974a861877af/lib/oj_serializers/serializer.rb#L269&quot;&gt;this example&lt;/a&gt; in the &lt;a href=&quot;https://github.com/ElMassimo/oj_serializers&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;oj_serializers&lt;/code&gt;&lt;/a&gt; library, which &lt;a href=&quot;https://github.com/ElMassimo/oj_serializers/blob/385aea5d97c477be9ff121edd622974a861877af/lib/oj_serializers/serializer.rb#L262&quot;&gt;defines&lt;/a&gt; a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cache_key&lt;/code&gt; &lt;em&gt;singleton method&lt;/em&gt; for each object, so that they can be passed to &lt;a href=&quot;https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L649-L653&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fetch_multi&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;ad-hoc-validations-in-rails&quot;&gt;Ad Hoc Validations in Rails&lt;/h2&gt;
+
+&lt;p&gt;Let’s imagine that we have a file upload API, and we are running an integrity check on save.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;FileIntegrityValidation&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;extend&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveSupport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Concern&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;included&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;validate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'is corrupt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;corrupt?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;corrupt?&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;What if we need to run the validation conditionally based on a setting that is not accesible from the model?&lt;/p&gt;
+
+&lt;p&gt;We can leverage the &lt;em&gt;singleton class&lt;/em&gt; to define the validation conditionally:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Api::FilesController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Api&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;BaseController&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:file_upload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;file_upload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;FileIntegrityValidation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;check_file_integrity?&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file_upload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;save&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The &lt;a href=&quot;https://github.com/ElMassimo/resourcerer&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;resource&lt;/code&gt;&lt;/a&gt; syntax is coming from &lt;a href=&quot;https://github.com/ElMassimo/resourcerer&quot;&gt;&lt;em&gt;resourcerer&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In this case we can’t use &lt;a href=&quot;#adding-mixins-to-the-singleton-class&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extend&lt;/code&gt;&lt;/a&gt; because &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ActiveSupport::Concern&lt;/code&gt; internally uses the &lt;a href=&quot;https://ruby-doc.org/core-2.7.2/Module.html#method-i-included&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;included&lt;/code&gt;&lt;/a&gt; hook, which is only triggered when using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;include&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;When using this pattern, it’s better to encapsulate it so that it’s easier to understand:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;FileIntegrityValidation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;apply_on&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file_upload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;check_file_integrity?&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;FileIntegrityValidation&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Public: Define this validation only for the provided object.&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;apply_on&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;singleton_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;We can use an object’s &lt;em&gt;singleton class&lt;/em&gt; to define methods or include modules without affecting other instances, which enables very powerful techniques such as method stubbing and dynamically modifying behavior.&lt;/p&gt;
+
+&lt;p&gt;In practice, the use cases where this is necessary don’t come around very often. It’s usually possible to achieve what we need using simpler or more explicit strategies, that are easier to reason about.&lt;/p&gt;
+
+&lt;p&gt;As with most advanced techniques, you will know when you need it 😃&lt;/p&gt;
+    </content>
+    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/practical-applications-of-the-singleton-class.jpg" />
+    <author>
+      <name>Máximo Mussini</name>
+      <email>maximomussini@gmail.com</email>
+    </author>
+    <category term="posts" />
+  
+    <category term="ruby" />
+  
+    <category term="language" />
+  
+  
+    <summary>The _singleton class_ is rarely used in practice to modify the behavior of specific objects. Read on to learn a few practical applications that might prove useful in your code.</summary>
+  
+  </entry>
 
   <entry>
     <title>What is the Singleton Class in Ruby?</title>
@@ -139,7 +429,7 @@
 
 &lt;p&gt;Once again, &lt;em&gt;classes are just a particular kind of object&lt;/em&gt;. And yet, unlike classes, modifying the behavior of a particular object is rarely used in practice.&lt;/p&gt;
 
-&lt;p&gt;In the &lt;em&gt;next post&lt;/em&gt;, I’ll share a few useful applications of this pattern, stay tuned!&lt;/p&gt;
+&lt;p&gt;In the &lt;em&gt;&lt;a href=&quot;/posts/practical-applications-of-the-singleton-class&quot;&gt;next post&lt;/a&gt;&lt;/em&gt; I share a few useful applications of this feature, &lt;a href=&quot;/posts/practical-applications-of-the-singleton-class&quot;&gt;read on&lt;/a&gt;!&lt;/p&gt;
     </content>
     <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/understanding-the-singleton-class.jpg" />
     <author>
@@ -147,6 +437,10 @@
       <email>maximomussini@gmail.com</email>
     </author>
     <category term="posts" />
+  
+    <category term="ruby" />
+  
+    <category term="language" />
   
   
     <summary>The _singleton class_, also referred to as the _metaclass_ or the _eigenclass_. What is it exactly?
@@ -290,6 +584,16 @@ enjoyable 😃&lt;/p&gt;
       <email>maximomussini@gmail.com</email>
     </author>
     <category term="posts" />
+  
+    <category term="rails" />
+  
+    <category term="http" />
+  
+    <category term="ajax" />
+  
+    <category term="api" />
+  
+    <category term="js" />
   
   
   </entry>
@@ -1302,161 +1606,6 @@ and easier to use &lt;em&gt;without restricting the software’s flexibility&lt;
     <category term="mongodb" />
   
     <category term="aggregation" />
-  
-  
-  </entry>
-
-  <entry>
-    <title>Class Instance Variables in Ruby</title>
-    <link href="http://maximomussini.com/posts/ruby-class-variables/" rel="alternate" type="text/html" title="Class Instance Variables in Ruby" />
-    <published>2016-05-30T21:10:00-03:00</published>
-  
-    <updated>2016-05-30T21:10:00-03:00</updated>
-  
-    <id>http://maximomussini.com/posts/ruby-class-variables</id>
-    <content type="html" xml:base="http://maximomussini.com/posts/ruby-class-variables/">
-      &lt;picture&gt;
-  &lt;source srcset=&quot;http://maximomussini.webp&quot; type=&quot;image/webp&quot; media=&quot;(min-width: 600px)&quot;&gt;
-  &lt;source srcset=&quot;http://maximomussini-500.webp&quot; type=&quot;image/webp&quot;&gt;
-  &lt;img src=&quot;http://maximomussini.com/images/posts/ruby-class-variables.jpg&quot; alt=&quot;Post Image&quot; class=&quot;post-image&quot;&gt;
-&lt;/picture&gt;
-
-      &lt;p&gt;Like most object-oriented languages, Ruby has both instance and class variables. The syntax is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@name&lt;/code&gt; for &lt;em&gt;instance variables&lt;/em&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@@name&lt;/code&gt; for &lt;em&gt;class variables&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Let’s look at a simple example to understand how we might use &lt;em&gt;class variables&lt;/em&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
-  &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;all&lt;/span&gt;
-    &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;other_species&lt;/span&gt;
-    &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
-  &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
-  &lt;span class=&quot;vc&quot;&gt;@@animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;all&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# [Dog, Cat]&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;other_species&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# [Dog]&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;other_species&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# [Cat]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@@animals&lt;/code&gt; &lt;em&gt;class variable&lt;/em&gt; is &lt;strong&gt;shared&lt;/strong&gt; among subclasses, and we can refer to it by using the same syntax from both class and instance methods.&lt;/p&gt;
-
-&lt;h2 id=&quot;limitations-of-class-variables&quot;&gt;Limitations of Class Variables&lt;/h2&gt;
-&lt;p&gt;Now, what happens if we wanted to do something different, like storing metadata or configuration in each subclass?&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
-  &lt;span class=&quot;vc&quot;&gt;@@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'?'&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
-    &lt;span class=&quot;vc&quot;&gt;@@sound&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
-  &lt;span class=&quot;vc&quot;&gt;@@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'woof!'&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
-  &lt;span class=&quot;vc&quot;&gt;@@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'meow!'&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# &quot;meow!&quot;&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# &quot;meow!&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Because &lt;em&gt;class variables&lt;/em&gt; are shared between the parent class and its subclasses, the value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@@sound&lt;/code&gt; gets stepped over by the last subclass, rather than it taking a different value for each subclass as intended.&lt;/p&gt;
-
-&lt;h2 id=&quot;class-instance-variables&quot;&gt;Class Instance Variables&lt;/h2&gt;
-&lt;p&gt;Fortunately, there’s a simple way to achieve this in Ruby:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Animal&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sound&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@sound&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sound&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
-  &lt;span class=&quot;vi&quot;&gt;@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'woof!'&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Animal&lt;/span&gt;
-  &lt;span class=&quot;vi&quot;&gt;@sound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'meow!'&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# 'woof!'&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Cat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;talk&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# 'meow!'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;By using instance variables, each subclass gets its own variable so &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@sound&lt;/code&gt; does not get stepped over, and each subclass can configure the variable as needed. So, &lt;em&gt;how does it work&lt;/em&gt;?&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Classes in Ruby are plain objects, instances of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt; class.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Let that sink in for a bit :smile:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Because each class is an object, it can have instance variables just like any other Ruby object.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Although they are often called &lt;em&gt;class instance variables&lt;/em&gt; to differentiate them from actual &lt;em&gt;class variables&lt;/em&gt;, there’s nothing special about them—they are just plain ole’ instance variables.&lt;/p&gt;
-
-&lt;p&gt;The key practical difference is that &lt;em&gt;class variables&lt;/em&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@@&lt;/code&gt;) are shared among a class and all of its descendants, whereas &lt;em&gt;class instance variables&lt;/em&gt; (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@&lt;/code&gt;) are not shared and each class has separate instance variables just like you would expect from different objects.&lt;/p&gt;
-
-&lt;h3 id=&quot;limitations-of-class-instance-variables&quot;&gt;Limitations of Class Instance Variables&lt;/h3&gt;
-&lt;p&gt;It’s worth noting that in the last example we lost the convenience of referencing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@sound&lt;/code&gt; variable directly on the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;talk&lt;/code&gt; method like we did in the &lt;a href=&quot;#limitations-of-class-variables&quot;&gt;second example&lt;/a&gt;, and instead need to define a getter method at the class level in order to access it.&lt;/p&gt;
-
-&lt;p&gt;This is because the same syntax is used for regular &lt;em&gt;instance variables&lt;/em&gt;, so we can only refer to class instance variables directly when we are in the class scope—like in &lt;strong&gt;class methods&lt;/strong&gt; and in the &lt;strong&gt;top-level context&lt;/strong&gt; of a class definition.&lt;/p&gt;
-
-&lt;p&gt;Also, since we can’t use &lt;em&gt;class instance variables&lt;/em&gt; to share values between a class and its descendants, in cases where we would like to access the variable of a parent class we will need to refer to it using a fully qualified getter (such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Animal.sound&lt;/code&gt;) or use &lt;a href=&quot;https://github.com/ElMassimo/queryable/blob/7c5eb3448456e6e84a907cbf4a567c576433428a/lib/queryable/default_scope.rb#L38-L50&quot;&gt;metaprogramming&lt;/a&gt; in order to achieve that.&lt;/p&gt;
-
-&lt;h2 id=&quot;driving-it-home-house-car&quot;&gt;Driving it home :house: :car:&lt;/h2&gt;
-&lt;p&gt;In general, &lt;em&gt;class instance variables&lt;/em&gt; are the way to go because they are not shared, which is very useful when building libraries or DSLs, and we don’t run the risk of the value getting stepped over by accident in a subclass.&lt;/p&gt;
-
-&lt;p&gt;On the other hand, when the variable must be shared by a class and its descendants we should always use &lt;em&gt;class variables&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;When inheritance is not in play we can use either, but it’s better to be consistent and pick a “default”. I always use &lt;em&gt;class instance variables&lt;/em&gt; unless I actually need the variable to be shared.&lt;/p&gt;
-
-&lt;p&gt;We should now be less fuzzy on what &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@&lt;/code&gt; means when used in class methods or in a class definition, and when to use &lt;em&gt;class instance variables&lt;/em&gt; instead of &lt;em&gt;class variables&lt;/em&gt; :smiley:&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Would you like to &lt;a href=&quot;/posts/ruby-to_proc/&quot;&gt;learn about Ruby’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Symbol&lt;/code&gt; shortcuts&lt;/a&gt;?&lt;/em&gt;&lt;/p&gt;
-    </content>
-    <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://maximomussini.com/images/posts/ruby-class-variables.jpg" />
-    <author>
-      <name>Máximo Mussini</name>
-      <email>maximomussini@gmail.com</email>
-    </author>
-    <category term="posts" />
-  
-    <category term="ruby" />
-  
-    <category term="language" />
   
   
   </entry>

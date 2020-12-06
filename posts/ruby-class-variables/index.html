@@ -313,24 +313,22 @@ class Dog &lt; Animal
 
   <div class="related-post">
     <div class="content container">
-      <a id="related-post" href="/posts/ruby-double-splat-keywords/" class="overlay">
-        <h1>Ruby Keywords and the Double Splat Operator</h1>
+      <a id="related-post" href="/posts/practical-applications-of-the-singleton-class/" class="overlay">
+        <h1>Practical Applications of the Singleton Class in Ruby</h1>
         <div class="post-info">
-  <span class="date">January 30, 2020</span>
-  <span class="reading-time">3 min read</span>
+  <span class="date">December 06, 2020</span>
+  <span class="reading-time">7 min read</span>
 </div>
 
         <div class="post">
-          <p>One of the nicest bits of syntax sugar in Ruby are <em>keywords</em> (<code class="language-plaintext highlighter-rouge">**</code> or <em>double-splat</em>).</p>
+          
+<p>In the <span href="/posts/understanding-the-singleton-class">previous post</span>, we discussed how the <em>singleton class</em> powers class methods in Ruby, and how every object instance has <span href="/posts/understanding-the-singleton-class"><em>its own</em> singleton class</span>.</p>
 
-<h2 id="keywords-in-method-parameters">Keywords in Method Parameters</h2>
+<p>In this post, we will cover a few practical usages of the <em>singleton class</em> as a way to modify the behavior of a particular object.</p>
 
-<p>Just like the splat operator (<code class="language-plaintext highlighter-rouge">*args</code>) captures any parameters as an <code class="language-plaintext highlighter-rouge">Array</code> of
-arguments, the double-splat operator (<code class="language-plaintext highlighter-rouge">**attrs</code>) captures any option parameters
-as a <code class="language-plaintext highlighter-rouge">Hash</code>.</p>
+<h2 id="adding-methods-and-mixins">Adding Methods and Mixins</h2>
 
-<p>The nice thing is that it allows to destructure a <code class="language-plaintext highlighter-rouge">Hash</code> argument into any of
-its individual keys, and mark it as r…</p>
+<p>Since the <em>singleton class</em> of an object is specific to it, we can add methods to it, remove me…</p>
         </div>
       </a>
     </div>

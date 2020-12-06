@@ -192,23 +192,22 @@ In the frontend this has become increasingly more common because of all the avai
 
   <div class="related-post">
     <div class="content container">
-      <a id="related-post" href="/posts/vuex-stores/" class="overlay">
-        <h1>Store Objects for Vuex</h1>
+      <a id="related-post" href="/posts/js-from-routes/" class="overlay">
+        <h1>Generating a JS API from Rails Routes</h1>
         <div class="post-info">
-  <span class="date">May 12, 2020</span>
-  <span class="reading-time">4 min read</span>
+  <span class="date">June 22, 2020</span>
+  <span class="reading-time">5 min read</span>
 </div>
 
         <div class="post">
-          <p><span href="%7B%7Bpage.vuex%7D%7D">Vuex</span> is a state-management solution that integrates nicely with
-<span href="%7B%7Bpage.vue%7D%7D">Vue</span> components.</p>
+          <p>One idea I’ve always appreciated about the routing approach in Rails is <strong>path helpers</strong>, which are automatically generated from route definitions.</p>
 
-<p>When starting to use Vuex, one quickly realizes that it’s easier to manage and
-understand the state of a large application when the state is split between
-different <span href="%7B%7Bpage.modules%7D%7D">modules in the Vuex store</span>.</p>
-
-<p>Unfortunately, working with modules involves using a <em>namespace string</em> to
-access state and getters, which makes typos hard…</p>
+<p>Some advantages of using path helpers are:</p>
+<ul>
+  <li>There’s no need to take care of manually interpolating ids and parameters to
+build a <code class="language-plaintext highlighter-rouge">String</code> URL.</li>
+  <li>Any change to the route …</li>
+</ul>
         </div>
       </a>
     </div>

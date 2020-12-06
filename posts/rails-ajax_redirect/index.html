@@ -176,23 +176,22 @@ requests, while still setting the <code class="language-plaintext highlighter-ro
 
   <div class="related-post">
     <div class="content container">
-      <a id="related-post" href="/posts/better-settings/" class="overlay">
-        <h1>Better Settings in Ruby apps</h1>
+      <a id="related-post" href="/posts/js-from-routes/" class="overlay">
+        <h1>Generating a JS API from Rails Routes</h1>
         <div class="post-info">
-  <span class="date">March 02, 2019</span>
-  <span class="reading-time">6 min read</span>
+  <span class="date">June 22, 2020</span>
+  <span class="reading-time">5 min read</span>
 </div>
 
         <div class="post">
-          <p><span href="%7B%7Bpage.github%7D%7D"><em>BetterSettings</em></span> is a settings-management library for Ruby apps, which was
-designed in response to certain issues we faced when using <span href="%7B%7Bpage.settingslogic%7D%7D"><em>settingslogic</em></span>
-(one of the most popular libraries to manage settings in Rails applications).</p>
+          <p>One idea I’ve always appreciated about the routing approach in Rails is <strong>path helpers</strong>, which are automatically generated from route definitions.</p>
 
-<p>In this post we’ll talk about <em>settingslogic</em> and its design decisions, how they
-affect reliability, and how we can overcome them.</p>
-
-<p>Even if you are not familiar with these libraries, reading this article might
-help you to learn about potentially harmful practic…</p>
+<p>Some advantages of using path helpers are:</p>
+<ul>
+  <li>There’s no need to take care of manually interpolating ids and parameters to
+build a <code class="language-plaintext highlighter-rouge">String</code> URL.</li>
+  <li>Any change to the route …</li>
+</ul>
         </div>
       </a>
     </div>

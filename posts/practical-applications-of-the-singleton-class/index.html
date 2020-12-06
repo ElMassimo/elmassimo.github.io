@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>
+
+  Practical Applications of the Singleton Class in Ruby · Máximo Mussini
+
+</title>
+
+<meta name="author" content="Máximo Mussini">
+<meta name="description" content="The singleton class is rarely used in practice to modify the behavior of specific objects. Read on to learn a few practical applications that might prove useful in your code.
+">
+<meta name="keywords" content="ruby, language">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="cleartype" content="on">
+<meta name="theme-color" content="#5C7E8F" />
+
+<!-- Styles -->
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//www.google-analytics.com">
+<link rel="preload" href="//fonts.googleapis.com/css?family=Raleway:700,800,900|Lato:400,400italic,700,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.rel='stylesheet'" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="/assets/css/styles.css?v=4" media="screen, projection">
+
+<!-- Icons -->
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="icon" sizes="192x192" href="/icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.jpg">
+<link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Máximo Mussini · Code and Design">
+
+<!-- Facebook Stuff -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="http://maximomussini.com/posts/practical-applications-of-the-singleton-class/">
+<meta property="og:site_name" content="Máximo Mussini">
+<meta property="og:title" content="Practical Applications of the Singleton Class in Ruby">
+<meta property="og:image" content="http://maximomussini.com/images/posts/practical-applications-of-the-singleton-class.jpg">
+<meta property="og:description" content="The singleton class is rarely used in practice to modify the behavior of specific objects. Read on to learn a few practical applications that might prove useful in your code.
+">
+
+<!-- Twitter Stuff -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="maximomussini.com" />
+<meta name="twitter:title" value="Practical Applications of the Singleton Class in Ruby" />
+<meta name="twitter:description" value="The singleton class is rarely used in practice to modify the behavior of specific objects. Read on to learn a few practical applications that might prove useful in your code.
+" />
+<meta name="twitter:image" content="http://maximomussini.com/images/posts/practical-applications-of-the-singleton-class.jpg" />
+<meta name="twitter:url" value="http://maximomussini.com/posts/practical-applications-of-the-singleton-class/" />
+
+  </head>
+  <body>
+    <header style="background-image: url('data:image/webp;base64,UklGRkQDAABXRUJQVlA4IDgDAAAQJwCdASrfAGQAPrlMnku8uC0lNjvMQ5AXCWdt6zBmTK5rinJ5Pd/gn/XmMmvlo6+wgKaoAreaE4xfJB6i3EU84P3mcJCxBHGf3In6V88JsBEfU/AuqlZeIQxdW+u1fUiMt7v1zE+R2HkQy/Jv/L0m44hFdh01I+2U6UkQAAxC8Yl4dSQmY5rnftb8EKYSM8s0yRaY9yoc4vSLdGSOKsu4yTQLIHWiiwKjBmg5fMDhPxeXAYYHAq2DMHKdyEk1Ffvi86LBk7ZXEARObL1GaQHgeZzgR2SoLCbgPmrboULpZ8/MCDMPFLzhIC+ICT9L5HOYpvoS+Zf4Yjqv4HfwzYtjc30eE7gNBBTGxyX6ymWQhmXF5hppbL1ZwaJgteSAwa1/ccdonCdX47TWUQPHYf/xZo0jEobsDhl8L4dGtRMoWRQA/u/nLyCD41uVRRb0Wgh18ryPtSDQr/4+kGakQqdYRN0jjF4mOr47NiwUcQLXjDFaYbVGBaHQtQhYEW2F41IPvy72EUZYVZfhFK7EPAg/v0czSqjCKyW0R8rXC24hLM74haLnDxV7wQuzKBpcZF2z8ZdvZ+iyOLD+udAAaVJjHauhxQjKrrCPDnZHS5kjZQ7wdgamu5v7DBUbqiwCDpUUkkD03jakQOsJFDKRkIGcw1N6lf1z+HSAZAb51ZdqAOEVuyZWMb5myFMBWafSsnHndwJaBvUMDSkLwzIbggEuL6n1/+/rt4zpwQgErJx+JzpmpDg0vj7phVmll38FRJ6305kVdYkSPwoFXsOUEFZ37D+kJtsk+NgYh7u4Tfcx6MbD4owROMJPW3xO4Qtxt85wQlHpO+aIr+N/Vh1ybiks7KX1IeJ5lBKeovec8V1bIe+K4qp282pKiDZvipD5KYNjlUjyp/AhgfpHmf1KfdadAr2Q/PWyI1pwEOmTBJAhKFFI9jcxAhKZ7HbDovZaVlHD58Bbqs0Q09c56ut7rChM3rTMO6RMdo85DxKjNBuLDFYBbwaEE1J8cEwDNIXvWd2BnigxA0NHL0fxoc905FqHp8F33oPthKOgc9s9XgZcWgRoFMyhEGz561zm3+c7I9Yw/Zel+WAAAA==')">
+  
+    <div class="hero">
+      <picture>
+  <source srcset="/images/posts/practical-applications-of-the-singleton-class.webp" type="image/webp" media="(min-width: 600px)">
+  <source srcset="/images/posts/practical-applications-of-the-singleton-class-500.webp" type="image/webp">
+  <img src="/images/posts/practical-applications-of-the-singleton-class.jpg" alt="practical-applications-of-the-singleton-class.jpg" class="hero-bg">
+</picture>
+
+      <h1 class="hero-title">Practical Applications of the Singleton Class in Ruby</h1>
+    </div>
+  
+</header>
+
+    <div class="menu container">
+  <ul>
+    
+<li>
+  <a href="/about/">About</a>
+</li>
+
+    
+<li>
+  <a href="/posts/">Posts</a>
+</li>
+
+    <li>
+      <a href="/" class="logo">
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo"/>
+</a>
+
+    </li>
+    
+<li>
+  <a href="/projects/">Projects</a>
+</li>
+
+    
+<li>
+  <a href="/talks/">Talks</a>
+</li>
+
+  </ul>
+  <hr />
+</div>
+
+    <div class="content container">
+  
+
+  <div class="post-info">
+  <span class="date">December 06, 2020</span>
+  <span class="reading-time">7 min read</span>
+</div>
+
+
+  <div class="post">
+    
+<p>In the <a href="/posts/understanding-the-singleton-class">previous post</a>, we discussed how the <em>singleton class</em> powers class methods in Ruby, and how every object instance has <a href="/posts/understanding-the-singleton-class"><em>its own</em> singleton class</a>.</p>
+
+<p>In this post, we will cover a few practical usages of the <em>singleton class</em> as a way to modify the behavior of a particular object.</p>
+
+<h2 id="adding-methods-and-mixins">Adding Methods and Mixins</h2>
+
+<p>Since the <em>singleton class</em> of an object is specific to it, we can add methods to it, remove methods, or include modules, all without affecting other instances.</p>
+
+<blockquote>
+  <p>When calling a method on an object, Ruby will first look into its singleton class to find it, before traversing the rest of the <a href="/posts/understanding-the-singleton-class/#the-metaclass-hierarchy">method chain</a>.</p>
+</blockquote>
+
+<h3 id="defining-singleton-methods">Defining Singleton Methods</h3>
+
+<p>Let’s cover a few of the syntaxes we can use to define methods for a specific object.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">person</span> <span class="o">=</span> <span class="no">Object</span><span class="p">.</span><span class="nf">new</span>
+
+<span class="n">person</span><span class="p">.</span><span class="nf">define_singleton_method</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="s1">'Alice'</span>
+<span class="p">}</span>
+
+<span class="n">person</span><span class="p">.</span><span class="nf">singleton_class</span><span class="p">.</span><span class="nf">define_method</span><span class="p">(</span><span class="ss">:to_s</span><span class="p">)</span> <span class="p">{</span>
+  <span class="s2">"</span><span class="si">#{</span> <span class="nb">name</span> <span class="si">}</span><span class="s2"> in </span><span class="si">#{</span> <span class="n">location</span> <span class="si">}</span><span class="s2">"</span>
+<span class="p">}</span>
+
+<span class="k">def</span> <span class="nc">person</span><span class="o">.</span><span class="nf">location</span>
+  <span class="s1">'Wonderland'</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="n">person</span>
+  <span class="k">def</span> <span class="nf">inspect</span>
+    <span class="s2">"</span><span class="si">#{</span> <span class="nb">to_s</span> <span class="si">}</span><span class="s2">: </span><span class="si">#{</span> <span class="k">super</span> <span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">person</span><span class="p">.</span><span class="nf">inspect</span> <span class="c1"># =&gt; "Alice in Wonderland: #&lt;Object:0x00007fe7b5071238&gt;"</span>
+</code></pre></div></div>
+
+<p>The last two syntaxes should be familiar, we usually use them inside a class definition with <code class="language-plaintext highlighter-rouge">self</code> as the receiver (inside the class definition <code class="language-plaintext highlighter-rouge">self</code> is the class object).</p>
+
+<p>These four different ways of defining a method are equivalent, each one is defining a <em><strong>singleton method</strong></em>.</p>
+
+<blockquote>
+  <p>A <em><strong>singleton method</strong></em> is a method defined in the <em>singleton class</em> of an object.</p>
+</blockquote>
+
+<p>As we saw in the <a href="/posts/understanding-the-singleton-class">previous post</a>, class methods are simply <em>singleton methods</em> of a class object, which explains why the same syntaxes can be used with a different receiver: they do <em>the same thing</em>.</p>
+
+<h3 id="adding-mixins-to-the-singleton-class">Adding Mixins to the Singleton Class</h3>
+
+<p>We are not limited to adding or overriding methods, we can also work with modules.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Greeting</span>
+  <span class="k">def</span> <span class="nf">introduce</span>
+    <span class="s2">"Hey, I'm </span><span class="si">#{</span> <span class="nb">name</span> <span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nn">NiceGreeting</span>
+  <span class="k">def</span> <span class="nf">introduce</span>
+    <span class="s2">"</span><span class="si">#{</span> <span class="k">super</span> <span class="si">}</span><span class="s2">, nice to meet you!"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">person</span><span class="p">.</span><span class="nf">extend</span><span class="p">(</span><span class="no">Greeting</span><span class="p">)</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">singleton_class</span><span class="p">.</span><span class="nf">include</span><span class="p">(</span><span class="no">NiceGreeting</span><span class="p">)</span>
+
+<span class="n">person</span><span class="p">.</span><span class="nf">introduce</span> <span class="c1"># =&gt; "Hey, I'm Alice, nice to meet you!"</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">singleton_class</span><span class="p">.</span><span class="nf">ancestors</span> <span class="c1"># =&gt; [#&lt;Class:#&lt;Object:...&gt;&gt;, NiceGreeting, Greeting, ...</span>
+</code></pre></div></div>
+
+<p>The example above illustrates how <a href="/posts/understanding-the-singleton-class/#the-metaclass-hierarchy">module inheritance</a> works when dealing with the <em>singleton class</em>. Using <code class="language-plaintext highlighter-rouge">extend</code> is like <em>including</em> a module in the <em>singleton class</em>.</p>
+
+<blockquote>
+  <p>Calling <code class="language-plaintext highlighter-rouge">extend</code> on an object will make the module methods available on <em>that</em> object. In a class definition the object is implicit: <em>the <a href="/posts/understanding-the-singleton-class/#the-metaclass-of-a-class">class object</a>.</em></p>
+</blockquote>
+
+<h2 id="practical-applications">Practical Applications</h2>
+
+<p>Let’s now dive into a few scenarios where all of this flexibility becomes useful.</p>
+
+<h3 id="test-doubles-and-method-stubbing">Test Doubles and Method Stubbing</h3>
+
+<p>A <em>test double</em> is any object that stands in for a real object during a test. <a href="https://github.com/rspec/rspec-mocks">Some libraries</a> allow to easily create doubles, and stub some of their methods:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">book</span> <span class="o">=</span> <span class="n">instance_double</span><span class="p">(</span><span class="s1">'Book'</span><span class="p">,</span> <span class="ss">pages: </span><span class="mi">236</span><span class="p">)</span>
+<span class="n">book</span><span class="p">.</span><span class="nf">pages</span> <span class="c1"># =&gt; 236</span>
+</code></pre></div></div>
+
+<p>A <em>method stub</em> is an instruction to an object to return a known value in response to a message:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">allow</span><span class="p">(</span><span class="n">book</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span> <span class="p">{</span> <span class="s1">'Free Play'</span> <span class="p">}</span>
+<span class="n">book</span><span class="p">.</span><span class="nf">title</span> <span class="c1"># =&gt; "Free Play"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Most libraries implement both of these features by leveraging the <em>singleton class</em>.</p>
+</blockquote>
+
+<p>Let’s see how we might be able to implement a very simplistic version of <code class="language-plaintext highlighter-rouge">double</code>, which returns an object that can respond to the specified methods:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="o">**</span><span class="n">method_stubs</span><span class="p">)</span>
+  <span class="no">Object</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">tap</span> <span class="k">do</span> <span class="o">|</span><span class="n">object</span><span class="o">|</span>
+    <span class="n">object</span><span class="p">.</span><span class="nf">instance_variable_set</span><span class="p">(</span><span class="s1">'@name'</span><span class="p">,</span> <span class="nb">name</span><span class="p">)</span>
+    <span class="n">method_stubs</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+      <span class="n">object</span><span class="p">.</span><span class="nf">define_singleton_method</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="p">{</span> <span class="n">value</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">double</span><span class="p">(</span><span class="s1">'Book'</span><span class="p">,</span> <span class="ss">pages: </span><span class="mi">236</span><span class="p">,</span> <span class="ss">title: </span><span class="s1">'Free Play'</span><span class="p">)</span>
+<span class="n">book</span><span class="p">.</span><span class="nf">pages</span> <span class="c1"># =&gt; 236</span>
+<span class="n">book</span><span class="p">.</span><span class="nf">title</span> <span class="c1"># =&gt; "Free Play"</span>
+</code></pre></div></div>
+
+<p>By using <a href="https://ruby-doc.org/core-2.7.2/Object.html#method-i-define_singleton_method"><code class="language-plaintext highlighter-rouge">define_singleton_method</code></a> we can create a test double that conforms to the provided options, without having to use temporary classes or structs, nor affecting other object instances.</p>
+
+<h3 id="rspec-example-group-methods">RSpec Example Group Methods</h3>
+
+<p>When writing tests with RSpec, it’s a good practice to keep helpers and state as local as possible. A typical way to do that is to include helpers only for certain types of tests.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">include</span><span class="p">(</span><span class="no">EmailSpec</span><span class="o">::</span><span class="no">Helpers</span><span class="p">,</span> <span class="ss">type: :controller</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Behind the scenes, RSpec will leverage the <em>singleton class</em> of a specific example group to include the module, without affecting other test scenarios.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="ss">:each</span><span class="p">,</span> <span class="ss">type: :controller</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">example</span><span class="o">|</span>
+    <span class="n">example</span><span class="p">.</span><span class="nf">example_group_instance</span><span class="p">.</span><span class="nf">singleton_class</span><span class="p">.</span><span class="nf">include</span><span class="p">(</span><span class="no">EmailSpec</span><span class="o">::</span><span class="no">Helpers</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>We can use this to our advantage as a way to define scenario-specific methods as well:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">before</span><span class="p">(</span><span class="ss">:each</span><span class="p">,</span> <span class="ss">:as</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">example</span><span class="o">|</span>
+    <span class="n">example</span><span class="p">.</span><span class="nf">example_group_instance</span><span class="p">.</span><span class="nf">define_singleton_method</span><span class="p">(</span><span class="ss">:current_user</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">instance_exec</span><span class="p">(</span><span class="o">&amp;</span><span class="n">example</span><span class="p">.</span><span class="nf">metadata</span><span class="p">[</span><span class="ss">:as</span><span class="p">])</span>
+    <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">RSpec</span><span class="p">.</span><span class="nf">feature</span> <span class="s1">'Visiting a page'</span> <span class="k">do</span>
+  <span class="n">before</span> <span class="p">{</span> <span class="n">sign_in_as</span> <span class="n">current_user</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s1">'can visit the page as a user'</span><span class="p">,</span> <span class="ss">as: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span> <span class="p">}</span> <span class="k">do</span>
+    <span class="o">...</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s1">'can visit the page as an admin'</span><span class="p">,</span> <span class="ss">as: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Admin</span><span class="p">.</span><span class="nf">first</span> <span class="p">}</span> <span class="k">do</span>
+    <span class="o">...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Check <a href="https://github.com/ElMassimo/capybara_test_helpers/blob/367fdb898f9c02059dc54f2351a3a46f72cffac8/lib/capybara_test_helpers/rspec.rb#L24">this example</a> in the <a href="https://github.com/ElMassimo/capybara_test_helpers"><em>Capybara Test Helpers</em></a> library, which uses it to <a href="https://capybara-test-helpers.netlify.app/guide/essentials/injection.html#test-helpers-in-rspec">inject test helpers</a> using a <code class="language-plaintext highlighter-rouge">:test_helpers</code> option.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">feature</span> <span class="s1">'Cities'</span> <span class="k">do</span>
+  <span class="n">scenario</span> <span class="s1">'adding a city'</span><span class="p">,</span> <span class="ss">test_helpers: </span><span class="p">[</span><span class="ss">:cities</span><span class="p">]</span> <span class="k">do</span>
+    <span class="n">visit_page</span><span class="p">(</span><span class="ss">:cities</span><span class="p">)</span>
+    <span class="n">cities</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'Minneapolis'</span><span class="p">)</span>
+    <span class="n">cities</span><span class="p">.</span><span class="nf">should</span><span class="p">.</span><span class="nf">have_city</span><span class="p">(</span><span class="s1">'Minneapolis'</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="custom-cache-keys">Custom Cache Keys</h3>
+
+<p>When using Rails’ cache, <a href="https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L435-L445"><code class="language-plaintext highlighter-rouge">fetch_multi</code></a> supports passing a list of keys, which will be yielded to the block in order to calculate the value to cache.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">keys</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">cache_key_for</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="p">}</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">fetch_multi</span><span class="p">(</span><span class="o">*</span><span class="n">keys</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span> <span class="n">value_for</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>What if we need the item instead of the key in order to calculte the value to cache?</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items_by_cache_key</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="nf">index_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">cache_key_for</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="p">}</span>
+<span class="n">cache_keys</span> <span class="o">=</span> <span class="n">items_by_cache_key</span><span class="p">.</span><span class="nf">keys</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">fetch_multi</span><span class="p">(</span><span class="o">*</span><span class="n">cache_keys</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span> <span class="n">value_for</span><span class="p">(</span><span class="n">items_by_cache_key</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Quite awkward. However, <a href="https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L435-L445"><code class="language-plaintext highlighter-rouge">fetch_multi</code></a> also supports passing a list of objects, in which case it will call <a href="https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L649-L653"><code class="language-plaintext highlighter-rouge">cache_key</code></a> on the objects to <a href="https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L649-L653">obtain the cache keys</a>.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">fetch_multi</span><span class="p">(</span><span class="o">*</span><span class="n">items</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">value_for</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>But what if the items don’t respond to <code class="language-plaintext highlighter-rouge">cache_key</code>?</p>
+
+<p>We can leverage <a href="https://ruby-doc.org/core-2.7.2/Object.html#method-i-define_singleton_method"><code class="language-plaintext highlighter-rouge">define_singleton_method</code></a> to define it differently for each item:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+  <span class="n">item</span><span class="p">.</span><span class="nf">define_singleton_method</span><span class="p">(</span><span class="ss">:cache_key</span><span class="p">)</span> <span class="p">{</span> <span class="n">cache_key_for</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">fetch_multi</span><span class="p">(</span><span class="o">*</span><span class="n">items</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">value_for</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Check <a href="https://github.com/ElMassimo/oj_serializers/blob/385aea5d97c477be9ff121edd622974a861877af/lib/oj_serializers/serializer.rb#L269">this example</a> in the <a href="https://github.com/ElMassimo/oj_serializers"><code class="language-plaintext highlighter-rouge">oj_serializers</code></a> library, which <a href="https://github.com/ElMassimo/oj_serializers/blob/385aea5d97c477be9ff121edd622974a861877af/lib/oj_serializers/serializer.rb#L262">defines</a> a <code class="language-plaintext highlighter-rouge">cache_key</code> <em>singleton method</em> for each object, so that they can be passed to <a href="https://github.com/rails/rails/blob/fe76a95b0d252a2d7c25e69498b720c96b243ea2/activesupport/lib/active_support/cache.rb#L649-L653"><code class="language-plaintext highlighter-rouge">fetch_multi</code></a>.</p>
+
+<h2 id="ad-hoc-validations-in-rails">Ad Hoc Validations in Rails</h2>
+
+<p>Let’s imagine that we have a file upload API, and we are running an integrity check on save.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">FileIntegrityValidation</span>
+  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+
+  <span class="n">included</span> <span class="k">do</span>
+    <span class="n">validate</span> <span class="p">{</span> <span class="n">errors</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="ss">:file</span><span class="p">,</span> <span class="s1">'is corrupt'</span><span class="p">)</span> <span class="k">if</span> <span class="n">corrupt?</span> <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">corrupt?</span>
+    <span class="o">...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>What if we need to run the validation conditionally based on a setting that is not accesible from the model?</p>
+
+<p>We can leverage the <em>singleton class</em> to define the validation conditionally:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Api::FilesController</span> <span class="o">&lt;</span> <span class="no">Api</span><span class="o">::</span><span class="no">BaseController</span>
+  <span class="n">resource</span><span class="p">(</span><span class="ss">:file_upload</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="n">file_upload</span><span class="p">.</span><span class="nf">singleton_class</span><span class="p">.</span><span class="nf">include</span><span class="p">(</span><span class="no">FileIntegrityValidation</span><span class="p">)</span> <span class="k">if</span> <span class="n">check_file_integrity?</span>
+    <span class="k">if</span> <span class="n">file_upload</span><span class="p">.</span><span class="nf">save</span>
+      <span class="o">...</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>The <a href="https://github.com/ElMassimo/resourcerer"><code class="language-plaintext highlighter-rouge">resource</code></a> syntax is coming from <a href="https://github.com/ElMassimo/resourcerer"><em>resourcerer</em></a>.</p>
+</blockquote>
+
+<p>In this case we can’t use <a href="#adding-mixins-to-the-singleton-class"><code class="language-plaintext highlighter-rouge">extend</code></a> because <code class="language-plaintext highlighter-rouge">ActiveSupport::Concern</code> internally uses the <a href="https://ruby-doc.org/core-2.7.2/Module.html#method-i-included"><code class="language-plaintext highlighter-rouge">included</code></a> hook, which is only triggered when using <code class="language-plaintext highlighter-rouge">include</code>.</p>
+
+<p>When using this pattern, it’s better to encapsulate it so that it’s easier to understand:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">create</span>
+    <span class="no">FileIntegrityValidation</span><span class="p">.</span><span class="nf">apply_on</span><span class="p">(</span><span class="n">file_upload</span><span class="p">)</span> <span class="k">if</span> <span class="n">check_file_integrity?</span>
+</code></pre></div></div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">FileIntegrityValidation</span>
+  <span class="c1"># Public: Define this validation only for the provided object.</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">apply_on</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
+    <span class="n">object</span><span class="p">.</span><span class="nf">singleton_class</span><span class="p">.</span><span class="nf">include</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="summary">Summary</h2>
+
+<p>We can use an object’s <em>singleton class</em> to define methods or include modules without affecting other instances, which enables very powerful techniques such as method stubbing and dynamically modifying behavior.</p>
+
+<p>In practice, the use cases where this is necessary don’t come around very often. It’s usually possible to achieve what we need using simpler or more explicit strategies, that are easier to reason about.</p>
+
+<p>As with most advanced techniques, you will know when you need it 😃</p>
+
+
+  </div>
+
+  <div class="ending">
+  <a href="/" class="logo">
+  <img class="logo-img" src="/assets/icons/logo.svg" alt="Logo"/>
+</a>
+
+  <span>by</span>
+  <a href="https://twitter.com/MaximoMussini" class="author-name">Máximo<span class="last-name"> Mussini</span></a>
+  <a class="twitter-share-button" href="//twitter.com/intent/tweet?original_referer=http://maximomussini.com/posts/practical-applications-of-the-singleton-class/&amp;ref_src=twsrc%5Etfw&amp;text=Practical Applications of the Singleton Class in Ruby%20%C2%B7%20M%C3%A1ximo%20Mussini&amp;tw_p=tweetbutton&amp;url=http://maximomussini.com/posts/practical-applications-of-the-singleton-class/&amp;via=MaximoMussini" rel="noopener" target="_blank"><i class="twitter-icon"></i><span class="twitter-label">Tweet</span></a>
+
+</div>
+
+</div>
+
+
+
+
+
+
+  <a id="previous-post" href="/posts/understanding-the-singleton-class/" class="hidden"></a>
+
+
+
+
+  <div class="related-post">
+    <div class="content container">
+      <a id="related-post" href="/posts/understanding-the-singleton-class/" class="overlay">
+        <h1>What is the Singleton Class in Ruby?</h1>
+        <div class="post-info">
+  <span class="date">December 04, 2020</span>
+  <span class="reading-time">4 min read</span>
+</div>
+
+        <div class="post">
+          
+<p>The <em>singleton class</em>, also referred to as the <em>metaclass</em> or the <em>eigenclass</em>. What is it exactly?</p>
+
+<p>Let’s begin by discussing the <strong>main purpose</strong> of metaclasses in Ruby.</p>
+
+<h2 id="classes-and-method-dispatching">Classes and Method Dispatching</h2>
+
+<p>In Ruby, everything is an <em>object</em>, and every object has a <em>class</em>, which defines the <em>methods</em> the object can respond to.</p>
+
+<p>These two statements also apply to classes, which is what makes it possi…</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
+    <script>
+if (document.location.hostname.search('maximomussini.com') !== -1) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67510525-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+
+<script src="/assets/js/anchors.js" async></script>
+<script src="/assets/js/shortcuts.js" async></script>
+
+  </body>
+</html>

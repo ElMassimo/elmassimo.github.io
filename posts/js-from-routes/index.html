@@ -17,7 +17,7 @@ Some advantages of using path helpers are:
 build a String URL.
   Any change to the route …
 ">
-<meta name="keywords" content="">
+<meta name="keywords" content="rails, http, ajax, api, js">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -272,23 +272,19 @@ enjoyable 😃</p>
 
   <div class="related-post">
     <div class="content container">
-      <a id="related-post" href="/posts/vuex-stores/" class="overlay">
-        <h1>Store Objects for Vuex</h1>
+      <a id="related-post" href="/posts/rails-ajax_redirect/" class="overlay">
+        <h1>Redirecting AJAX requests in Rails</h1>
         <div class="post-info">
-  <span class="date">May 12, 2020</span>
-  <span class="reading-time">4 min read</span>
+  <span class="date">January 11, 2016</span>
+  <span class="reading-time">2 min read</span>
 </div>
 
         <div class="post">
-          <p><span href="https://vuex.vuejs.org/">Vuex</span> is a state-management solution that integrates nicely with
-<span href="https://vuejs.org/">Vue</span> components.</p>
+          <p><span href="https://github.com/rails/jquery-rails"><code class="language-plaintext highlighter-rouge">jquery-rails</code></span> powers links and forms in Rails: it’s what makes <code class="language-plaintext highlighter-rouge">remote: true</code> work, allowing any link to make an AJAX request unobtrusively.</p>
 
-<p>When starting to use Vuex, one quickly realizes that it’s easier to manage and
-understand the state of a large application when the state is split between
-different <span href="https://vuex.vuejs.org/guide/modules.html">modules in the Vuex store</span>.</p>
+<p><span href="https://github.com/ElMassimo/rails-ajax_redirect"><code class="language-plaintext highlighter-rouge">rails-ajax_redirect</code></span> is an extension to this unobtrusive behaviour that adds AJAX support to <code class="language-plaintext highlighter-rouge">redirect_to</code>. It allows us to redirect an AJAX request as usual, instead of having to perform the redirect by handling the response manually in JS every time.</p>
 
-<p>Unfortunately, working with modules involves using a <em>namespace string</em> to
-access state and getters, which makes typos hard…</p>
+<p>This is helpful in many different scenarios, and ju…</p>
         </div>
       </a>
     </div>
