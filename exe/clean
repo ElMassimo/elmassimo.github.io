@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Remove compiled site.
-find _site -mindepth 1 -maxdepth 1 -type d | grep -v .git | xargs rm -r
+find _site -mindepth 1 -maxdepth 1 -type d | grep -v .git | grep -v resume | xargs rm -r
 
 # Remove images.
 rm -R -f tmp

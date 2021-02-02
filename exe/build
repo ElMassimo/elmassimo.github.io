@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# If the site exists
+if [ -d _site ]; then
+  mv _site/resume tmp/resume
+fi
+
 # If the site does not exist
 if [ ! -d _site ]; then
 
@@ -13,6 +18,8 @@ if [ ! -d _site ]; then
   git checkout master
   cd ..
 fi
+
+mv tmp/resume _site/resume
 
 # Rebuild site
 echo "=> Building Jekyll Site"
