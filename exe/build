@@ -19,8 +19,14 @@ if [ ! -d _site ]; then
   cd ..
 fi
 
-mv tmp/resume _site/resume
-
 # Rebuild site
 echo "=> Building Jekyll Site"
 bin/jekyll build --lsi --trace "$@"
+
+echo "=> Moving frontend back"
+mv tmp/resume _site/resume
+
+if [ ! -d _site/resume ]; then
+  echo 'Missing resume'
+  exit 1
+fi
