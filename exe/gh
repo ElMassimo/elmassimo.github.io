@@ -6,4 +6,4 @@ cd _site
 # Upload all the current work
 git add .
 exe/commit "$1"
-git push -f gh master
+# git push -f gh master

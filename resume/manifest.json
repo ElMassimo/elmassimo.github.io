@@ -1,16 +1,16 @@
 {
   "index.html": {
-    "file": "assets/index.b0519a5f.js",
+    "file": "assets/index.c6f2e38a.js",
     "src": "index.html",
     "isEntry": true,
     "imports": [
-      "_vendor.dff0ddc2.js"
+      "_vendor.8ed8e1a3.js"
     ],
     "css": [
-      "assets/index.67ef2545.css"
+      "assets/index.78ca95c4.css"
     ]
   },
-  "_vendor.dff0ddc2.js": {
-    "file": "assets/vendor.dff0ddc2.js"
+  "_vendor.8ed8e1a3.js": {
+    "file": "assets/vendor.8ed8e1a3.js"
   }
 }
